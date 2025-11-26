@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CryptoAura — AURASYSTEM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --card: #1a1a1a;
+      --glow: #00ff88;
+      --text: #ccc;
+      --primary: #ff6b6b;
+      --accent: #feca57;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: #ff6b6b;
+      background: linear-gradient(45deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 25px rgba(255,107,107,0.5);
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+      text-align: center;
+    }
+
+    /* ВЕРХНЯЯ СТРОКА — ПРОГНОЗЫ (МЕДЛЕННАЯ) */
+    .ticker-top {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(135deg, #111, #000);
+      color: var(--glow);
+      padding: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      overflow: hidden;
+      white-space: nowrap;
+      z-index: 1000;
+      border-bottom: 2px solid var(--glow);
+      box-shadow: 0 4px 15px rgba(0,255,136,0.3);
+    }
+    .ticker-top span {
+      display: inline-block;
+      animation: marquee-top 45s linear infinite;
+    }
+    @keyframes marquee-top {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .content {
+      flex: 1;
+      padding-top: 60px;
+      padding-bottom: 60px;
+      overflow: auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+    .window {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,255,136,0.2);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .window a {
+      display: block;
+      width: 100%;
+      height: 300px;
+      background: #333;
+      color: var(--glow);
+      text-decoration: none;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .description {
+      padding: 10px;
+      font-size: 0.9rem;
+      color: var(--text);
+      text-align: center;
+      background: rgba(0,0,0,0.5);
+      cursor: pointer;
+    }
+    .description:hover {
+      background: rgba(0,255,136,0.2);
+    }
+
+    /* НИЖНЯЯ СТРОКА — ЦЕНЫ (БЫСТРАЯ) */
+    .ticker-bottom {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #111;
+      color: var(--glow);
+      padding: 8px;
+      font-size: 0.9rem;
+      overflow: hidden;
+      white-space: nowrap;
+      box-shadow: 0 -2px 10px rgba(0,255,136,0.2);
+    }
+    .ticker-bottom span {
+      display: inline-block;
+      animation: marquee-bottom 25s linear infinite;
+    }
+    @keyframes marquee-bottom {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ВЕРХНЯЯ СТРОКА: ПРОГНОЗЫ -->
+  <div class="ticker-top">
+    <span>
+      SOL/USDT: +15% за 24ч — ВХОДИМ! 🚀 • 
+      Не берите SHITCOIN23 — скам! ⚠️ • 
+      BTC держит $87K — ставим на рост! 📈 • 
+      ETH пробьёт $3K к пятнице! • 
+      DeFi TVL +$2B — следим за AAVE! • 
+      Binance добавляет TON — лонг! • 
+      SOL/USDT: +15% за 24ч — ВХОДИМ! 🚀 • 
+      Не берите SHITCOIN23 — скам! ⚠️ • 
+      BTC держит $87K — ставим на рост! 📈 • 
+      ETH пробьёт $3K к пятнице! • 
+      DeFi TVL +$2B — следим за AAVE! • 
+      Binance добавляет TON — лонг!
+    </span>
+  </div>
+
+  <div class="content">
+    <h1>CryptoAura</h1>
+
+    <div class="grid">
+      <div class="window">
+        <a href="https://www.poloniex.com/ru/" target="_blank" rel="noopener">Poloniex</a>
+        <div class="description" onclick="window.open('https://www.poloniex.com/ru/', '_blank')">
+          Poloniex — CEX with BTC/ETH pairs, +5-10% volatility on USDT.
+        </div>
+      </div>
+      <div class="window">
+        <a href="https://dexscreener.com/new-pairs" target="_blank" rel="noopener">DexScreener</a>
+        <div class="description" onclick="window.open('https://dexscreener.com/new-pairs', '_blank')">
+          DexScreener — New pairs on Solana, +2383% pumps, high risk rugs.
+        </div>
+      </div>
+      <div class="window">
+        <a href="https://coinmarketcap.com/" target="_blank" rel="noopener">CoinMarketCap</a>
+        <div class="description" onclick="window.open('https://coinmarketcap.com/', '_blank')">
+          CoinMarketCap — Crypto rankings, market cap, volume for BTC/ETH.
+        </div>
+      </div>
+      <div class="window">
+        <a href="https://www.binance.com" target="_blank" rel="noopener">Binance</a>
+        <div class="description" onclick="window.open('https://www.binance.com', '_blank')">
+          Binance — Largest exchange by volume, spot, futures, P2P, staking.
+        </div>
+      </div>
+      <div class="window">
+        <a href="https://www.coinbase.com" target="_blank" rel="noopener">Coinbase</a>
+        <div class="description" onclick="window.open('https://www.coinbase.com', '_blank')">
+          Coinbase — Regulated, beginner-friendly, with advanced trading.
+        </div>
+      </div>
+      <div class="window">
+        <a href="https://www.kraken.com" target="_blank" rel="noopener">Kraken</a>
+        <div class="description" onclick="window.open('https://www.kraken.com', '_blank')">
+          Kraken — Reliable, high security, advanced trading tools.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- НИЖНЯЯ СТРОКА: ЦЕНЫ -->
+  <div class="ticker-bottom">
+    <span>
+      BTC/USD: 87,656 (+0.3%) • ETH/USD: 2,940 (-2.5%) • SOL/USDT: 185.2 (+15%) • 
+      USD/EUR: 0.92 • USD/RUB: 95 • BNB: 612 • TON: 7.8 • 
+      BTC/USD: 87,656 (+0.3%) • ETH/USD: 2,940 (-2.5%) • SOL/USDT: 185.2 (+15%) • 
+      USD/EUR: 0.92 • USD/RUB: 95 • BNB: 612 • TON: 7.8
+    </span>
+  </div>
+
+</body>
+</html>

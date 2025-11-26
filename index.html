@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AURASYSTEM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: #0a0a0a;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      text-align: center;
+      padding: 80px 20px 60px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 6rem;
+      font-weight: 900;
+      color: #ff6b6b;
+      background: linear-gradient(45deg, #ff6b6b, #feca57);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 40px rgba(255,107,107,0.6);
+      margin-bottom: 30px;
+      letter-spacing: 3px;
+    }
+    p {
+      font-size: 1.3rem;
+      color: #cccccc;
+      margin: 0 0 50px 0;
+      line-height: 1.6;
+      max-width: 600px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 16px 32px;
+      margin: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      min-width: 200px;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+    .btn-orange { background: linear-gradient(45deg, #ff6b6b, #feca57); }
+    .btn-blue { background: linear-gradient(45deg, #1e90ff, #00d2ff); }
+    .btn-purple { background: linear-gradient(45deg, #9c27b0, #e91e63); }
+    .btn-green { background: linear-gradient(45deg, #00ff88, #00ccff); }
+    .footer {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 0.85rem;
+      color: #00ff88;
+      font-weight: 500;
+      text-shadow: 0 0 8px rgba(0,255,136,0.4);
+      animation: flicker 1.5s infinite alternate;
+    }
+    @keyframes flicker {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <h1>AURASYSTEM</h1>
+  <p>Privacy-native tools.<br>No servers. No accounts. Full control.</p>
+
+  <a href="https://mihelson1010.github.io/aurasystem/office.html" class="btn btn-orange">Aura Office</a>
+  <a href="#" class="btn btn-blue">Aura Shop</a>
+  <a href="https://mihelson1010.github.io/aurasystem/proxy.html" class="btn btn-purple">Aura Proxy</a>
+  <a href="https://mihelson1010.github.io/aurasystem/cryptoaura.html" class="btn btn-green">CryptoAura</a>
+
+  <div class="footer">Produced by Mihelson © 2025</div>
+</body>
+</html>

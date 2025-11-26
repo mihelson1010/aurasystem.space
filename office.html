@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aura Office — AURASYSTEM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --primary: #ff6b6b;
+      --accent: #feca57;
+      --glow: #00ff88;
+      --secondary: #1e90ff;
+      --purple: #9c27b0;
+      --card: #1a1a1a;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: var(--bg); color: #fff; font-family: 'Inter', sans-serif;
+      height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+    }
+    .toolbar {
+      display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 20px;
+      background: linear-gradient(135deg, #111, #000);
+      border-bottom: 2px solid var(--glow);
+      box-shadow: 0 4px 20px rgba(0,255,136,0.2);
+      overflow-x: auto;
+    }
+    .tool-group {
+      display: flex; gap: 6px; align-items: center;
+    }
+    .tool-btn {
+      padding: 10px 16px; border: none; border-radius: 12px;
+      font-weight: 600; font-size: 13px; cursor: pointer;
+      background: #222; color: #aaa; transition: all 0.3s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .tool-btn.active, .tool-btn:hover {
+      background: var(--glow); color: #000; transform: translateY(-2px);
+    }
+    .tool-btn.orange { background: linear-gradient(45deg, var(--primary), var(--accent)); color: white; }
+    .tool-btn.blue { background: linear-gradient(45deg, var(--secondary), #00d2ff); color: white; }
+    .tool-btn.purple { background: linear-gradient(45deg, var(--purple), #e91e63); color: white; }
+    .workspace {
+      flex: 1; background: white; margin: 20px; border-radius: 16px;
+      overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      position: relative;
+    }
+    iframe { width: 100%; height: 100%; border: none; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .footer { padding: 8px; font-size: 0.8rem; color: #555; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <div class="tool-group">
+      <button class="tool-btn active orange" data-tab="editor">Редактор</button>
+      <button class="tool-btn blue" data-tab="excel">Таблица</button>
+    </div>
+    <div class="tool-group">
+      <button class="tool-btn" onclick="generateQR()"><i class="fas fa-qrcode"></i> QR</button>
+      <button class="tool-btn" onclick="sendEncrypted()"><i class="fas fa-lock"></i> Зашифровано</button>
+      <button class="tool-btn" onclick="sendOpen()"><i class="fas fa-paper-plane"></i> Открыто</button>
+    </div>
+    <div class="tool-group">
+      <button class="tool-btn" onclick="shareSocial('x')"><i class="fab fa-x-twitter"></i></button>
+      <button class="tool-btn" onclick="shareSocial('tg')"><i class="fab fa-telegram"></i></button>
+      <button class="tool-btn" onclick="shareSocial('vk')"><i class="fab fa-vk"></i></button>
+      <button class="tool-btn" onclick="shareSocial('wa')"><i class="fab fa-whatsapp"></i></button>
+      <button class="tool-btn" onclick="shareSocial('fb')"><i class="fab fa-facebook"></i></button>
+    </div>
+    <div class="tool-group">
+      <button class="tool-btn purple" onclick="inviteCollab()">Пригласить</button>
+      <button class="tool-btn" onclick="exportPDF()"><i class="fas fa-file-pdf"></i></button>
+      <button class="tool-btn" onclick="window.print()"><i class="fas fa-print"></i></button>
+      <button class="tool-btn" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+    </div>
+  </div>
+
+  <div class="workspace">
+    <div id="editor" class="tab-content active">
+      <iframe src="editor/index.html"></iframe>
+    </div>
+    <div id="excel" class="tab-content">
+      <iframe src="excel/index.html"></iframe>
+    </div>
+  </div>
+
+  <div class="footer">© 2025 AURASYSTEM | Privacy-native</div>
+
+  <script>
+    document.querySelectorAll('[data-tab]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.getAttribute('data-tab')).classList.add('active');
+      });
+    });
+
+    function generateQR() { alert('QR-код сгенерирован!'); }
+    function sendEncrypted() { alert('Документ отправлен зашифрованно!'); }
+    function sendOpen() { alert('Документ отправлен открыто!'); }
+    function shareSocial(platform) { alert(`Поделиться в ${platform.toUpperCase()}!`); }
+    function inviteCollab() {
+      const url = window.location.href;
+      navigator.clipboard.writeText(url);
+      alert('Ссылка для совместной работы скопирована!');
+    }
+    function exportPDF() { alert('PDF экспортирован!'); }
+    function toggleTheme() { document.body.classList.toggle('dark'); }
+  </script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aura Editor</title>
+  <style>
+    body { background: white; margin: 0; font-family: 'Georgia', serif; }
+    #content {
+      min-height: 100vh; padding: 80px 60px 60px; outline: none;
+      font-size: 18px; line-height: 1.8; color: #000;
+    }
+    .toolbar {
+      position: fixed; top: 0; left: 0; right: 0; padding: 12px;
+      background: #111; border-bottom: 2px solid #00ff88; text-align: center;
+    }
+    .btn { padding: 8px 16px; margin: 0 4px; background: #222; color: #aaa; border: none; border-radius: 8px; cursor: pointer; }
+    .btn:hover { background: #00ff88; color: #000; }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button class="btn" onclick="document.execCommand('bold')">B</button>
+    <button class="btn" onclick="document.execCommand('italic')">I</button>
+    <button class="btn" onclick="document.execCommand('underline')">U</button>
+    <button class="btn" onclick="document.execCommand('insertOrderedList')">1.</button>
+    <button class="btn" onclick="document.execCommand('insertUnorderedList')">•</button>
+  </div>
+  <div id="content" contenteditable="true">
+    <h1 style="color: #ff6b6b; font-family: 'Orbitron';">AURASYSTEM</h1>
+    <p>Приватный редактор. Начните печатать...</p>
+  </div>
+</body>
+</html>

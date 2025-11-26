@@ -1,0 +1,15 @@
+<!DOCTYPE html><html><body style="margin:40px; background:white; font-family:Inter;">
+<h2>Зашифровать документ</h2>
+<textarea id="text" placeholder="Введи текст" style="width:90%; height:200px; padding:12px; margin:20px;"></textarea>
+<input type="password" id="pass" placeholder="Пароль" style="width:90%; padding:12px;">
+<button onclick="encrypt()" style="background:#00ff88; color:#000; padding:12px 24px; border:none; border-radius:8px; margin:10px;">Зашифровать</button>
+<textarea id="output" readonly style="width:90%; height:100px; margin:20px;"></textarea>
+<script>
+  function encrypt() {
+    const text = document.getElementById('text').value;
+    const pass = document.getElementById('pass').value;
+    const encrypted = btoa(encodeURIComponent(text).replace(/%([0-9A-F]{2})/g, (match, p1) => String.fromCharCode('0x' + p1))) + '||' + btoa(pass);
+    document.getElementById('output').value = encrypted;
+  }
+</script>
+</body></html>

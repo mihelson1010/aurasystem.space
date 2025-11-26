@@ -1,0 +1,28 @@
+[
+  {
+    "name": "Lavazza Classico 250г",
+    "article": "LVZ250",
+    "prices": [
+      { "store": "Ozon", "price": 347 },
+      { "store": "Wildberries", "price": 329 },
+      { "store": "Яндекс.Маркет", "price": 355 }
+    ]
+  },
+  {
+    "name": "Philips Hue Лампа E27",
+    "article": "PH-HUE-01",
+    "prices": [
+      { "store": "Ozon", "price": 1290 },
+      { "store": "WB", "price": 1350 },
+      { "store": "Яндекс.Маркет", "price": 1280 }
+    ]
+  },
+  {
+    "name": "Samsung Galaxy Buds2",
+    "article": "SM-BD2",
+    "prices": [
+      { "store": "Ozon", "price": 5990 },
+      { "store": "WB", "price": 5850 }
+    ]
+  }
+]

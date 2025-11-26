@@ -1,0 +1,13 @@
+<!DOCTYPE html><html><body style="margin:40px; background:white; text-align:center; font-family:Inter;">
+<h2>QR-код для документа</h2>
+<input id="text" placeholder="Введи ссылку" style="width:80%; padding:12px; margin:20px; border:1px solid #00ff88;">
+<div id="qrcode"></div>
+<script src="https://cdn.jsdelivr.net/npm/qrcode.js@1.0.0/qrcode.min.js"></script>
+<script>
+  document.getElementById('text').addEventListener('input', () => {
+    const val = document.getElementById('text').value;
+    document.getElementById('qrcode').innerHTML = '';
+    if (val) new QRCode(document.getElementById('qrcode'), { text: val, width: 256, height: 256, colorDark: '#00ff88', colorLight: '#fff' });
+  });
+</script>
+</body></html>
