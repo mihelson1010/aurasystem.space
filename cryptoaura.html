@@ -3,207 +3,106 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CryptoAura — AURASYSTEM</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <title>CryptoAura — Live Prices</title>
   <style>
-    :root {
-      --bg: #0a0a0a;
-      --card: #1a1a1a;
-      --glow: #00ff88;
-      --text: #ccc;
-      --primary: #ff6b6b;
-      --accent: #feca57;
-    }
+    :root { --bg: #0a0a1a; --text: #e0e0e0; --neon: #0ff; }
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
+      background: var(--bg); color: var(--text);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center; padding: 20px; min-height: 100vh;
     }
-    h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 3.5rem;
-      font-weight: 700;
-      color: #ff6b6b;
-      background: linear-gradient(45deg, var(--primary), var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 25px rgba(255,107,107,0.5);
-      margin-bottom: 20px;
-      letter-spacing: 2px;
-      text-align: center;
+    .logo {
+      font-size: 3rem; margin: 20px 0; color: #0ff;
+      text-shadow: 0 0 20px var(--neon);
     }
 
-    /* ВЕРХНЯЯ СТРОКА — ПРОГНОЗЫ (МЕДЛЕННАЯ) */
+    /* ВЕРХНЯЯ СТРОКА — СОВЕТЫ НА АНГЛИЙСКОМ */
     .ticker-top {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(135deg, #111, #000);
-      color: var(--glow);
-      padding: 10px;
-      font-size: 1rem;
-      font-weight: 600;
-      overflow: hidden;
-      white-space: nowrap;
-      z-index: 1000;
-      border-bottom: 2px solid var(--glow);
-      box-shadow: 0 4px 15px rgba(0,255,136,0.3);
+      position: fixed; top: 0; left: 0; right: 0;
+      background: #001122; color: #00ccff; padding: 8px 0;
+      font-size: 0.9rem; overflow: hidden; white-space: nowrap; z-index: 1000;
     }
-    .ticker-top span {
-      display: inline-block;
-      animation: marquee-top 45s linear infinite;
-    }
-    @keyframes marquee-top {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
+    .ticker-top .inner { display: inline-block; animation: scroll 50s linear infinite; }
 
-    .content {
-      flex: 1;
-      padding-top: 60px;
-      padding-bottom: 60px;
-      overflow: auto;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      padding: 20px;
-    }
-    .window {
-      background: var(--card);
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0,255,136,0.2);
-      overflow: hidden;
-      transition: all 0.3s ease;
-    }
-    .window a {
-      display: block;
-      width: 100%;
-      height: 300px;
-      background: #333;
-      color: var(--glow);
-      text-decoration: none;
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .description {
-      padding: 10px;
-      font-size: 0.9rem;
-      color: var(--text);
-      text-align: center;
-      background: rgba(0,0,0,0.5);
-      cursor: pointer;
-    }
-    .description:hover {
-      background: rgba(0,255,136,0.2);
-    }
-
-    /* НИЖНЯЯ СТРОКА — ЦЕНЫ (БЫСТРАЯ) */
+    /* НИЖНЯЯ СТРОКА — ЦЕНЫ */
     .ticker-bottom {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #111;
-      color: var(--glow);
-      padding: 8px;
-      font-size: 0.9rem;
-      overflow: hidden;
-      white-space: nowrap;
-      box-shadow: 0 -2px 10px rgba(0,255,136,0.2);
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: #001122; color: #0ff; padding: 8px 0;
+      font-size: 0.9rem; overflow: hidden; white-space: nowrap; z-index: 1000;
     }
-    .ticker-bottom span {
-      display: inline-block;
-      animation: marquee-bottom 25s linear infinite;
-    }
-    @keyframes marquee-bottom {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
+    .ticker-bottom .inner { display: inline-block; animation: scroll 35s linear infinite; }
+
+    @keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+    .container { margin: 100px auto 80px; max-width: 1200px; }
+    .card { background: #1a1a2e; border: 1px solid #0ff; border-radius: 12px; padding: 20px; margin: 15px; }
+    .price { font-size: 2rem; font-weight: bold; }
   </style>
 </head>
 <body>
 
-  <!-- ВЕРХНЯЯ СТРОКА: ПРОГНОЗЫ -->
+  <!-- ВЕРХНЯЯ СТРОКА -->
   <div class="ticker-top">
-    <span>
-      SOL/USDT: +15% за 24ч — ВХОДИМ! 🚀 • 
-      Не берите SHITCOIN23 — скам! ⚠️ • 
-      BTC держит $87K — ставим на рост! 📈 • 
-      ETH пробьёт $3K к пятнице! • 
-      DeFi TVL +$2B — следим за AAVE! • 
-      Binance добавляет TON — лонг! • 
-      SOL/USDT: +15% за 24ч — ВХОДИМ! 🚀 • 
-      Не берите SHITCOIN23 — скам! ⚠️ • 
-      BTC держит $87K — ставим на рост! 📈 • 
-      ETH пробьёт $3K к пятнице! • 
-      DeFi TVL +$2B — следим за AAVE! • 
-      Binance добавляет TON — лонг!
-    </span>
-  </div>
-
-  <div class="content">
-    <h1>CryptoAura</h1>
-
-    <div class="grid">
-      <div class="window">
-        <a href="https://www.poloniex.com/ru/" target="_blank" rel="noopener">Poloniex</a>
-        <div class="description" onclick="window.open('https://www.poloniex.com/ru/', '_blank')">
-          Poloniex — CEX with BTC/ETH pairs, +5-10% volatility on USDT.
-        </div>
-      </div>
-      <div class="window">
-        <a href="https://dexscreener.com/new-pairs" target="_blank" rel="noopener">DexScreener</a>
-        <div class="description" onclick="window.open('https://dexscreener.com/new-pairs', '_blank')">
-          DexScreener — New pairs on Solana, +2383% pumps, high risk rugs.
-        </div>
-      </div>
-      <div class="window">
-        <a href="https://coinmarketcap.com/" target="_blank" rel="noopener">CoinMarketCap</a>
-        <div class="description" onclick="window.open('https://coinmarketcap.com/', '_blank')">
-          CoinMarketCap — Crypto rankings, market cap, volume for BTC/ETH.
-        </div>
-      </div>
-      <div class="window">
-        <a href="https://www.binance.com" target="_blank" rel="noopener">Binance</a>
-        <div class="description" onclick="window.open('https://www.binance.com', '_blank')">
-          Binance — Largest exchange by volume, spot, futures, P2P, staking.
-        </div>
-      </div>
-      <div class="window">
-        <a href="https://www.coinbase.com" target="_blank" rel="noopener">Coinbase</a>
-        <div class="description" onclick="window.open('https://www.coinbase.com', '_blank')">
-          Coinbase — Regulated, beginner-friendly, with advanced trading.
-        </div>
-      </div>
-      <div class="window">
-        <a href="https://www.kraken.com" target="_blank" rel="noopener">Kraken</a>
-        <div class="description" onclick="window.open('https://www.kraken.com', '_blank')">
-          Kraken — Reliable, high security, advanced trading tools.
-        </div>
-      </div>
+    <div class="inner">
+      BTC overbought — DO NOT BUY. &nbsp; 
+      Fed rate hike expected — volatility ahead. &nbsp; 
+      Altseason delayed. &nbsp; 
+      NEVER chase FOMO. &nbsp; 
+      Privacy > profit. &nbsp; 
+      No servers. No accounts.
     </div>
   </div>
 
-  <!-- НИЖНЯЯ СТРОКА: ЦЕНЫ -->
-  <div class="ticker-bottom">
-    <span>
-      BTC/USD: 87,656 (+0.3%) • ETH/USD: 2,940 (-2.5%) • SOL/USDT: 185.2 (+15%) • 
-      USD/EUR: 0.92 • USD/RUB: 95 • BNB: 612 • TON: 7.8 • 
-      BTC/USD: 87,656 (+0.3%) • ETH/USD: 2,940 (-2.5%) • SOL/USDT: 185.2 (+15%) • 
-      USD/EUR: 0.92 • USD/RUB: 95 • BNB: 612 • TON: 7.8
-    </span>
+  <div class="logo">CRYPTOAURA</div>
+  <h1>Live Prices — No Advice</h1>
+
+  <div class="container">
+    <div class="card">
+      <h3>BTC/USDT</h3>
+      <div class="price" id="btc">—</div>
+    </div>
+    <div class="card">
+      <h3>ETH/USDT</h3>
+      <div class="price" id="eth">—</div>
+    </div>
+    <div class="card">
+      <h3>EUR/USD</h3>
+      <div class="price" id="eur">—</div>
+    </div>
+    <div class="card">
+      <h3>XAU/USD</h3>
+      <div class="price" id="gold">—</div>
+    </div>
   </div>
 
+  <!-- НИЖНЯЯ СТРОКА — ЦЕНЫ -->
+  <div class="ticker-bottom">
+    <div class="inner" id="price-ticker">Loading...</div>
+  </div>
+
+  <script>
+    async function updatePrices() {
+      try {
+        const btc = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT').then(r => r.json());
+        const eth = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT').then(r => r.json());
+        const eurusd = await fetch('https://api.exchangerate.host/latest?base=USD&symbols=EUR').then(r => r.json());
+        const gold = await fetch('https://api.metals.live/v1/spot').then(r => r.json());
+
+        document.getElementById('btc').innerText = '$' + parseFloat(btc.price).toFixed(0).toLocaleString();
+        document.getElementById('eth').innerText = '$' + parseFloat(eth.price).toFixed(0).toLocaleString();
+        document.getElementById('eur').innerText = (1 / eurusd.rates.EUR).toFixed(4);
+        document.getElementById('gold').innerText = '$' + (gold[0]?.gold?.toFixed(2) || 'N/A');
+
+        document.getElementById('price-ticker').innerHTML = 
+          `BTC: $${parseFloat(btc.price).toFixed(0).toLocaleString()} &nbsp; ` +
+          `ETH: $${parseFloat(eth.price).toFixed(0).toLocaleString()} &nbsp; ` +
+          `EUR/USD: ${(1 / eurusd.rates.EUR).toFixed(4)} &nbsp; ` +
+          `XAU: $${(gold[0]?.gold?.toFixed(2) || 'N/A')} &nbsp; | &nbsp; `;
+      } catch (e) {}
+    }
+    updatePrices();
+    setInterval(updatePrices, 10000);
+  </script>
 </body>
 </html>
