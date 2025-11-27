@@ -5,26 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AURASYSTEM</title>
 
-  <!-- 🔒 Content Security Policy — защита от XSS и внедрения -->
+  <!-- 🔒 Content Security Policy -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  script-src 'self' 'unsafe-inline';
                  style-src 'self' 'unsafe-inline';
-                 img-src 'self' https: data:;
+                 img-src 'self' https: ;
                  font-src 'self';
                  connect-src 'self';
                  frame-ancestors 'none';
                  base-uri 'self';">
 
-  <!-- Безопасность и приватность -->
   <meta name="referrer" content="no-referrer">
-  <meta name="robots" content="index, follow">
 
   <style>
     body {
       margin: 0;
       padding: 0;
-      background: #000;
+      background: #0d0d1a; /* тёмно-синий фон как на скрине */
       color: #fff;
       font-family: Arial, Helvetica, sans-serif;
       text-align: center;
@@ -32,70 +30,78 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: center;
     }
 
     h1 {
-      font-size: 3.2rem;
+      font-size: 3.5rem;
       font-weight: bold;
-      margin: 0 0 20px;
+      color: #ff7700; /* оранжевый как на скрине */
+      margin: 20px 0 10px;
       letter-spacing: 2px;
-      background: linear-gradient(90deg, #ff00cc, #00ccff, #00ff9d, #ffcc00, #ff00cc);
-      background-size: 300% 300%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      animation: gradientGlow 10s ease infinite;
-      text-shadow: 0 0 15px rgba(255, 0, 204, 0.4);
-    }
-
-    @keyframes gradientGlow {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      text-shadow: 0 0 10px rgba(255, 119, 0, 0.5);
     }
 
     .tagline {
-      font-size: 1.25rem;
-      color: #aaa;
+      font-size: 1.3rem;
+      color: #fff;
       margin-bottom: 40px;
       line-height: 1.6;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
     }
 
-    .links {
+    .buttons {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      flex-direction: column;
       gap: 16px;
+      width: 100%;
+      max-width: 320px;
       padding: 0 20px;
-      max-width: 800px;
-      margin: 0 auto;
     }
 
-    .link-item {
-      background: #0a0a0a;
-      border: 1px solid #333;
-      border-radius: 12px;
-      padding: 16px 24px;
-      min-width: 180px;
-      transition: all 0.3s ease;
-    }
-
-    .link-item:hover {
-      border-color: #0ff;
-      box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
-    }
-
-    .link-item a {
-      color: #0ff;
-      text-decoration: none;
-      font-size: 1.25rem;
-      font-weight: bold;
-      display: block;
-    }
-
-    .link-item a:hover {
+    .button-text {
+      font-size: 1.1rem;
       color: #fff;
-      text-shadow: 0 0 8px #0ff;
+      margin-bottom: 8px;
+    }
+
+    .btn {
+      padding: 14px 24px;
+      border-radius: 25px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-decoration: none;
+      color: white;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-shop {
+      background: linear-gradient(135deg, #4a90e2, #50b4ff);
+    }
+
+    .btn-proxy {
+      background: linear-gradient(135deg, #8e44ad, #9b59b6);
+    }
+
+    .btn-crypto {
+      background: linear-gradient(135deg, #2ecc71, #34e07c);
+    }
+
+    .btn-office {
+      background: transparent;
+      color: #fff;
+      border: 2px solid #fff;
+      padding: 12px 24px;
+    }
+
+    .btn-office:hover {
+      background: rgba(255, 255, 255, 0.1);
     }
 
     .footer {
@@ -125,25 +131,21 @@
   No servers. No accounts. Full control.
 </div>
 
-<div class="links">
-  <div class="link-item">
-    <a href="cryptoaura.html">CryptoAura</a>
-  </div>
-  <div class="link-item">
-    <a href="#">Aura Office</a>
-  </div>
-  <div class="link-item">
-    <a href="#">Aura Shop</a>
-  </div>
-  <div class="link-item">
-    <a href="#">Aura Proxy</a>
-  </div>
+<div class="buttons">
+  <div class="button-text">Aura Office</div>
+  <a href="#" class="btn btn-office">Aura Office</a>
+
+  <a href="cryptoaura.html" class="btn btn-crypto">CryptoAura →</a>
+
+  <a href="#" class="btn btn-shop">Aura Shop →</a>
+
+  <a href="#" class="btn btn-proxy">Aura Proxy</a>
 </div>
 
 <div class="footer">© AURASYSTEM • Full control. No tracking. • aurasystem.space</div>
 
 <script>
-  // Очистка подозрительных параметров (например, ?spm=...)
+  // Очистка URL от параметров
   if (window.location.search && window.location.search !== '?') {
     history.replaceState(null, '', window.location.pathname);
   }
