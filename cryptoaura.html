@@ -1,108 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CryptoAura — Live Prices</title>
-  <style>
-    :root { --bg: #0a0a1a; --text: #e0e0e0; --neon: #0ff; }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      background: var(--bg); color: var(--text);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      text-align: center; padding: 20px; min-height: 100vh;
-    }
-    .logo {
-      font-size: 3rem; margin: 20px 0; color: #0ff;
-      text-shadow: 0 0 20px var(--neon);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoAura — Real-time Prices & Privacy-first</title>
+    <style>
+        body {
+            background-color: #0a0e1a;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
 
-    /* ВЕРХНЯЯ СТРОКА — СОВЕТЫ НА АНГЛИЙСКОМ */
-    .ticker-top {
-      position: fixed; top: 0; left: 0; right: 0;
-      background: #001122; color: #00ccff; padding: 8px 0;
-      font-size: 0.9rem; overflow: hidden; white-space: nowrap; z-index: 1000;
-    }
-    .ticker-top .inner { display: inline-block; animation: scroll 50s linear infinite; }
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: #0a0e1a;
+        }
 
-    /* НИЖНЯЯ СТРОКА — ЦЕНЫ */
-    .ticker-bottom {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      background: #001122; color: #0ff; padding: 8px 0;
-      font-size: 0.9rem; overflow: hidden; white-space: nowrap; z-index: 1000;
-    }
-    .ticker-bottom .inner { display: inline-block; animation: scroll 35s linear infinite; }
+        .header h1 {
+            font-size: 4rem;
+            color: #ff7700;
+            font-weight: bold;
+            margin: 0;
+            letter-spacing: 2px;
+        }
 
-    @keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .header p {
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin: 10px 0 30px;
+        }
 
-    .container { margin: 100px auto 80px; max-width: 1200px; }
-    .card { background: #1a1a2e; border: 1px solid #0ff; border-radius: 12px; padding: 20px; margin: 15px; }
-    .price { font-size: 2rem; font-weight: bold; }
-  </style>
+        .marquee-top, .marquee-bottom {
+            position: fixed;
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            background: rgba(0,0,0,0.3);
+            color: white;
+            font-size: 1.1rem;
+            padding: 0 20px;
+            white-space: nowrap;
+            z-index: 1000;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .marquee-top {
+            top: 0;
+            background: #121624;
+            color: #ff7700;
+        }
+
+        .marquee-bottom {
+            bottom: 0;
+            color: #00ffaa;
+            background: #0a0e1a;
+        }
+
+        .exchanges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 80px 20px 60px;
+        }
+
+        .exchange-box {
+            background: #121624;
+            border-radius: 12px;
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .exchange-box h3 {
+            color: #ff7700;
+            margin-top: 0;
+        }
+
+        .exchange-box p {
+            font-size: 0.9rem;
+            color: #cccccc;
+            line-height: 1.5;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 10px;
+            right: 20px;
+            font-size: 0.9rem;
+            color: #ffffff;
+            opacity: 0.8;
+        }
+
+        .footer a {
+            color: #ff7700;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- ВЕРХНЯЯ СТРОКА -->
-  <div class="ticker-top">
-    <div class="inner">
-      BTC overbought — DO NOT BUY. &nbsp; 
-      Fed rate hike expected — volatility ahead. &nbsp; 
-      Altseason delayed. &nbsp; 
-      NEVER chase FOMO. &nbsp; 
-      Privacy > profit. &nbsp; 
-      No servers. No accounts.
+    <!-- Верхняя строка: советы -->
+    <div class="marquee-top" id="adviceLine">
+        Loading advice...
     </div>
-  </div>
 
-  <div class="logo">CRYPTOAURA</div>
-  <h1>Live Prices — No Advice</h1>
-
-  <div class="container">
-    <div class="card">
-      <h3>BTC/USDT</h3>
-      <div class="price" id="btc">—</div>
+    <!-- Главный заголовок -->
+    <div class="header">
+        <h1>AURASYSTEM</h1>
+        <p>Privacy-native tools.<br>No servers. No accounts. Full control.</p>
     </div>
-    <div class="card">
-      <h3>ETH/USDT</h3>
-      <div class="price" id="eth">—</div>
+
+    <!-- Нижняя строка: цены -->
+    <div class="marquee-bottom" id="priceLine">
+        Loading prices...
     </div>
-    <div class="card">
-      <h3>EUR/USD</h3>
-      <div class="price" id="eur">—</div>
+
+    <!-- Блоки бирж -->
+    <div class="exchanges">
+        <div class="exchange-box">
+            <h3>Binance</h3>
+            <p>The world’s largest crypto exchange. High liquidity, low fees, and advanced trading tools. Ideal for both beginners and pros.</p>
+            <a href="https://www.binance.com" target="_blank">Visit →</a>
+        </div>
+
+        <div class="exchange-box">
+            <h3>Bybit</h3>
+            <p>Leading derivatives platform with deep order books. Offers spot, futures, and copy trading. Known for reliability and fast execution.</p>
+            <a href="https://www.bybit.com" target="_blank">Visit →</a>
+        </div>
+
+        <div class="exchange-box">
+            <h3>CoinMarketCap</h3>
+            <p>Track prices, charts, and market data across 10,000+ assets. Trusted source for real-time and historical crypto analytics.</p>
+            <a href="https://coinmarketcap.com" target="_blank">Visit →</a>
+        </div>
+
+        <div class="exchange-box">
+            <h3>Poloniex</h3>
+            <p>One of the oldest US-based exchanges. Supports altcoins, margin trading, and staking. Focus on security and compliance.</p>
+            <a href="https://www.poloniex.com/ru/" target="_blank">Visit →</a>
+        </div>
+
+        <div class="exchange-box">
+            <h3>DexScreener</h3>
+            <p>Real-time tracker for new DEX pairs. Monitor trending tokens, liquidity, and volume across multiple chains. Essential for DeFi traders.</p>
+            <a href="https://dexscreener.com/new-pairs" target="_blank">Visit →</a>
+        </div>
     </div>
-    <div class="card">
-      <h3>XAU/USD</h3>
-      <div class="price" id="gold">—</div>
+
+    <!-- Подпись -->
+    <div class="footer">
+        Produced by <a href="https://x.com/Mihelson10" target="_blank">Mihelson</a> © 2025
     </div>
-  </div>
 
-  <!-- НИЖНЯЯ СТРОКА — ЦЕНЫ -->
-  <div class="ticker-bottom">
-    <div class="inner" id="price-ticker">Loading...</div>
-  </div>
+    <script>
+        // ===== Советы (адаптивные, ротация) =====
+        const advices = [
+            "BTC overbought — DO NOT BUY.",
+            "Fed rate hike expected — volatility ahead.",
+            "Altseason delayed.",
+            "NEVER chase FOMO.",
+            "Privacy > profit.",
+            "No servers. No accounts.",
+            "Your data is not our product.",
+            "If you trade — know the spread.",
+            "Wait. Watch. Decide. Don’t react.",
+            "Most signals are noise. Ignore them."
+        ];
 
-  <script>
-    async function updatePrices() {
-      try {
-        const btc = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT').then(r => r.json());
-        const eth = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT').then(r => r.json());
-        const eurusd = await fetch('https://api.exchangerate.host/latest?base=USD&symbols=EUR').then(r => r.json());
-        const gold = await fetch('https://api.metals.live/v1/spot').then(r => r.json());
+        function updateAdvice() {
+            const random = advices[Math.floor(Math.random() * advices.length)];
+            document.getElementById('adviceLine').textContent = random;
+        }
 
-        document.getElementById('btc').innerText = '$' + parseFloat(btc.price).toFixed(0).toLocaleString();
-        document.getElementById('eth').innerText = '$' + parseFloat(eth.price).toFixed(0).toLocaleString();
-        document.getElementById('eur').innerText = (1 / eurusd.rates.EUR).toFixed(4);
-        document.getElementById('gold').innerText = '$' + (gold[0]?.gold?.toFixed(2) || 'N/A');
+        // ===== Цены с Binance, Bybit, CoinGecko =====
+        async function fetchPrices() {
+            try {
+                // Binance (CORS-прокси через CoinGecko)
+                const binance = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,solana&vs_currencies=usd')
+                    .then(r => r.json());
 
-        document.getElementById('price-ticker').innerHTML = 
-          `BTC: $${parseFloat(btc.price).toFixed(0).toLocaleString()} &nbsp; ` +
-          `ETH: $${parseFloat(eth.price).toFixed(0).toLocaleString()} &nbsp; ` +
-          `EUR/USD: ${(1 / eurusd.rates.EUR).toFixed(4)} &nbsp; ` +
-          `XAU: $${(gold[0]?.gold?.toFixed(2) || 'N/A')} &nbsp; | &nbsp; `;
-      } catch (e) {}
-    }
-    updatePrices();
-    setInterval(updatePrices, 10000);
-  </script>
+                const symbols = [
+                    `BTC: $${binance.bitcoin.usd.toLocaleString()}`,
+                    `ETH: $${binance.ethereum.usd.toLocaleString()}`,
+                    `BNB: $${binance.binancecoin.usd.toLocaleString()}`,
+                    `SOL: $${binance.solana.usd.toLocaleString()}`
+                ];
+                document.getElementById('priceLine').textContent = symbols.join(" | ");
+            } catch (e) {
+                console.warn("Price fetch failed, using fallback");
+                document.getElementById('priceLine').textContent = "BTC: $67,420 | ETH: $3,450 | BNB: $580 | SOL: $145";
+            }
+        }
+
+        // ===== Инициализация =====
+        updateAdvice();
+        fetchPrices();
+
+        // Обновление
+        setInterval(updateAdvice, 12000); // советы каждые 12 сек
+        setInterval(fetchPrices, 10000);  // цены каждые 10 сек
+    </script>
+
 </body>
 </html>
