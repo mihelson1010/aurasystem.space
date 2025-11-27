@@ -43,7 +43,7 @@
       background: rgba(255,255,255,0.9);
       box-shadow: 0 16px 40px rgba(0,0,0,0.05);
     }
-    .dropzone:hover, .dropzone.dragover {
+    .dropzone.dragover {
       background: rgba(255,255,255,0.95);
       transform: scale(1.02);
     }
@@ -52,14 +52,6 @@
       font-size: 1.4rem;
       text-align: center;
       padding: 0 2rem;
-    }
-
-    /* Анимация смены фона */
-    .fade-out {
-      opacity: 0;
-    }
-    .fade-in {
-      opacity: 1;
     }
 
     /* Результат */
@@ -109,14 +101,15 @@
 </div>
 
 <script>
+  // ✅ ВАШИ ОРИГИНАЛЬНЫЕ ФОНЫ — без placeholder’ов
   const backgrounds = [
-    'https://via.placeholder.com/1920x1080?text=Background+1',
-    'https://via.placeholder.com/1920x1080?text=Background+2',
-    'https://via.placeholder.com/1920x1080?text=Background+3',
-    'https://via.placeholder.com/1920x1080?text=Background+4',
-    'https://via.placeholder.com/1920x1080?text=Background+5',
-    'https://via.placeholder.com/1920x1080?text=Background+6',
-    'https://via.placeholder.com/1920x1080?text=Background+7'
+    'bg1.jpg',
+    'bg2.jpg',
+    'bg3.jpg',
+    'bg4.jpg',
+    'bg5.jpg',
+    'bg6.jpg',
+    'bg7.jpg'
   ];
 
   let currentBg = 0;
@@ -165,8 +158,6 @@
     // Показываем сообщение о распознавании
     dropzone.innerHTML = '<p>🔍 Распознаю текст…</p>';
 
-    // Здесь будет логика распознавания и поиска цен
-    // Для демонстрации — покажем, что фото загружено
     setTimeout(() => {
       // Имитация распознавания
       const fakeText = "iPhone 15 Pro Max 256GB";
