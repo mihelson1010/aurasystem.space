@@ -3,16 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AURASYSTEM</title>
+  <title>Aura Office</title>
 
-  <!-- 🔒 Content Security Policy -->
+  <!-- 🔒 CSP для безопасности -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
-                 script-src 'self' 'unsafe-inline';
+                 script-src 'self';
                  style-src 'self' 'unsafe-inline';
-                 img-src 'self' https: ;
-                 font-src 'self';
-                 connect-src 'self';
+                 img-src 'self' https:;
                  frame-ancestors 'none';
                  base-uri 'self';">
 
@@ -22,7 +20,7 @@
     body {
       margin: 0;
       padding: 0;
-      background: #0d0d1a; /* тёмно-синий фон как на первом скрине */
+      background: #0d0d1a;
       color: #fff;
       font-family: Arial, Helvetica, sans-serif;
       text-align: center;
@@ -34,61 +32,39 @@
     }
 
     h1 {
-      font-size: 3.5rem; /* ⚠️ ТОЧНЫЙ РАЗМЕР ПО СКРИНШОТУ */
+      font-size: 2.8rem;
       font-weight: bold;
-      color: #ff7700; /* оранжевый */
-      margin: 20px 0 10px;
-      letter-spacing: 2px;
-      text-shadow: none; /* без неона */
+      color: #ffaa00;
+      margin: 20px 0 30px;
+      letter-spacing: 1px;
     }
 
-    .tagline {
-      font-size: 1.3rem;
-      color: #fff;
-      margin-bottom: 40px;
-      line-height: 1.6;
-      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-    }
-
-    .buttons {
+    .tools {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 18px;
       width: 100%;
-      max-width: 320px;
+      max-width: 340px;
       padding: 0 20px;
     }
 
-    .btn {
-      padding: 14px 24px;
-      border-radius: 25px;
+    .tool-btn {
+      padding: 16px 24px;
+      border-radius: 16px;
       font-size: 1.2rem;
       font-weight: bold;
       text-decoration: none;
       color: white;
       text-align: center;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
+      background: #1a1a2e;
+      border: 1px solid #333;
     }
 
-    .btn:hover {
+    .tool-btn:hover {
+      border-color: #0ff;
       transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    }
-
-    .btn-office {
-      background: linear-gradient(135deg, #ff7700, #ffaa00);
-    }
-
-    .btn-shop {
-      background: linear-gradient(135deg, #4a90e2, #50b4ff);
-    }
-
-    .btn-proxy {
-      background: linear-gradient(135deg, #8e44ad, #9b59b6);
-    }
-
-    .btn-crypto {
-      background: linear-gradient(135deg, #2ecc71, #34e07c);
+      box-shadow: 0 6px 12px rgba(0, 255, 255, 0.2);
     }
 
     .footer {
@@ -96,7 +72,7 @@
       bottom: 12px;
       right: 16px;
       font-size: 0.85rem;
-      color: #4cff4c; /* зелёный как на втором скрине */
+      color: #4cff4c;
       text-shadow: 0 0 8px rgba(76, 255, 76, 0.5);
       opacity: 0.9;
       animation: neonFlicker 3.5s infinite alternate;
@@ -111,28 +87,17 @@
 </head>
 <body>
 
-<h1>AURASYSTEM</h1>
+<h1>Aura Office</h1>
 
-<div class="tagline">
-  Privacy-native tools.<br>
-  No servers. No accounts. Full control.
+<div class="tools">
+  <a href="encrypt.html" class="tool-btn">🔐 Шифрование</a>
+  <a href="excel.html" class="tool-btn">📊 Excel-анализ</a>
+  <a href="qr.html" class="tool-btn">📱 Генератор QR</a>
+  <a href="invite.html" class="tool-btn">✉️ Пригласить друга</a>
+  <a href="share.htm" class="tool-btn">📤 Share (Legacy)</a>
 </div>
 
-<div class="buttons">
-  <a href="#" class="btn btn-office">Aura Office</a>
-  <a href="#" class="btn btn-shop">Aura Shop</a>
-  <a href="#" class="btn btn-proxy">Aura Proxy</a>
-  <a href="cryptoaura.html" class="btn btn-crypto">CryptoAura</a>
-</div>
-
-<div class="footer">Produced by Mihelson © 2025</div>
-
-<script>
-  // Очистка URL от параметров
-  if (window.location.search && window.location.search !== '?') {
-    history.replaceState(null, '', window.location.pathname);
-  }
-</script>
+<div class="footer">© AURASYSTEM • aurasystem.space</div>
 
 </body>
 </html>
