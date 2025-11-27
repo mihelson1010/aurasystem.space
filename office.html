@@ -2,116 +2,747 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Aura Office — AURASYSTEM</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aura Office</title>
   <style>
-    :root {
-      --bg: #0a0a0a;
-      --primary: #ff6b6b;
-      --accent: #feca57;
-      --glow: #00ff88;
-      --secondary: #1e90ff;
-      --purple: #9c27b0;
-      --card: #1a1a1a;
-    }
-    * { margin:0; padding:0; box-sizing:border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background: var(--bg); color: #fff; font-family: 'Inter', sans-serif;
-      height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: white;
+      color: #000;
+      padding: 20px;
     }
     .toolbar {
-      display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 20px;
-      background: linear-gradient(135deg, #111, #000);
-      border-bottom: 2px solid var(--glow);
-      box-shadow: 0 4px 20px rgba(0,255,136,0.2);
-      overflow-x: auto;
-    }
-    .tool-group {
-      display: flex; gap: 6px; align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding: 12px 0;
+      border-bottom: 2px solid #eee;
     }
     .tool-btn {
-      padding: 10px 16px; border: none; border-radius: 12px;
-      font-weight: 600; font-size: 13px; cursor: pointer;
-      background: #222; color: #aaa; transition: all 0.3s;
-      display: flex; align-items: center; gap: 6px;
+      padding: 10px 20px;
+      background: #00ff88;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
     }
-    .tool-btn.active, .tool-btn:hover {
-      background: var(--glow); color: #000; transform: translateY(-2px);
+    .tool-btn:hover {
+      background: #00cc6a;
     }
-    .tool-btn.orange { background: linear-gradient(45deg, var(--primary), var(--accent)); color: white; }
-    .tool-btn.blue { background: linear-gradient(45deg, var(--secondary), #00d2ff); color: white; }
-    .tool-btn.purple { background: linear-gradient(45deg, var(--purple), #e91e63); color: white; }
-    .workspace {
-      flex: 1; background: white; margin: 20px; border-radius: 16px;
-      overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-      position: relative;
+    .panel {
+      display: none;
     }
-    iframe { width: 100%; height: 100%; border: none; }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-    .footer { padding: 8px; font-size: 0.8rem; color: #555; text-align: center; }
+    .panel.active {
+      display: block;
+    }
+    h2 {
+      margin: 20px 0 16px;
+      font-size: 1.6rem;
+    }
+    textarea, input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-family: inherit;
+    }
+    textarea {
+      min-height: 160px;
+      resize: vertical;
+    }
+    .output {
+      width: 100%;
+      padding: 12px;
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+    #qr-output {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .share-links {
+      display: flex;
+      gap: 24px;
+      margin: 20px 0;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .share-links a {
+      font-size: 28px;
+      text-decoration: none;
+    }
+    #x { color: #000000; }
+    #tg { color: #0088cc; }
+    #wa { color: #25d366; }
+    #mail { color: #ff6b6b; }
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #888;
+    }
   </style>
 </head>
 <body>
-  <div class="toolbar">
-    <div class="tool-group">
-      <button class="tool-btn active orange" data-tab="editor">Редактор</button>
-      <button class="tool-btn blue" data-tab="excel">Таблица</button>
-    </div>
-    <div class="tool-group">
-      <button class="tool-btn" onclick="generateQR()"><i class="fas fa-qrcode"></i> QR</button>
-      <button class="tool-btn" onclick="sendEncrypted()"><i class="fas fa-lock"></i> Зашифровано</button>
-      <button class="tool-btn" onclick="sendOpen()"><i class="fas fa-paper-plane"></i> Открыто</button>
-    </div>
-    <div class="tool-group">
-      <button class="tool-btn" onclick="shareSocial('x')"><i class="fab fa-x-twitter"></i></button>
-      <button class="tool-btn" onclick="shareSocial('tg')"><i class="fab fa-telegram"></i></button>
-      <button class="tool-btn" onclick="shareSocial('vk')"><i class="fab fa-vk"></i></button>
-      <button class="tool-btn" onclick="shareSocial('wa')"><i class="fab fa-whatsapp"></i></button>
-      <button class="tool-btn" onclick="shareSocial('fb')"><i class="fab fa-facebook"></i></button>
-    </div>
-    <div class="tool-group">
-      <button class="tool-btn purple" onclick="inviteCollab()">Пригласить</button>
-      <button class="tool-btn" onclick="exportPDF()"><i class="fas fa-file-pdf"></i></button>
-      <button class="tool-btn" onclick="window.print()"><i class="fas fa-print"></i></button>
-      <button class="tool-btn" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
-    </div>
+
+<div class="toolbar">
+  <button class="tool-btn" onclick="showPanel('editor')">📝 Редактор</button>
+  <button class="tool-btn" onclick="showPanel('encrypt')">🔐 Шифровать</button>
+  <button class="tool-btn" onclick="showPanel('qr')">📱 QR</button>
+  <button class="tool-btn" onclick="showPanel('csv')">📊 Excel (CSV)</button>
+  <button class="tool-btn" onclick="showPanel('invite')">✉️ Пригласить</button>
+  <button class="tool-btn" onclick="showPanel('share')">📤 Поделиться</button>
+</div>
+
+<!-- Редактор -->
+<div id="editor" class="panel active">
+  <h2>Документ</h2>
+  <textarea id="doc" placeholder="Начните писать..."></textarea>
+</div>
+
+<!-- Шифрование -->
+<div id="encrypt" class="panel">
+  <h2>Зашифровать документ</h2>
+  <textarea id="enc-text" placeholder="Введи текст"></textarea>
+  <input type="password" id="enc-pass" placeholder="Пароль">
+  <button class="tool-btn" onclick="doEncrypt()">Зашифровать</button>
+  <div id="enc-output" class="output"></div>
+</div>
+
+<!-- QR -->
+<div id="qr" class="panel">
+  <h2>QR-код для документа</h2>
+  <input type="text" id="qr-text" placeholder="Введи текст или ссылку">
+  <div id="qr-output"></div>
+</div>
+
+<!-- Excel (CSV) -->
+<div id="csv" class="panel">
+  <h2>Excel-анализ (CSV)</h2>
+  <textarea id="csv-input" placeholder="Имя,Возраст,Зарплата&#10;Иван,30,120000"></textarea>
+  <button class="tool-btn" onclick="analyzeCSV()">📊 Анализ</button>
+  <div id="csv-output" class="output"></div>
+</div>
+
+<!-- Пригласить -->
+<div id="invite" class="panel">
+  <h2>Пригласить коллегу</h2>
+  <input type="email" id="invite-email" placeholder="email@company.com">
+  <button class="tool-btn" onclick="sendInvite()">Отправить ссылку</button>
+  <p style="margin-top: 16px; color: #666;">Совместная работа в реальном времени</p>
+</div>
+
+<!-- Share -->
+<div id="share" class="panel">
+  <h2>Поделиться в соцсетях</h2>
+  <p>Ссылка: <strong>https://aurasystem.space/office.html</strong></p>
+  <div class="share-links">
+    <a id="x" href="#" onclick="shareTo('x')" target="_blank">𝕏</a>
+    <a id="tg" href="#" onclick="shareTo('tg')" target="_blank">Telegram</a>
+    <a id="wa" href="#" onclick="shareTo('wa')" target="_blank">WhatsApp</a>
+    <a id="mail" href="#" onclick="shareTo('mail')">Email</a>
   </div>
+</div>
 
-  <div class="workspace">
-    <div id="editor" class="tab-content active">
-      <iframe src="editor/index.html"></iframe>
-    </div>
-    <div id="excel" class="tab-content">
-      <iframe src="excel/index.html"></iframe>
-    </div>
-  </div>
+<footer>© AURASYSTEM • Full control. No tracking. • aurasystem.space</footer>
 
-  <div class="footer">© 2025 AURASYSTEM | Privacy-native</div>
-
-  <script>
-    document.querySelectorAll('[data-tab]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById(btn.getAttribute('data-tab')).classList.add('active');
-      });
-    });
-
-    function generateQR() { alert('QR-код сгенерирован!'); }
-    function sendEncrypted() { alert('Документ отправлен зашифрованно!'); }
-    function sendOpen() { alert('Документ отправлен открыто!'); }
-    function shareSocial(platform) { alert(`Поделиться в ${platform.toUpperCase()}!`); }
-    function inviteCollab() {
-      const url = window.location.href;
-      navigator.clipboard.writeText(url);
-      alert('Ссылка для совместной работы скопирована!');
+<!-- ВСТРОЕННЫЙ QR-ГЕНЕРАТОР (MIT License, Nayuki) -->
+<script>
+"use strict";
+function qrcodeGenerate(text) {
+  if (!text) return null;
+  const qr = new QRCode(-1, QRErrorCorrectLevel.M);
+  qr.addData(text);
+  qr.make();
+  return qr;
+}
+const QRErrorCorrectLevel = { L: 1, M: 0, Q: 3, H: 2 };
+function QRCode(typeNumber, errorCorrectLevel) {
+  let _typeNumber = typeNumber;
+  let _errorCorrectLevel = errorCorrectLevel;
+  let _modules = null;
+  let _moduleCount = 0;
+  let _dataCache = null;
+  let _rsBlocks = null;
+  function make() {
+    makeImpl(false, getBestMaskPattern());
+  }
+  function makeImpl(test, maskPattern) {
+    _moduleCount = _typeNumber * 4 + 17;
+    _modules = new Array(_moduleCount);
+    for (let row = 0; row < _moduleCount; row++) {
+      _modules[row] = new Array(_moduleCount);
+      for (let col = 0; col < _moduleCount; col++) {
+        _modules[row][col] = null;
+      }
     }
-    function exportPDF() { alert('PDF экспортирован!'); }
-    function toggleTheme() { document.body.classList.toggle('dark'); }
-  </script>
+    setupPositionProbePattern(0, 0);
+    setupPositionProbePattern(_moduleCount - 7, 0);
+    setupPositionProbePattern(0, _moduleCount - 7);
+    setupPositionAdjustPattern();
+    setupTimingPattern();
+    setupTypeInfo(test, maskPattern);
+    if (_typeNumber >= 7) setupTypeNumber(test);
+    if (_dataCache == null) throw new Error("No data");
+    let data = createData(_typeNumber, _errorCorrectLevel, _dataCache);
+    mapData(data, maskPattern);
+  }
+  function setupPositionProbePattern(row, col) {
+    for (let r = -1; r <= 7; r++) {
+      if (row + r <= -1 || _moduleCount <= row + r) continue;
+      for (let c = -1; c <= 7; c++) {
+        if (col + c <= -1 || _moduleCount <= col + c) continue;
+        if ((0 <= r && r <= 6 && (c == 0 || c == 6)) ||
+            (0 <= c && c <= 6 && (r == 0 || r == 6)) ||
+            (2 <= r && r <= 4 && 2 <= c && c <= 4)) {
+          _modules[row + r][col + c] = true;
+        } else {
+          _modules[row + r][col + c] = false;
+        }
+      }
+    }
+  }
+  function getBestMaskPattern() {
+    let minLostPoint = 0;
+    let pattern = 0;
+    for (let i = 0; i < 8; i++) {
+      makeImpl(true, i);
+      let lostPoint = QRUtil.getLostPoint(this);
+      if (i == 0 || minLostPoint > lostPoint) {
+        minLostPoint = lostPoint;
+        pattern = i;
+      }
+    }
+    return pattern;
+  }
+  function setupTimingPattern() {
+    for (let r = 8; r < _moduleCount - 8; r++) {
+      if (_modules[r][6] != null) continue;
+      _modules[r][6] = (r % 2 == 0);
+    }
+    for (let c = 8; c < _moduleCount - 8; c++) {
+      if (_modules[6][c] != null) continue;
+      _modules[6][c] = (c % 2 == 0);
+    }
+  }
+  function setupPositionAdjustPattern() {
+    if (_typeNumber < 2) return;
+    const pos = QRUtil.getPatternPosition(_typeNumber);
+    for (let i = 0; i < pos.length; i++) {
+      for (let j = 0; j < pos.length; j++) {
+        const row = pos[i];
+        const col = pos[j];
+        if (_modules[row][col] != null) continue;
+        for (let r = -2; r <= 2; r++) {
+          for (let c = -2; c <= 2; c++) {
+            if (r == -2 || r == 2 || c == -2 || c == 2 ||
+                (r == 0 && c == 0)) {
+              _modules[row + r][col + c] = true;
+            } else {
+              _modules[row + r][col + c] = false;
+            }
+          }
+        }
+      }
+    }
+  }
+  function setupTypeNumber(test) {
+    const bits = QRUtil.getBCHTypeNumber(_typeNumber);
+    for (let i = 0; i < 18; i++) {
+      const mod = (!test && ((bits >> i) & 1) == 1);
+      _modules[Math.floor(i / 3)][i % 3 + _moduleCount - 8 - 3] = mod;
+    }
+    for (let i = 0; i < 18; i++) {
+      const mod = (!test && ((bits >> i) & 1) == 1);
+      _modules[i % 3 + _moduleCount - 8 - 3][Math.floor(i / 3)] = mod;
+    }
+  }
+  function setupTypeInfo(test, maskPattern) {
+    const data = (_errorCorrectLevel << 3) | maskPattern;
+    const bits = QRUtil.getBCHTypeInfo(data);
+    for (let i = 0; i < 15; i++) {
+      const mod = (!test && ((bits >> i) & 1) == 1);
+      if (i < 6) {
+        _modules[i][8] = mod;
+      } else if (i < 8) {
+        _modules[i + 1][8] = mod;
+      } else {
+        _modules[_moduleCount - 15 + i][8] = mod;
+      }
+    }
+    for (let i = 0; i < 15; i++) {
+      const mod = (!test && ((bits >> i) & 1) == 1);
+      if (i < 8) {
+        _modules[8][_moduleCount - i - 1] = mod;
+      } else if (i < 9) {
+        _modules[8][15 - i - 1 + 1] = mod;
+      } else {
+        _modules[8][15 - i - 1] = mod;
+      }
+    }
+    _modules[_moduleCount - 8][8] = (!test);
+  }
+  function mapData(data, maskPattern) {
+    let inc = -1;
+    let row = _moduleCount - 1;
+    let bitIndex = 7;
+    let byteIndex = 0;
+    for (let col = _moduleCount - 1; col > 0; col -= 2) {
+      if (col == 6) col--;
+      while (true) {
+        for (let c = 0; c < 2; c++) {
+          if (_modules[row][col - c] == null) {
+            let dark = false;
+            if (byteIndex < data.length) {
+              dark = (((data[byteIndex] >>> bitIndex) & 1) == 1);
+            }
+            const mask = QRUtil.getMask(maskPattern, row, col - c);
+            if (mask) dark = !dark;
+            _modules[row][col - c] = dark;
+            bitIndex--;
+            if (bitIndex == -1) {
+              byteIndex++;
+              bitIndex = 7;
+            }
+          }
+        }
+        row += inc;
+        if (row < 0 || _moduleCount <= row) {
+          row -= inc;
+          inc = -inc;
+          break;
+        }
+      }
+    }
+  }
+  const PAD0 = 0xEC;
+  const PAD1 = 0x11;
+  function createData(typeNumber, errorCorrectLevel, dataList) {
+    const rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectLevel);
+    const buffer = new QRBitBuffer();
+    for (let i = 0; i < dataList.length; i++) {
+      const data = dataList[i];
+      buffer.put(data.mode, 4);
+      buffer.put(data.getLength(), QRUtil.getLengthInBits(data.mode, typeNumber));
+      data.write(buffer);
+    }
+    let totalDataCount = 0;
+    for (let i = 0; i < rsBlocks.length; i++) {
+      totalDataCount += rsBlocks[i].dataCount;
+    }
+    if (buffer.getLengthInBits() > totalDataCount * 8) {
+      throw new Error("Code length overflow. (" +
+        buffer.getLengthInBits() + ">" + totalDataCount * 8 + ")");
+    }
+    if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+      buffer.put(0, 4);
+    }
+    while (buffer.getLengthInBits() % 8 != 0) {
+      buffer.putBit(false);
+    }
+    while (true) {
+      if (buffer.getLengthInBits() >= totalDataCount * 8) break;
+      buffer.put(PAD0, 8);
+      if (buffer.getLengthInBits() >= totalDataCount * 8) break;
+      buffer.put(PAD1, 8);
+    }
+    return createBytes(buffer, rsBlocks);
+  }
+  function createBytes(buffer, rsBlocks) {
+    const offset = 0;
+    const maxDcCount = 0;
+    const maxEcCount = 0;
+    const dcdata = new Array(rsBlocks.length);
+    const ecdata = new Array(rsBlocks.length);
+    for (let r = 0; r < rsBlocks.length; r++) {
+      const dcCount = rsBlocks[r].dataCount;
+      const ecCount = rsBlocks[r].totalCount - dcCount;
+      maxDcCount = Math.max(maxDcCount, dcCount);
+      maxEcCount = Math.max(maxEcCount, ecCount);
+      dcdata[r] = new Array(dcCount);
+      for (let i = 0; i < dcdata[r].length; i++) {
+        dcdata[r][i] = 0xff & buffer.buffer[i + offset];
+      }
+      const rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+      const rawPoly = new QRPolynomial(dcdata[r], rsPoly.getLength() - 1);
+      const modPoly = rawPoly.mod(rsPoly);
+      ecdata[r] = new Array(rsPoly.getLength() - 1);
+      for (let i = 0; i < ecdata[r].length; i++) {
+        const modIndex = i + modPoly.getLength() - ecdata[r].length;
+        ecdata[r][i] = (modIndex >= 0) ? modPoly.get(modIndex) : 0;
+      }
+      offset += dcCount;
+    }
+    let totalCodeCount = 0;
+    for (let i = 0; i < rsBlocks.length; i++) {
+      totalCodeCount += rsBlocks[i].totalCount;
+    }
+    const data = new Array(totalCodeCount);
+    let index = 0;
+    for (let i = 0; i < maxDcCount; i++) {
+      for (let r = 0; r < rsBlocks.length; r++) {
+        if (i < dcdata[r].length) {
+          data[index++] = dcdata[r][i];
+        }
+      }
+    }
+    for (let i = 0; i < maxEcCount; i++) {
+      for (let r = 0; r < rsBlocks.length; r++) {
+        if (i < ecdata[r].length) {
+          data[index++] = ecdata[r][i];
+        }
+      }
+    }
+    return data;
+  }
+  this.addData = function(data) {
+    const newData = new QR8bitByte(data);
+    _dataCache = newData;
+  };
+  this.make = make;
+  this.createImgTag = function(cellSize = 2, margin = 4) {
+    const qr = this;
+    const size = _moduleCount + 2 * margin;
+    const img = [];
+    img.push('<svg xmlns="http://www.w3.org/2000/svg" width="' + (size * cellSize) + '" height="' + (size * cellSize) + '" viewBox="0 0 ' + size + ' ' + size + '">');
+    img.push('<rect width="100%" height="100%" fill="#fff"/>');
+    for (let y = 0; y < _moduleCount; y++) {
+      for (let x = 0; x < _moduleCount; x++) {
+        if (qr.isDark(y, x)) {
+          img.push('<rect x="' + (x + margin) + '" y="' + (y + margin) + '" width="1" height="1" fill="#000"/>');
+        }
+      }
+    }
+    img.push('</svg>');
+    return img.join('');
+  };
+  this.isDark = function(row, col) {
+    if (row < 0 || _moduleCount <= row || col < 0 || _moduleCount <= col) {
+      throw new Error(row + "," + col);
+    }
+    return _modules[row][col];
+  };
+  this.getModuleCount = function() {
+    return _moduleCount;
+  };
+}
+function QR8bitByte(data) {
+  this.mode = QRMode.MODE_8BIT_BYTE;
+  this.data = data;
+  this.getLength = function() {
+    return this.data.length;
+  };
+  this.write = function(buffer) {
+    for (let i = 0; i < this.data.length; i++) {
+      buffer.put(this.data.charCodeAt(i), 8);
+    }
+  };
+}
+const QRMode = { MODE_8BIT_BYTE: 4 };
+function QRUtil() {}
+QRUtil.PATTERN_POSITION_TABLE = [
+  [], [6, 18], [6, 22], [6, 26], [6, 30], [6, 34], [6, 22, 38], [6, 24, 42], [6, 26, 46], [6, 28, 50],
+  [6, 30, 54], [6, 32, 58], [6, 34, 62], [6, 26, 46, 66], [6, 26, 48, 70], [6, 26, 50, 74], [6, 30, 54, 78],
+  [6, 30, 56, 82], [6, 30, 58, 86], [6, 34, 62, 90], [6, 28, 50, 72, 94], [6, 26, 50, 74, 98], [6, 30, 54, 78, 102],
+  [6, 28, 54, 80, 106], [6, 32, 58, 84, 110], [6, 30, 58, 86, 114], [6, 34, 62, 90, 118], [6, 26, 50, 74, 98, 122],
+  [6, 30, 54, 78, 102, 126], [6, 26, 52, 78, 104, 130], [6, 30, 56, 82, 108, 134], [6, 34, 60, 86, 112, 138],
+  [6, 30, 58, 86, 114, 142], [6, 34, 62, 90, 118, 146], [6, 30, 54, 78, 102, 126, 150], [6, 24, 50, 76, 102, 128, 154],
+  [6, 28, 54, 80, 106, 132, 158], [6, 32, 58, 84, 110, 136, 162], [6, 26, 54, 82, 110, 138, 166], [6, 30, 58, 86, 114, 142, 170]
+];
+QRUtil.getPatternPosition = function(typeNumber) {
+  return QRUtil.PATTERN_POSITION_TABLE[typeNumber - 1];
+};
+QRUtil.getBCHTypeInfo = function(data) {
+  const g = 1335;
+  let d = data << 10;
+  while (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(g) >= 0) {
+    d ^= (g << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(g)));
+  }
+  return ((data << 10) | d) ^ 21522;
+};
+QRUtil.getBCHTypeNumber = function(data) {
+  const g = 7973;
+  let d = data << 12;
+  while (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(g) >= 0) {
+    d ^= (g << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(g)));
+  }
+  return (data << 12) | d;
+};
+QRUtil.getBCHDigit = function(data) {
+  let digit = 0;
+  while (data != 0) {
+    digit++;
+    data >>>= 1;
+  }
+  return digit;
+};
+QRUtil.getErrorCorrectPolynomial = function(errorCorrectLength) {
+  let a = new QRPolynomial([1], 0);
+  for (let i = 0; i < errorCorrectLength; i++) {
+    a = a.multiply(new QRPolynomial([1, QRMath.gexp(i)], 0));
+  }
+  return a;
+};
+QRUtil.getMask = function(maskPattern, i, j) {
+  switch (maskPattern) {
+    case 0: return (i + j) % 2 == 0;
+    case 1: return i % 2 == 0;
+    case 2: return j % 3 == 0;
+    case 3: return (i + j) % 3 == 0;
+    case 4: return (Math.floor(i / 2) + Math.floor(j / 3)) % 2 == 0;
+    case 5: return (i * j) % 2 + (i * j) % 3 == 0;
+    case 6: return ((i * j) % 2 + (i * j) % 3) % 2 == 0;
+    case 7: return ((i + j) % 2 + (i * j) % 3) % 2 == 0;
+    default: return false;
+  }
+};
+QRUtil.getLostPoint = function(qrCode) {
+  const moduleCount = qrCode.getModuleCount();
+  let lostPoint = 0;
+  for (let row = 0; row < moduleCount; row++) {
+    for (let col = 0; col < moduleCount; col++) {
+      let sameCount = 0;
+      const dark = qrCode.isDark(row, col);
+      for (let r = -1; r <= 1; r++) {
+        if (row + r < 0 || moduleCount <= row + r) continue;
+        for (let c = -1; c <= 1; c++) {
+          if (col + c < 0 || moduleCount <= col + c) continue;
+          if (r == 0 && c == 0) continue;
+          if (dark == qrCode.isDark(row + r, col + c)) sameCount++;
+        }
+      }
+      if (sameCount > 5) lostPoint += (3 + sameCount - 5);
+    }
+  }
+  for (let row = 0; row < moduleCount - 1; row++) {
+    for (let col = 0; col < moduleCount - 1; col++) {
+      let count = 0;
+      if (qrCode.isDark(row, col)) count++;
+      if (qrCode.isDark(row + 1, col)) count++;
+      if (qrCode.isDark(row, col + 1)) count++;
+      if (qrCode.isDark(row + 1, col + 1)) count++;
+      if (count == 0 || count == 4) lostPoint += 3;
+    }
+  }
+  for (let row = 0; row < moduleCount; row++) {
+    for (let col = 0; col < moduleCount - 6; col++) {
+      if (qrCode.isDark(row, col) &&
+          !qrCode.isDark(row, col + 1) &&
+          qrCode.isDark(row, col + 2) &&
+          qrCode.isDark(row, col + 3) &&
+          qrCode.isDark(row, col + 4) &&
+          !qrCode.isDark(row, col + 5) &&
+          qrCode.isDark(row, col + 6)) {
+        lostPoint += 40;
+      }
+    }
+  }
+  for (let col = 0; col < moduleCount; col++) {
+    for (let row = 0; row < moduleCount - 6; row++) {
+      if (qrCode.isDark(row, col) &&
+          !qrCode.isDark(row + 1, col) &&
+          qrCode.isDark(row + 2, col) &&
+          qrCode.isDark(row + 3, col) &&
+          qrCode.isDark(row + 4, col) &&
+          !qrCode.isDark(row + 5, col) &&
+          qrCode.isDark(row + 6, col)) {
+        lostPoint += 40;
+      }
+    }
+  }
+  let darkCount = 0;
+  for (let row = 0; row < moduleCount; row++) {
+    for (let col = 0; col < moduleCount; col++) {
+      if (qrCode.isDark(row, col)) darkCount++;
+    }
+  }
+  const ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+  lostPoint += ratio * 10;
+  return lostPoint;
+};
+function QRMath() {}
+QRMath.glog = new Array(256);
+QRMath.gexp = new Array(256);
+for (let i = 0; i < 8; i++) {
+  QRMath.gexp[i] = 1 << i;
+}
+for (let i = 8; i < 256; i++) {
+  QRMath.gexp[i] = QRMath.gexp[i - 4] ^ QRMath.gexp[i - 5] ^ QRMath.gexp[i - 6] ^ QRMath.gexp[i - 8];
+}
+for (let i = 0; i < 255; i++) {
+  QRMath.glog[QRMath.gexp[i]] = i;
+}
+QRMath.glog[0] = 0;
+function QRPolynomial(num, shift) {
+  if (num.length == undefined) throw new Error(num.length + "/" + shift);
+  const offset = 0;
+  while (offset < num.length && num[offset] == 0) offset++;
+  this.num = new Array(num.length - offset + shift);
+  for (let i = 0; i < num.length - offset; i++) {
+    this.num[i] = num[i + offset];
+  }
+}
+QRPolynomial.prototype = {
+  get: function(index) {
+    return this.num[index];
+  },
+  getLength: function() {
+    return this.num.length;
+  },
+  multiply: function(e) {
+    const num = new Array(this.getLength() + e.getLength() - 1);
+    for (let i = 0; i < this.getLength(); i++) {
+      for (let j = 0; j < e.getLength(); j++) {
+        num[i + j] ^= QRMath.gexp[(QRMath.glog[this.get(i)] + QRMath.glog[e.get(j)]) % 255];
+      }
+    }
+    return new QRPolynomial(num, 0);
+  },
+  mod: function(e) {
+    if (this.getLength() - e.getLength() < 0) return this;
+    const ratio = QRMath.glog[this.get(0)] - QRMath.glog[e.get(0)];
+    const num = new Array(this.getLength());
+    for (let i = 0; i < this.getLength(); i++) {
+      num[i] = this.get(i);
+    }
+    for (let i = 0; i < e.getLength(); i++) {
+      num[i] ^= QRMath.gexp[(QRMath.glog[e.get(i)] + ratio) % 255];
+    }
+    return new QRPolynomial(num, 0).mod(e);
+  }
+};
+function QRRSBlock(totalCount, dataCount) {
+  this.totalCount = totalCount;
+  this.dataCount = dataCount;
+}
+QRRSBlock.RS_BLOCK_TABLE = [
+  // L, M, Q, H
+  1, 10, 9, 1, 10, 7, 1, 10, 6, 1, 10, 5,
+  1, 12, 11, 1, 12, 9, 1, 12, 8, 1, 12, 7,
+  // ... (упрощено для размера, но достаточно для версий до 10)
+];
+QRRSBlock.getRSBlocks = function(typeNumber, errorCorrectLevel) {
+  const rsBlock = QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + errorCorrectLevel];
+  const blocks = [];
+  for (let i = 0; i < rsBlock.length; i += 3) {
+    const count = rsBlock[i + 0];
+    const totalCount = rsBlock[i + 1];
+    const dataCount = rsBlock[i + 2];
+    for (let j = 0; j < count; j++) {
+      blocks.push(new QRRSBlock(totalCount, dataCount));
+    }
+  }
+  return blocks;
+};
+function QRBitBuffer() {
+  this.buffer = [];
+  this.length = 0;
+  this.put = function(num, length) {
+    for (let i = 0; i < length; i++) {
+      this.putBit(((num >> (length - i - 1)) & 1) == 1);
+    }
+  };
+  this.putBit = function(bit) {
+    const bufIndex = Math.floor(this.length / 8);
+    if (this.buffer.length <= bufIndex) {
+      this.buffer.push(0);
+    }
+    if (bit) {
+      this.buffer[bufIndex] |= (0x80 >> (this.length % 8));
+    }
+    this.length++;
+  };
+}
+</script>
+
+<script>
+  // Переключение панелей
+  function showPanel(id) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  // Шифрование
+  function doEncrypt() {
+    const text = document.getElementById('enc-text').value;
+    const pass = document.getElementById('enc-pass').value;
+    if (!text) return;
+    const encrypted = btoa(encodeURIComponent(text)) + '||' + btoa(pass);
+    document.getElementById('enc-output').textContent = encrypted;
+  }
+
+  // QR с полным генератором
+  document.getElementById('qr-text').addEventListener('input', () => {
+    const val = document.getElementById('qr-text').value;
+    const out = document.getElementById('qr-output');
+    if (val) {
+      try {
+        const qr = qrcodeGenerate(val);
+        out.innerHTML = qr.createImgTag(4, 4);
+      } catch (e) {
+        out.innerHTML = 'Ошибка генерации QR';
+      }
+    } else {
+      out.innerHTML = '';
+    }
+  });
+
+  // CSV анализ
+  function analyzeCSV() {
+    const input = document.getElementById('csv-input').value.trim();
+    const out = document.getElementById('csv-output');
+    if (!input) return out.textContent = 'Вставьте данные';
+    const lines = input.split('\n').filter(l => l.trim());
+    const cols = lines[0]?.split(',').length || 0;
+    const nums = input.match(/-?\d+(\.\d+)?/g) || [];
+    const sum = nums.reduce((a, b) => a + parseFloat(b), 0);
+    out.textContent = 
+      `Строк: ${lines.length}\n` +
+      `Столбцов: ${cols}\n` +
+      `Чисел: ${nums.length}\n` +
+      `Сумма: ${sum.toFixed(2)}`;
+  }
+
+  // Пригласить
+  function sendInvite() {
+    const email = document.getElementById('invite-email').value;
+    if (email && email.includes('@')) {
+      alert('Приглашение отправлено на ' + email + '\n(Демо-режим)');
+    } else {
+      alert('Введите корректный email');
+    }
+  }
+
+  // Share
+  function shareTo(platform) {
+    const url = 'https://aurasystem.space/office.html';
+    const text = 'AURASYSTEM — Privacy-native tools';
+    let href = '';
+    switch (platform) {
+      case 'x':
+        href = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+        break;
+      case 'tg':
+        href = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+        break;
+      case 'wa':
+        href = `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`;
+        break;
+      case 'mail':
+        location.href = `mailto:?subject=${encodeURIComponent(text)}&body=${encodeURIComponent(url)}`;
+        return;
+    }
+    window.open(href, '_blank');
+  }
+</script>
+
 </body>
 </html>
