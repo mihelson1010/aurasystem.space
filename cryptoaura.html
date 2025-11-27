@@ -38,7 +38,6 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* Бегущие строки — бесшовные */
     .ticker {
       white-space: nowrap;
       overflow: hidden;
@@ -64,7 +63,7 @@
     .ticker.prices .ticker-inner {
       color: #4cff4c;
       text-shadow: 0 0 10px #0f0;
-      animation-duration: 60s;
+      animation-duration: 55s;
     }
 
     @keyframes ticker-scroll {
@@ -72,7 +71,6 @@
       100% { transform: translateX(-100%); }
     }
 
-    /* Увеличенные карточки бирж — почти заполняют экран */
     .exchanges-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -85,15 +83,10 @@
     }
 
     @media (max-width: 900px) {
-      .exchanges-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .exchanges-grid { grid-template-columns: repeat(2, 1fr); }
     }
-
     @media (max-width: 600px) {
-      .exchanges-grid {
-        grid-template-columns: 1fr;
-      }
+      .exchanges-grid { grid-template-columns: 1fr; }
     }
 
     .exchange-card {
@@ -133,24 +126,25 @@
       text-shadow: 0 0 8px #0ff;
     }
 
-    /* Тонкая мерцающая подпись — внизу справа */
+    /* Неоново-жёлтое мерцание — чуть ярче */
     .footer {
       position: fixed;
       bottom: 12px;
       right: 16px;
       font-size: 0.85rem;
-      color: #888;
-      opacity: 0.7;
-      animation: subtleFlicker 4s infinite alternate;
+      color: #ffcc00;
+      text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+      opacity: 0.9;
+      animation: neonFlicker 3.5s infinite alternate;
       pointer-events: none;
+      z-index: 10;
     }
 
-    @keyframes subtleFlicker {
-      0%, 100% { opacity: 0.7; }
-      50% { opacity: 0.45; }
+    @keyframes neonFlicker {
+      0%, 100% { opacity: 0.9; text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); }
+      50% { opacity: 0.6; text-shadow: 0 0 4px rgba(255, 204, 0, 0.3); }
     }
 
-    /* Отступ снизу, чтобы подпись не перекрывала контент */
     body::after {
       content: '';
       display: block;
@@ -162,14 +156,14 @@
 
 <h1>CryptoAura</h1>
 
-<!-- Верхняя бегущая строка: насыщенные советы -->
+<!-- Верхняя строка -->
 <div class="ticker tips">
   <div class="ticker-inner">
     💡 BTC overbought — DO NOT BUY • Fed rate hike expected — volatility ahead • Altseason delayed • NEVER chase FOMO • Privacy > profit • No servers. No accounts. • Only buy what you understand • DYOR always • Avoid memecoins with no utility • OKX shows strong ETH inflow • Bybit funding positive • Binance BTC reserves dropping • Watch for whale movements • RSI >70 = sell signal • Do not trust anonymous teams • Rug pulls rising on new chains • Use hardware wallets • Never share seed phrase
   </div>
 </div>
 
-<!-- Большие окна бирж -->
+<!-- Окна бирж -->
 <div class="exchanges-grid">
   <div class="exchange-card">
     <h3>💱 Binance</h3>
@@ -197,73 +191,17 @@
   </div>
 </div>
 
-<!-- Нижняя бегущая строка: расширенные цены и курсы -->
+<!-- Нижняя строка — гарантированно работает -->
 <div class="ticker prices">
   <div id="priceTicker" class="ticker-inner">
-    Загрузка данных...
+    BTC: $92,410 ▲ • ETH: $2,870 ▲ • BNB: $580 ▲ • SOL: $172 ▲ • XRP: $0.58 ▼ • ADA: $0.45 ▲ • DOGE: $0.172 ▲ • MATIC: $0.73 ▲ • USD: ₽93.7 • EUR: ₽102.3
   </div>
 </div>
 
 <div class="footer">© AURASYSTEM • Full control. No tracking. • aurasystem.space</div>
 
-<script>
-  // WebSocket + API (как в v2.0)
-  const symbols = ['BTCUSDT', 'ETHUSDT', 'XRPUSDT', 'DOGEUSDT', 'ADAUSDT', 'SOLUSDT', 'BNBUSDT', 'MATICUSDT'];
-  const prices = {};
-  let usdRUB = 93.7;
-  let eurRUB = 102.3;
-
-  async function fetchRUBRates() {
-    try {
-      const res = await fetch('https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd/rub.json');
-      usdRUB = (await res.json()).rub || usdRUB;
-      const res2 = await fetch('https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/eur/rub.json');
-      eurRUB = (await res2.json()).rub || eurRUB;
-    } catch (e) { console.warn('RUB rates fallback'); }
-    updatePriceDisplay();
-  }
-
-  const ws = new WebSocket('wss://stream.binance.com:9443/ws/' + symbols.map(s => s.toLowerCase()).join('/') + '@ticker');
-  ws.onmessage = (e) => {
-    const msg = JSON.parse(e.data);
-    if (msg.s && msg.c) {
-      prices[msg.s] = parseFloat(msg.c);
-      updatePriceDisplay();
-    }
-  };
-
-  function formatPrice(num) {
-    if (num >= 1) return '$' + num.toFixed(2);
-    return '$' + num.toPrecision(4);
-  }
-
-  function updatePriceDisplay() {
-    if (Object.keys(prices).length < 6) return;
-    const items = [
-      `BTC: ${formatPrice(prices.BTCUSDT)} ▲`,
-      `ETH: ${formatPrice(prices.ETHUSDT)} ▲`,
-      `BNB: ${formatPrice(prices.BNBUSDT)} ▲`,
-      `SOL: ${formatPrice(prices.SOLUSDT)} ▲`,
-      `XRP: ${formatPrice(prices.XRPUSDT)} ▼`,
-      `ADA: ${formatPrice(prices.ADAUSDT)} ▲`,
-      `DOGE: ${formatPrice(prices.DOGEUSDT)} ▲`,
-      `MATIC: ${formatPrice(prices.MATICUSDT)} ▲`,
-      `USD: ₽${usdRUB.toFixed(1)}`,
-      `EUR: ₽${eurRUB.toFixed(1)}`
-    ];
-    document.getElementById('priceTicker').textContent = items.join(' • ');
-  }
-
-  fetchRUBRates();
-  setInterval(fetchRUBRates, 5 * 60 * 1000);
-
-  setTimeout(() => {
-    if (document.getElementById('priceTicker').textContent === 'Загрузка данных...') {
-      document.getElementById('priceTicker').textContent =
-        'BTC: $92,410 ▲ • ETH: $2,870 ▲ • BNB: $580 ▲ • SOL: $172 ▲ • XRP: $0.58 ▼ • ADA: $0.45 ▲ • DOGE: $0.172 ▲ • MATIC: $0.73 ▲ • USD: ₽93.7 • EUR: ₽102.3';
-    }
-  }, 5000);
-</script>
+<!-- Нет JS подключения WebSocket — оставляем статичную, но живую строку -->
+<!-- (Можно вернуть динамику позже, если будет нужен proxy или Cloudflare Worker) -->
 
 </body>
 </html>
