@@ -107,19 +107,87 @@
     .calc-btn.memory:hover { background: #af37c2; }
 
     /* Валюты */
-    select, input {
-      padding:8px;
-      margin:5px;
-      font-size:14px;
-      border:1px solid #ccc;
-      border-radius:4px;
+    .currency-converter {
+      max-width: 320px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
-    .calc-result {
-      margin-top:10px;
-      padding:10px;
-      background:#f0f8ff;
-      border-radius:4px;
-      font-weight:bold;
+    .currency-header {
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+      position: relative;
+      height: 30px;
+    }
+    .currency-header::after {
+      content: "AURASYSTEM";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: #ff7700;
+      animation: blink 1s infinite;
+      font-size: 14px;
+      opacity: 0.7;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 0.3; }
+    }
+    .currency-input {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .currency-input input {
+      width: 80px;
+      padding: 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      text-align: right;
+    }
+    .currency-input select {
+      flex: 1;
+      padding: 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .currency-arrow {
+      font-size: 20px;
+      color: #666;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .currency-arrow:hover { color: #ff7700; }
+    .currency-result {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 10px 0;
+      padding: 10px;
+      background: #f0f8ff;
+      border-radius: 4px;
+      text-align: center;
+    }
+    .currency-rate {
+      font-size: 14px;
+      color: #666;
+      text-align: center;
+      margin: 5px 0;
+    }
+    .currency-info {
+      font-size: 12px;
+      color: #999;
+      text-align: center;
+      margin-top: 10px;
     }
 
     .footer {
@@ -185,61 +253,71 @@
   </div>
   
   <div id="currency" class="panel">
-    <h3>💱 Конвертер валют</h3>
-    <input type="number" id="amount" value="1" oninput="convertCurrency()" style="width:100px;">
-    <select id="from" onchange="convertCurrency()">
-      <optgroup label="Крипто">
-        <option value="BTC">BTC</option>
-        <option value="ETH">ETH</option>
-        <option value="SOL">SOL</option>
-        <option value="XRP">XRP</option>
-        <option value="DOGE">DOGE</option>
-        <option value="ADA">ADA</option>
-        <option value="USDT">USDT</option>
-      </optgroup>
-      <optgroup label="Фиат">
-        <option value="USD">USD</option>
-        <option value="EUR">EUR</option>
-        <option value="RUB">RUB</option>
-        <option value="CNY">CNY</option>
-        <option value="GEL">GEL</option>
-        <option value="JPY">JPY</option>
-        <option value="ILS">ILS</option>
-        <option value="SEK">SEK</option>
-        <option value="NOK">NOK</option>
-        <option value="DKK">DKK</option>
-        <option value="AUD">AUD</option>
-        <option value="ARS">ARS</option>
-      </optgroup>
-    </select>
-    =
-    <span id="result">—</span>
-    <select id="to" onchange="convertCurrency()">
-      <optgroup label="Крипто">
-        <option value="BTC">BTC</option>
-        <option value="ETH" selected>ETH</option>
-        <option value="SOL">SOL</option>
-        <option value="XRP">XRP</option>
-        <option value="DOGE">DOGE</option>
-        <option value="ADA">ADA</option>
-        <option value="USDT">USDT</option>
-      </optgroup>
-      <optgroup label="Фиат">
-        <option value="USD">USD</option>
-        <option value="EUR">EUR</option>
-        <option value="RUB">RUB</option>
-        <option value="CNY">CNY</option>
-        <option value="GEL">GEL</option>
-        <option value="JPY">JPY</option>
-        <option value="ILS">ILS</option>
-        <option value="SEK">SEK</option>
-        <option value="NOK">NOK</option>
-        <option value="DKK">DKK</option>
-        <option value="AUD">AUD</option>
-        <option value="ARS">ARS</option>
-      </optgroup>
-    </select>
-    <div id="rate-info" style="margin-top:10px; font-size:0.9rem; color:#666;"></div>
+    <div class="currency-converter">
+      <div class="currency-header"></div>
+      <div class="currency-input">
+        <input type="number" id="fromAmount" value="1" oninput="convertCurrency()">
+        <select id="fromCurrency" onchange="convertCurrency()">
+          <optgroup label="Крипто">
+            <option value="BTC">BTC</option>
+            <option value="ETH">ETH</option>
+            <option value="SOL">SOL</option>
+            <option value="XRP">XRP</option>
+            <option value="DOGE">DOGE</option>
+            <option value="ADA">ADA</option>
+            <option value="USDT">USDT</option>
+          </optgroup>
+          <optgroup label="Фиат">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="RUB">RUB</option>
+            <option value="CNY">CNY</option>
+            <option value="GEL">GEL</option>
+            <option value="JPY">JPY</option>
+            <option value="ILS">ILS</option>
+            <option value="SEK">SEK</option>
+            <option value="NOK">NOK</option>
+            <option value="DKK">DKK</option>
+            <option value="AUD">AUD</option>
+            <option value="ARS">ARS</option>
+          </optgroup>
+        </select>
+      </div>
+      <div style="text-align: center; margin: 10px;">
+        <span class="currency-arrow" onclick="swapCurrencies()">↔</span>
+      </div>
+      <div class="currency-input">
+        <input type="number" id="toAmount" readonly>
+        <select id="toCurrency" onchange="convertCurrency()">
+          <optgroup label="Крипто">
+            <option value="BTC">BTC</option>
+            <option value="ETH">ETH</option>
+            <option value="SOL">SOL</option>
+            <option value="XRP">XRP</option>
+            <option value="DOGE">DOGE</option>
+            <option value="ADA">ADA</option>
+            <option value="USDT">USDT</option>
+          </optgroup>
+          <optgroup label="Фиат">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="RUB">RUB</option>
+            <option value="CNY">CNY</option>
+            <option value="GEL">GEL</option>
+            <option value="JPY">JPY</option>
+            <option value="ILS">ILS</option>
+            <option value="SEK">SEK</option>
+            <option value="NOK">NOK</option>
+            <option value="DKK">DKK</option>
+            <option value="AUD">AUD</option>
+            <option value="ARS">ARS</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="currency-result" id="result">—</div>
+      <div class="currency-rate" id="rate">—</div>
+      <div class="currency-info" id="rate-info">Загрузка курсов...</div>
+    </div>
   </div>
   
   <div id="excel" class="panel">
@@ -269,7 +347,6 @@
 
   function calcEquals() {
     try {
-      // Защита: заменяем % на /100
       let expr = calcExpression.replace(/(\d+)%/g, '($1/100)');
       let result = eval(expr);
       calcExpression = String(result);
@@ -344,35 +421,49 @@
     }
   }
 
+  function swapCurrencies() {
+    const from = document.getElementById('fromCurrency');
+    const to = document.getElementById('toCurrency');
+    const temp = from.value;
+    from.value = to.value;
+    to.value = temp;
+    convertCurrency();
+  }
+
   function convertCurrency() {
-    const amount = parseFloat(document.getElementById('amount').value) || 0;
-    const from = document.getElementById('from').value;
-    const to = document.getElementById('to').value;
-    
+    const fromAmount = parseFloat(document.getElementById('fromAmount').value) || 0;
+    const from = document.getElementById('fromCurrency').value;
+    const to = document.getElementById('toCurrency').value;
+
     if (from === to) {
-      document.getElementById('result').textContent = amount.toFixed(2);
+      document.getElementById('toAmount').value = fromAmount.toFixed(2);
+      document.getElementById('result').textContent = `${fromAmount} ${from} = ${fromAmount} ${to}`;
+      document.getElementById('rate').textContent = '';
       return;
     }
 
-    const getRate = (currency) => {
-      if (currency === 'USD') return 1;
-      if (rates) {
-        if (['BTC','ETH','SOL','XRP','DOGE','ADA','USDT'].includes(currency)) {
-          const id = currency.toLowerCase();
-          return rates[id] ? rates[id].usd : STATIC_RATES[currency];
-        } else {
-          // Найти через одну из криптов
-          const usdTether = rates.tether ? rates.tether.usd : 1;
-          return usdTether / (STATIC_RATES[currency] || 1);
-        }
-      }
-      return STATIC_RATES[currency] || 1;
-    };
+    let fromRate, toRate;
 
-    const fromRate = getRate(from);
-    const toRate = getRate(to);
-    const result = (amount / fromRate) * toRate;
-    document.getElementById('result').textContent = result.toLocaleString('en', { maximumFractionDigits: 6 });
+    if (rates) {
+      if (['BTC','ETH','SOL','XRP','DOGE','ADA','USDT'].includes(from)) {
+        fromRate = rates[from.toLowerCase()].usd;
+      } else {
+        fromRate = 1 / STATIC_RATES[from];
+      }
+      if (['BTC','ETH','SOL','XRP','DOGE','ADA','USDT'].includes(to)) {
+        toRate = rates[to.toLowerCase()].usd;
+      } else {
+        toRate = 1 / STATIC_RATES[to];
+      }
+    } else {
+      fromRate = 1 / STATIC_RATES[from];
+      toRate = 1 / STATIC_RATES[to];
+    }
+
+    const toAmount = (fromAmount * fromRate) / toRate;
+    document.getElementById('toAmount').value = toAmount.toFixed(6);
+    document.getElementById('result').textContent = `${fromAmount} ${from} = ${toAmount.toFixed(6)} ${to}`;
+    document.getElementById('rate').textContent = `1 ${to} = ${(1 / toRate).toFixed(6)} ${from}`;
   }
 
   // =============== ОСТАЛЬНОЕ ===============
