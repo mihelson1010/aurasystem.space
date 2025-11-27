@@ -1,69 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Excel-анализ</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aura Office</title>
   <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      margin: 40px;
-      background: white;
-      font-family: Inter, Arial, sans-serif;
+      background: #0a0a1a;
+      color: #fff;
+      font-family: Arial, sans-serif;
       text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
-    h2 {
-      color: #000;
-      margin-bottom: 20px;
+    h1 {
+      font-size: 2.8rem;
+      font-weight: bold;
+      color: #ffaa00;
+      margin: 20px 0 40px;
+      letter-spacing: 2px;
     }
-    #csv {
-      width: 90%;
-      height: 180px;
-      padding: 12px;
-      margin: 10px 0;
-      border: 1px solid #00ff88;
-      font-family: monospace;
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-width: 320px;
+      padding: 0 20px;
     }
     .btn {
-      background: #00ff88;
-      color: #000;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin: 8px;
+      padding: 14px 24px;
+      border-radius: 25px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-decoration: none;
+      color: white;
+      text-align: center;
+      transition: all 0.2s ease;
     }
-    #result {
-      width: 90%;
-      margin-top: 20px;
-      padding: 12px;
-      background: #f9f9f9;
-      border: 1px solid #ddd;
-      font-family: monospace;
-      text-align: left;
-      white-space: pre;
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    .btn-encrypt { background: linear-gradient(135deg, #ff7700, #ffaa00); }
+    .btn-excel  { background: linear-gradient(135deg, #4a90e2, #50b4ff); }
+    .btn-qr     { background: linear-gradient(135deg, #8e44ad, #9b59b6); }
+    .btn-invite { background: linear-gradient(135deg, #2ecc71, #34e07c); }
+    .btn-share  { background: linear-gradient(135deg, #e74c3c, #f39c12); }
+
+    .footer {
+      position: fixed;
+      bottom: 12px;
+      right: 16px;
+      font-size: 0.85rem;
+      color: #4cff4c;
+      text-shadow: 0 0 8px rgba(76, 255, 76, 0.5);
+      opacity: 0.9;
+      animation: neonFlicker 3.5s infinite alternate;
+      pointer-events: none;
+    }
+
+    @keyframes neonFlicker {
+      0%, 100% { opacity: 0.9; text-shadow: 0 0 8px rgba(76, 255, 76, 0.5); }
+      50% { opacity: 0.6; text-shadow: 0 0 4px rgba(76, 255, 76, 0.3); }
     }
   </style>
 </head>
 <body>
-  <h2>Excel-анализ (CSV)</h2>
-  <textarea id="csv" placeholder="Вставьте данные: Имя,Возраст&#10;Иван,30"></textarea><br>
-  <button class="btn" onclick="processCSV()">📊 Анализ</button>
-  <div id="result"></div>
-  <script>
-    function processCSV() {
-      const txt = document.getElementById('csv').value.trim();
-      const out = document.getElementById('result');
-      if (!txt) return out.textContent = 'Вставьте данные';
-      const lines = txt.split('\n').filter(l => l.trim());
-      const cols = lines[0]?.split(',').length || 0;
-      const nums = txt.match(/-?\d+(\.\d+)?/g) || [];
-      const sum = nums.reduce((a, b) => a + parseFloat(b), 0);
-      out.textContent = 
-        `Строк: ${lines.length}\n` +
-        `Столбцов: ${cols}\n` +
-        `Чисел: ${nums.length}\n` +
-        `Сумма: ${sum.toFixed(2)}`;
-    }
-  </script>
+
+<h1>Aura Office</h1>
+
+<div class="buttons">
+  <a href="encrypt.html" class="btn btn-encrypt">🔐 Шифрование</a>
+  <a href="excel.html" class="btn btn-excel">📊 Excel-анализ</a>
+  <a href="qr.html" class="btn btn-qr">📱 Генератор QR</a>
+  <a href="invite.html" class="btn btn-invite">✉️ Пригласить друга</a>
+  <a href="share.html" class="btn btn-share">📤 Share (Legacy)</a>
+</div>
+
+<div class="footer">© AURASYSTEM • aurasystem.space</div>
+
 </body>
 </html>
