@@ -1,58 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AURASYSTEM — Privacy-native tools</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Excel-анализ</title>
   <style>
-    :root { --bg: #0a0a1a; --text: #e0e0e0; }
-    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      background: var(--bg); color: var(--text);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      text-align: center; min-height: 100vh;
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      padding: 20px; position: relative;
+      margin: 40px;
+      background: white;
+      font-family: Inter, Arial, sans-serif;
+      text-align: center;
     }
-    .logo {
-      font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 4.5rem;
-      background: linear-gradient(90deg, #ff6200, #feca57);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      margin-bottom: 20px; letter-spacing: 5px;
+    h2 {
+      color: #000;
+      margin-bottom: 20px;
     }
-    .tagline {
-      font-size: 1.1rem; margin-bottom: 40px; opacity: 0.9; line-height: 1.6;
+    #csv {
+      width: 90%;
+      height: 180px;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #00ff88;
+      font-family: monospace;
     }
     .btn {
-      display: block; width: 220px; padding: 14px 0; margin: 12px auto;
-      border-radius: 50px; font-weight: 600; text-decoration: none;
-      transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      background: #00ff88;
+      color: #000;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 8px;
     }
-    .btn-office { background: linear-gradient(45deg, #ff9a9e, #fad0c4); color: #333; }
-    .btn-shop { background: linear-gradient(45deg, #a18cd1, #fbc2eb); color: #333; }
-    .btn-proxy { background: linear-gradient(45deg, #84fab0, #8fd3f4); color: #333; }
-    .btn-crypto { background: linear-gradient(45deg, #89f7fe, #66a6ff); color: #333; }
-    .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
-
-    footer {
-      position: absolute; bottom: 20px; right: 20px;
-      font-size: 0.8rem; opacity: 0.6;
+    #result {
+      width: 90%;
+      margin-top: 20px;
+      padding: 12px;
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      font-family: monospace;
+      text-align: left;
+      white-space: pre;
     }
   </style>
 </head>
 <body>
-  <div class="logo">AURASYSTEM</div>
-  <div class="tagline">
-    Privacy-native tools.<br>
-    No servers. No accounts. Full control.
-  </div>
-
-  <a href="aura-office.html" class="btn btn-office">Aura Office</a>
-  <a href="aurashop.html" class="btn btn-shop">Aura Shop</a>
-  <a href="proxy.html" class="btn btn-proxy">Aura Proxy</a>
-  <a href="cryptoaura.html" class="btn btn-crypto">CryptoAura</a>
-
-  <footer>Produced by Mihelson © 2025</footer>
+  <h2>Excel-анализ (CSV)</h2>
+  <textarea id="csv" placeholder="Вставьте данные: Имя,Возраст&#10;Иван,30"></textarea><br>
+  <button class="btn" onclick="processCSV()">📊 Анализ</button>
+  <div id="result"></div>
+  <script>
+    function processCSV() {
+      const txt = document.getElementById('csv').value.trim();
+      const out = document.getElementById('result');
+      if (!txt) return out.textContent = 'Вставьте данные';
+      const lines = txt.split('\n').filter(l => l.trim());
+      const cols = lines[0]?.split(',').length || 0;
+      const nums = txt.match(/-?\d+(\.\d+)?/g) || [];
+      const sum = nums.reduce((a, b) => a + parseFloat(b), 0);
+      out.textContent = 
+        `Строк: ${lines.length}\n` +
+        `Столбцов: ${cols}\n` +
+        `Чисел: ${nums.length}\n` +
+        `Сумма: ${sum.toFixed(2)}`;
+    }
+  </script>
 </body>
 </html>
