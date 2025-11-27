@@ -62,7 +62,7 @@
     }
     .panel { display:none; margin-top:20px; }
     
-    /* Калькулятор */
+    /* Простой калькулятор */
     .calculator {
       max-width: 320px;
       margin: 0 auto;
@@ -71,6 +71,27 @@
       padding: 20px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
+    .calc-header {
+      height: 30px;
+      position: relative;
+      margin-bottom: 10px;
+    }
+    .calc-header::after {
+      content: "AURASYSTEM";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: #ff7700;
+      font-size: 14px;
+      animation: blink 1.5s infinite;
+      opacity: 0.7;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 0.3; }
+    }
     .calc-display {
       background: #1a1a1a;
       color: #0f0;
@@ -78,7 +99,6 @@
       padding: 16px;
       text-align: right;
       border-radius: 8px;
-      margin-bottom: 16px;
       font-family: monospace;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -87,6 +107,7 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
+      margin-top: 10px;
     }
     .calc-btn {
       padding: 14px 0;
@@ -106,7 +127,7 @@
     .calc-btn.memory { background: #9c27b0; }
     .calc-btn.memory:hover { background: #af37c2; }
 
-    /* Валюты */
+    /* Валютный конвертер */
     .currency-converter {
       max-width: 320px;
       margin: 0 auto;
@@ -135,10 +156,6 @@
       animation: blink 1s infinite;
       font-size: 14px;
       opacity: 0.7;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 0.7; }
-      50% { opacity: 0.3; }
     }
     .currency-input {
       display: flex;
@@ -217,33 +234,29 @@
   
   <div id="calc" class="panel">
     <div class="calculator">
+      <div class="calc-header"></div>
       <div class="calc-display" id="calc-display">0</div>
       <div class="calc-buttons">
         <button class="calc-btn memory" onclick="calcMR()">MR</button>
         <button class="calc-btn memory" onclick="calcMC()">MC</button>
         <button class="calc-btn" onclick="calcClear()">C</button>
         <button class="calc-btn" onclick="calcClearEntry()">CE</button>
-        
         <button class="calc-btn" onclick="calcInput('7')">7</button>
         <button class="calc-btn" onclick="calcInput('8')">8</button>
         <button class="calc-btn" onclick="calcInput('9')">9</button>
         <button class="calc-btn operator" onclick="calcInput('/')">/</button>
-        
         <button class="calc-btn" onclick="calcInput('4')">4</button>
         <button class="calc-btn" onclick="calcInput('5')">5</button>
         <button class="calc-btn" onclick="calcInput('6')">6</button>
         <button class="calc-btn operator" onclick="calcInput('*')">*</button>
-        
         <button class="calc-btn" onclick="calcInput('1')">1</button>
         <button class="calc-btn" onclick="calcInput('2')">2</button>
         <button class="calc-btn" onclick="calcInput('3')">3</button>
         <button class="calc-btn operator" onclick="calcInput('-')">-</button>
-        
         <button class="calc-btn" onclick="calcInput('0')">0</button>
         <button class="calc-btn" onclick="calcInput('.')">.</button>
         <button class="calc-btn" onclick="calcInput('Math.sqrt(')">√</button>
         <button class="calc-btn operator" onclick="calcInput('+')">+</button>
-        
         <button class="calc-btn memory" onclick="calcMPlus()">M+</button>
         <button class="calc-btn" onclick="calcInput('%')">%</button>
         <button class="calc-btn equals" onclick="calcEquals()">=</button>
@@ -332,7 +345,7 @@
 <div class="footer">AURASYSTEM • Full control</div>
 
 <script>
-  // =============== КАЛЬКУЛЯТОР ===============
+  // =============== ПРОСТОЙ КАЛЬКУЛЯТОР ===============
   let calcMemory = 0;
   let calcExpression = '';
 
@@ -362,18 +375,19 @@
   }
 
   function calcClearEntry() {
-    calcExpression = calcExpression.slice(0, -1);
+    if (calcExpression.length > 0) {
+      calcExpression = calcExpression.slice(0, -1);
+    }
     updateCalcDisplay();
   }
 
   function calcBackspace() {
-    calcExpression = calcExpression.slice(0, -1);
-    updateCalcDisplay();
+    calcClearEntry();
   }
 
   function calcMPlus() {
     try {
-      calcMemory += eval(calcExpression || '0');
+      calcMemory += parseFloat(eval(calcExpression || '0'));
     } catch (e) {}
   }
 
@@ -397,9 +411,9 @@
     }
   }
 
-  // =============== ВАЛЮТЫ ===============
+  // =============== ВАЛЮТНЫЙ КОНВЕРТЕР ===============
   let rates = null;
-  const STATIC_RATES = {
+  const STATIC_RATES_USD = {
     USD: 1, EUR: 0.93, RUB: 93.5, CNY: 7.25, GEL: 2.70, JPY: 155.0,
     ILS: 3.70, SEK: 10.50, NOK: 10.80, DKK: 6.90, AUD: 1.52, ARS: 950.0,
     BTC: 1/92410, ETH: 1/2870, SOL: 1/172, XRP: 1/0.58,
@@ -411,7 +425,10 @@
     try {
       const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,ripple,dogecoin,cardano,tether&vs_currencies=usd,eur,rub,cny,gel,jpy,ils,sek,nok,dkk,aud,ars');
       const data = await res.json();
-      rates = data;
+      rates = {};
+      for (let id in data) {
+        rates[id.toUpperCase()] = data[id];
+      }
       document.getElementById('rate-info').textContent = '✅ Онлайн-курсы';
       convertCurrency();
     } catch (e) {
@@ -421,13 +438,16 @@
     }
   }
 
-  function swapCurrencies() {
-    const from = document.getElementById('fromCurrency');
-    const to = document.getElementById('toCurrency');
-    const temp = from.value;
-    from.value = to.value;
-    to.value = temp;
-    convertCurrency();
+  function getUSDPrice(currency, amount = 1) {
+    if (currency === 'USD') return amount;
+    if (rates) {
+      const id = currency.toLowerCase();
+      if (rates[id]) {
+        return amount * rates[id].usd;
+      }
+    }
+    // fallback to static
+    return amount / STATIC_RATES_USD[currency];
   }
 
   function convertCurrency() {
@@ -436,34 +456,32 @@
     const to = document.getElementById('toCurrency').value;
 
     if (from === to) {
-      document.getElementById('toAmount').value = fromAmount.toFixed(2);
-      document.getElementById('result').textContent = `${fromAmount} ${from} = ${fromAmount} ${to}`;
+      const v = fromAmount.toFixed(6);
+      document.getElementById('toAmount').value = v;
+      document.getElementById('result').textContent = `${fromAmount} ${from} = ${v} ${to}`;
       document.getElementById('rate').textContent = '';
       return;
     }
 
-    let fromRate, toRate;
+    // Convert from -> USD
+    const usd = getUSDPrice(from, fromAmount);
+    // Convert USD -> to
+    const toAmount = usd / getUSDPrice(to, 1);
 
-    if (rates) {
-      if (['BTC','ETH','SOL','XRP','DOGE','ADA','USDT'].includes(from)) {
-        fromRate = rates[from.toLowerCase()].usd;
-      } else {
-        fromRate = 1 / STATIC_RATES[from];
-      }
-      if (['BTC','ETH','SOL','XRP','DOGE','ADA','USDT'].includes(to)) {
-        toRate = rates[to.toLowerCase()].usd;
-      } else {
-        toRate = 1 / STATIC_RATES[to];
-      }
-    } else {
-      fromRate = 1 / STATIC_RATES[from];
-      toRate = 1 / STATIC_RATES[to];
-    }
-
-    const toAmount = (fromAmount * fromRate) / toRate;
     document.getElementById('toAmount').value = toAmount.toFixed(6);
     document.getElementById('result').textContent = `${fromAmount} ${from} = ${toAmount.toFixed(6)} ${to}`;
-    document.getElementById('rate').textContent = `1 ${to} = ${(1 / toRate).toFixed(6)} ${from}`;
+    document.getElementById('rate').textContent = `1 ${from} = ${(toAmount / fromAmount).toFixed(6)} ${to}`;
+  }
+
+  function swapCurrencies() {
+    const from = document.getElementById('fromCurrency');
+    const to = document.getElementById('toCurrency');
+    const fromAmount = document.getElementById('fromAmount').value;
+    const tempFrom = from.value;
+    from.value = to.value;
+    to.value = tempFrom;
+    document.getElementById('fromAmount').value = document.getElementById('toAmount').value;
+    convertCurrency();
   }
 
   // =============== ОСТАЛЬНОЕ ===============
