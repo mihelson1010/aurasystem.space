@@ -1,22 +1,58 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Aura Excel</title>
+  <title>AURASYSTEM — Privacy-native tools</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
   <style>
-    body { background: white; margin: 0; }
-    table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
-    th { background: #ff6b6b; color: white; }
-    input { border: none; width: 100%; padding: 6px; text-align: center; }
+    :root { --bg: #0a0a1a; --text: #e0e0e0; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center; min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      padding: 20px; position: relative;
+    }
+    .logo {
+      font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 4.5rem;
+      background: linear-gradient(90deg, #ff6200, #feca57);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 20px; letter-spacing: 5px;
+    }
+    .tagline {
+      font-size: 1.1rem; margin-bottom: 40px; opacity: 0.9; line-height: 1.6;
+    }
+    .btn {
+      display: block; width: 220px; padding: 14px 0; margin: 12px auto;
+      border-radius: 50px; font-weight: 600; text-decoration: none;
+      transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .btn-office { background: linear-gradient(45deg, #ff9a9e, #fad0c4); color: #333; }
+    .btn-shop { background: linear-gradient(45deg, #a18cd1, #fbc2eb); color: #333; }
+    .btn-proxy { background: linear-gradient(45deg, #84fab0, #8fd3f4); color: #333; }
+    .btn-crypto { background: linear-gradient(45deg, #89f7fe, #66a6ff); color: #333; }
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+
+    footer {
+      position: absolute; bottom: 20px; right: 20px;
+      font-size: 0.8rem; opacity: 0.6;
+    }
   </style>
 </head>
 <body>
-  <table contenteditable="true">
-    <tr><th>A</th><th>B</th><th>C</th></tr>
-    <tr><td><input value="1"></td><td><input value="2"></td><td><input value="=A1+B1"></td></tr>
-    <tr><td><input></td><td><input></td><td><input></td></tr>
-  </table>
+  <div class="logo">AURASYSTEM</div>
+  <div class="tagline">
+    Privacy-native tools.<br>
+    No servers. No accounts. Full control.
+  </div>
+
+  <a href="aura-office.html" class="btn btn-office">Aura Office</a>
+  <a href="aurashop.html" class="btn btn-shop">Aura Shop</a>
+  <a href="proxy.html" class="btn btn-proxy">Aura Proxy</a>
+  <a href="cryptoaura.html" class="btn btn-crypto">CryptoAura</a>
+
+  <footer>Produced by Mihelson © 2025</footer>
 </body>
 </html>
