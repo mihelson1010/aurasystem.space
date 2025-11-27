@@ -7,7 +7,7 @@
   <style>
     body, html {
       margin: 0; padding: 0; height: 100vh;
-      background: #0a0a1a;
+      background: #000;
       color: #fff;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -16,32 +16,23 @@
     .logo {
       font-size: 4.5rem;
       font-weight: 900;
-      background: linear-gradient(45deg, #ff6b00, #ff9500);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #fff;
       margin-bottom: 1rem;
-    }
-    .subtitle {
-      font-size: 1.1rem;
-      margin: 0.5rem 0;
-      opacity: 0.9;
     }
     .tagline {
       font-size: 1.4rem;
-      margin: 1rem 0 2rem;
+      margin: 1rem 0 3rem;
       opacity: 0.8;
       font-weight: 500;
     }
-    .footer {
-      margin-top: 3rem;
-      font-size: 0.9rem;
-      opacity: 0.6;
+    .btn-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 280px;
     }
     .btn {
-      display: block;
-      width: 260px;
       padding: 1rem 0;
-      margin: 0.8rem auto;
       border: none;
       border-radius: 50px;
       font-weight: bold;
@@ -49,15 +40,12 @@
       cursor: pointer;
       transition: all 0.3s ease;
       text-decoration: none;
-    }
-    .btn-shop {
-      background: #4a8eff;
       color: white;
     }
-    .btn-proxy {
-      background: #9b59b6;
-      color: white;
-    }
+    .btn-cryptobros { background: #ffd700; color: #000; }
+    .btn-office { background: #4a8eff; }
+    .btn-shop { background: #9b59b6; }
+    .btn-proxy { background: #e74c3c; }
     .btn:hover {
       transform: translateY(-3px);
       box-shadow: 0 10px 20px rgba(0,0,0,0.3);
@@ -66,12 +54,13 @@
 </head>
 <body>
   <div class="logo">AURASYSTEM</div>
-  <div class="subtitle">Privacy-native tools.</div>
   <div class="tagline">No servers. No accounts. Full control.</div>
 
-  <a href="#" class="btn btn-shop">Aura Shop →</a>
-  <a href="#" class="btn btn-proxy">Aura Proxy</a>
-
-  <div class="footer">Aura Office</div>
+  <div class="btn-container">
+    <a href="/cryptobros/" class="btn btn-cryptobros">ENTER CRYPTOBROS →</a>
+    <a href="#" class="btn btn-office">Aura Office</a>
+    <a href="#" class="btn btn-shop">Aura Shop</a>
+    <a href="#" class="btn btn-proxy">Aura Proxy</a>
+  </div>
 </body>
 </html>
