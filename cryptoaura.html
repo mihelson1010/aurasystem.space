@@ -12,13 +12,16 @@
       color: #fff;
       font-family: Arial, Helvetica, sans-serif;
       overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     h1 {
       font-size: 2.8rem;
       font-weight: bold;
       text-align: center;
-      margin: 25px 0 20px;
+      margin: 20px 0 10px;
       letter-spacing: 1.5px;
       background: linear-gradient(90deg, #ff00cc, #00ccff, #00ff9d, #ffcc00, #ff00cc);
       background-size: 300% 300%;
@@ -35,6 +38,7 @@
       100% { background-position: 0% 50%; }
     }
 
+    /* Бегущие строки — бесшовные */
     .ticker {
       white-space: nowrap;
       overflow: hidden;
@@ -48,19 +52,19 @@
     .ticker-inner {
       display: inline-block;
       padding-left: 100%;
-      animation: ticker-scroll 60s linear infinite;
+      animation: ticker-scroll linear infinite;
     }
 
     .ticker.tips .ticker-inner {
       color: #a0e0ff;
       text-shadow: 0 0 10px #0ff;
-      animation-duration: 70s;
+      animation-duration: 80s;
     }
 
     .ticker.prices .ticker-inner {
       color: #4cff4c;
       text-shadow: 0 0 10px #0f0;
-      animation-duration: 50s;
+      animation-duration: 60s;
     }
 
     @keyframes ticker-scroll {
@@ -68,32 +72,51 @@
       100% { transform: translateX(-100%); }
     }
 
+    /* Увеличенные карточки бирж — почти заполняют экран */
     .exchanges-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      padding: 30px 20px;
-      max-width: 1400px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      padding: 20px;
+      flex: 1;
+      max-width: 1800px;
       margin: 0 auto;
+      width: 100%;
+    }
+
+    @media (max-width: 900px) {
+      .exchanges-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .exchanges-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     .exchange-card {
-      background: #0a0a0a;
+      background: #0b0b0b;
       border: 1px solid #333;
-      border-radius: 12px;
-      padding: 20px 15px;
+      border-radius: 16px;
+      padding: 30px 20px;
       text-align: center;
-      transition: all 0.3s ease;
+      transition: all 0.35s ease;
+      min-height: 160px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .exchange-card:hover {
       border-color: #0ff;
-      box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
+      box-shadow: 0 0 16px rgba(0, 255, 255, 0.35);
     }
 
     .exchange-card h3 {
-      margin: 0 0 10px;
-      font-size: 1.35rem;
+      margin: 0 0 14px;
+      font-size: 1.5rem;
     }
 
     .exchange-card a {
@@ -102,6 +125,7 @@
       font-weight: bold;
       display: block;
       margin-top: 8px;
+      font-size: 1.1rem;
     }
 
     .exchange-card a:hover {
@@ -109,30 +133,28 @@
       text-shadow: 0 0 8px #0ff;
     }
 
+    /* Тонкая мерцающая подпись — внизу справа */
     .footer {
-      text-align: center;
-      padding: 25px 10px 15px;
-      font-size: 1rem;
-      color: #bbb;
-      animation: flicker 2.5s infinite alternate;
+      position: fixed;
+      bottom: 12px;
+      right: 16px;
+      font-size: 0.85rem;
+      color: #888;
+      opacity: 0.7;
+      animation: subtleFlicker 4s infinite alternate;
+      pointer-events: none;
     }
 
-    @keyframes flicker {
-      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-        opacity: 1;
-      }
-      20%, 24%, 55% {
-        opacity: 0.4;
-      }
+    @keyframes subtleFlicker {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 0.45; }
     }
 
-    /* Скрыть элемент цены до загрузки */
-    #priceTicker {
-      opacity: 0;
-      transition: opacity 0.5s;
-    }
-    #priceTicker.loaded {
-      opacity: 1;
+    /* Отступ снизу, чтобы подпись не перекрывала контент */
+    body::after {
+      content: '';
+      display: block;
+      height: 40px;
     }
   </style>
 </head>
@@ -140,14 +162,14 @@
 
 <h1>CryptoAura</h1>
 
-<!-- Советы -->
+<!-- Верхняя бегущая строка: насыщенные советы -->
 <div class="ticker tips">
   <div class="ticker-inner">
-    💡 BTC overbought — DO NOT BUY • Fed rate hike expected — volatility ahead • Altseason delayed • NEVER chase FOMO • Privacy > profit • No servers. No accounts. • Only buy what you understand • DYOR always • Avoid memecoins with no utility
+    💡 BTC overbought — DO NOT BUY • Fed rate hike expected — volatility ahead • Altseason delayed • NEVER chase FOMO • Privacy > profit • No servers. No accounts. • Only buy what you understand • DYOR always • Avoid memecoins with no utility • OKX shows strong ETH inflow • Bybit funding positive • Binance BTC reserves dropping • Watch for whale movements • RSI >70 = sell signal • Do not trust anonymous teams • Rug pulls rising on new chains • Use hardware wallets • Never share seed phrase
   </div>
 </div>
 
-<!-- Биржи -->
+<!-- Большие окна бирж -->
 <div class="exchanges-grid">
   <div class="exchange-card">
     <h3>💱 Binance</h3>
@@ -175,52 +197,39 @@
   </div>
 </div>
 
-<!-- Динамическая строка цен -->
+<!-- Нижняя бегущая строка: расширенные цены и курсы -->
 <div class="ticker prices">
-  <div id="priceTicker" class="ticker-inner">Загрузка цен...</div>
+  <div id="priceTicker" class="ticker-inner">
+    Загрузка данных...
+  </div>
 </div>
 
-<div class="footer">
-  © AURASYSTEM • Full control. No tracking. • 
-  <a href="https://aurasystem.space" style="color:#0ff; text-decoration:none;">aurasystem.space</a>
-</div>
+<div class="footer">© AURASYSTEM • Full control. No tracking. • aurasystem.space</div>
 
 <script>
-  // === WebSocket: Binance (BTC, ETH, XRP, DOGE, ADA, SOL) ===
-  const symbols = ['BTCUSDT', 'ETHUSDT', 'XRPUSDT', 'DOGEUSDT', 'ADAUSDT', 'SOLUSDT'];
+  // WebSocket + API (как в v2.0)
+  const symbols = ['BTCUSDT', 'ETHUSDT', 'XRPUSDT', 'DOGEUSDT', 'ADAUSDT', 'SOLUSDT', 'BNBUSDT', 'MATICUSDT'];
   const prices = {};
   let usdRUB = 93.7;
   let eurRUB = 102.3;
 
-  // Загрузка курсов RUB
   async function fetchRUBRates() {
     try {
       const res = await fetch('https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd/rub.json');
-      const data = await res.json();
-      usdRUB = data.rub || usdRUB;
-
+      usdRUB = (await res.json()).rub || usdRUB;
       const res2 = await fetch('https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/eur/rub.json');
-      const data2 = await res2.json();
-      eurRUB = data2.rub || eurRUB;
-    } catch (e) {
-      console.warn('Не удалось загрузить RUB курсы. Используются значения по умолчанию.');
-    }
+      eurRUB = (await res2.json()).rub || eurRUB;
+    } catch (e) { console.warn('RUB rates fallback'); }
     updatePriceDisplay();
   }
 
-  // Подключение к Binance
   const ws = new WebSocket('wss://stream.binance.com:9443/ws/' + symbols.map(s => s.toLowerCase()).join('/') + '@ticker');
-
-  ws.onmessage = (event) => {
-    const msg = JSON.parse(event.data);
+  ws.onmessage = (e) => {
+    const msg = JSON.parse(e.data);
     if (msg.s && msg.c) {
       prices[msg.s] = parseFloat(msg.c);
       updatePriceDisplay();
     }
-  };
-
-  ws.onopen = () => {
-    console.log('Binance WebSocket подключён');
   };
 
   function formatPrice(num) {
@@ -229,34 +238,29 @@
   }
 
   function updatePriceDisplay() {
-    if (Object.keys(prices).length === 0) return;
-
+    if (Object.keys(prices).length < 6) return;
     const items = [
       `BTC: ${formatPrice(prices.BTCUSDT)} ▲`,
       `ETH: ${formatPrice(prices.ETHUSDT)} ▲`,
-      `XRP: ${formatPrice(prices.XRPUSDT)} ▼`,
-      `DOGE: ${formatPrice(prices.DOGEUSDT)} ▲`,
-      `ADA: ${formatPrice(prices.ADAUSDT)} ▲`,
+      `BNB: ${formatPrice(prices.BNBUSDT)} ▲`,
       `SOL: ${formatPrice(prices.SOLUSDT)} ▲`,
+      `XRP: ${formatPrice(prices.XRPUSDT)} ▼`,
+      `ADA: ${formatPrice(prices.ADAUSDT)} ▲`,
+      `DOGE: ${formatPrice(prices.DOGEUSDT)} ▲`,
+      `MATIC: ${formatPrice(prices.MATICUSDT)} ▲`,
       `USD: ₽${usdRUB.toFixed(1)}`,
       `EUR: ₽${eurRUB.toFixed(1)}`
     ];
-
-    const tickerEl = document.getElementById('priceTicker');
-    tickerEl.textContent = items.join(' • ');
-    tickerEl.classList.add('loaded');
+    document.getElementById('priceTicker').textContent = items.join(' • ');
   }
 
-  // Запуск
   fetchRUBRates();
-  setInterval(fetchRUBRates, 5 * 60 * 1000); // обновление каждые 5 минут
+  setInterval(fetchRUBRates, 5 * 60 * 1000);
 
-  // Fallback текст через 5 сек, если сокет не ответил
   setTimeout(() => {
-    if (!document.getElementById('priceTicker').classList.contains('loaded')) {
-      document.getElementById('priceTicker').textContent = 
-        'BTC: $92,410 ▲ • ETH: $2,870 ▲ • XRP: $0.58 ▼ • DOGE: $0.172 ▲ • ADA: $0.45 ▲ • SOL: $172 ▲ • USD: ₽93.7 • EUR: ₽102.3';
-      document.getElementById('priceTicker').classList.add('loaded');
+    if (document.getElementById('priceTicker').textContent === 'Загрузка данных...') {
+      document.getElementById('priceTicker').textContent =
+        'BTC: $92,410 ▲ • ETH: $2,870 ▲ • BNB: $580 ▲ • SOL: $172 ▲ • XRP: $0.58 ▼ • ADA: $0.45 ▲ • DOGE: $0.172 ▲ • MATIC: $0.73 ▲ • USD: ₽93.7 • EUR: ₽102.3';
     }
   }, 5000);
 </script>
