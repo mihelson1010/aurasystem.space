@@ -61,6 +61,36 @@
     .fade-in {
       opacity: 1;
     }
+
+    /* Результат */
+    .result {
+      display: none;
+      width: 100%;
+      max-width: 600px;
+      padding: 20px;
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 16px;
+      margin-top: 20px;
+      text-align: left;
+    }
+    .result.active {
+      display: block;
+    }
+    .result h3 {
+      color: #ea580c;
+      margin-bottom: 10px;
+    }
+    .price-item {
+      margin: 10px 0;
+      padding: 10px;
+      background: white;
+      border: 1px solid #eee;
+      border-radius: 8px;
+    }
+    .price-item span {
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -71,16 +101,23 @@
   <p>📷 Перетащите фото товара<br><small>(JPG, PNG)</small></p>
 </div>
 
+<div class="result" id="result">
+  <h3>🔍 Распознанный текст:</h3>
+  <div id="recognized-text">—</div>
+  <h3>💰 Найденные цены:</h3>
+  <div id="prices"></div>
+</div>
+
 <script>
   const backgrounds = [
-  'bg1.jpg',
-  'bg2.jpg',
-  'bg3.jpg',
-  'bg4.jpg',
-  'bg5.jpg',
-  'bg6.jpg',
-  'bg7.jpg'
-];
+    'https://via.placeholder.com/1920x1080?text=Background+1',
+    'https://via.placeholder.com/1920x1080?text=Background+2',
+    'https://via.placeholder.com/1920x1080?text=Background+3',
+    'https://via.placeholder.com/1920x1080?text=Background+4',
+    'https://via.placeholder.com/1920x1080?text=Background+5',
+    'https://via.placeholder.com/1920x1080?text=Background+6',
+    'https://via.placeholder.com/1920x1080?text=Background+7'
+  ];
 
   let currentBg = 0;
 
@@ -94,7 +131,7 @@
       bg.style.backgroundImage = `url('${backgrounds[currentBg]}')`;
       bg.classList.remove('fade-out');
       bg.classList.add('fade-in');
-    }, 1000); // 1 секунда на смену — плавно
+    }, 1000);
   }
 
   // Запускаем смену фона каждые 7 секунд
@@ -106,6 +143,9 @@
 
   // Обработчики drag & drop
   const dropzone = document.getElementById('dropzone');
+  const result = document.getElementById('result');
+  const recognizedText = document.getElementById('recognized-text');
+  const prices = document.getElementById('prices');
 
   dropzone.addEventListener('dragover', (e) => {
     e.preventDefault();
@@ -121,14 +161,28 @@
     dropzone.classList.remove('dragover');
     const file = e.dataTransfer.files[0];
     if (!file || !file.type.match('image.*')) return;
-    
-    // Пока просто показываем сообщение
+
+    // Показываем сообщение о распознавании
     dropzone.innerHTML = '<p>🔍 Распознаю текст…</p>';
-    
+
     // Здесь будет логика распознавания и поиска цен
     // Для демонстрации — покажем, что фото загружено
     setTimeout(() => {
-      dropzone.innerHTML = '<p>✅ Готово! Цены найдены.</p>';
+      // Имитация распознавания
+      const fakeText = "iPhone 15 Pro Max 256GB";
+      recognizedText.textContent = fakeText;
+
+      // Имитация поиска цен
+      prices.innerHTML = `
+        <div class="price-item">Amazon: <span>$999</span></div>
+        <div class="price-item">eBay: <span>$950</span></div>
+        <div class="price-item">AliExpress: <span>$899</span></div>
+        <div class="price-item">Local Store: <span>$1050</span></div>
+      `;
+
+      // Показываем результат
+      dropzone.style.display = 'none';
+      result.classList.add('active');
     }, 2000);
   });
 
@@ -144,5 +198,6 @@
     input.click();
   });
 </script>
+
 </body>
 </html>
