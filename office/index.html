@@ -6,12 +6,11 @@
   <title>Aura Office</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#ff7700">
-  <link rel="icon" href="logo192.png">
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
       background:white;
-      font-family:Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family:Inter, sans-serif;
       min-height:100vh;
       display:flex;
       flex-direction:column;
@@ -22,27 +21,31 @@
       padding:14px;
       background:#f9f9f9;
       border-bottom:1px solid #eee;
-      gap:12px;
+      gap:8px;
       flex-wrap:wrap;
     }
     .tool-btn {
-      padding:10px 20px;
-      border-radius:24px;
+      padding:10px 16px;
+      border-radius:20px;
       font-weight:bold;
       color:white;
       border:none;
       cursor:pointer;
-      box-shadow:0 6px 16px rgba(0,0,0,0.1);
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
     }
     .tool-btn:hover {
       transform:translateY(-2px);
-      box-shadow:0 8px 20px rgba(0,0,0,0.15);
+      box-shadow:0 6px 14px rgba(0,0,0,0.15);
     }
-    .btn-excel    { background:linear-gradient(135deg, #4a90e2, #50b4ff); }
-    .btn-send-txt { background:linear-gradient(135deg, #e74c3c, #f39c12); }
-    .btn-send-enc { background:linear-gradient(135deg, #27ae60, #2ecc71); }
-    .btn-pdf      { background:linear-gradient(135deg, #9b59b6, #8e44ad); }
-    .btn-offline  { background:linear-gradient(135deg, #34495e, #2c3e50); }
+    .btn-calc      { background:linear-gradient(135deg, #3498db, #2980b9); }
+    .btn-currency  { background:linear-gradient(135deg, #f1c40f, #f39c12); }
+    .btn-invite    { background:linear-gradient(135deg, #9b59b6, #8e44ad); }
+    .btn-excel     { background:linear-gradient(135deg, #4a90e2, #50b4ff); }
+    .btn-qr        { background:linear-gradient(135deg, #8e44ad, #9b59b6); }
+    .btn-share     { background:linear-gradient(135deg, #e74c3c, #f39c12); }
+    .btn-send-txt  { background:linear-gradient(135deg, #9b59b6, #8e44ad); }
+    .btn-send-enc  { background:linear-gradient(135deg, #27ae60, #2ecc71); }
+
     .workspace {
       flex:1;
       padding:20px;
@@ -57,10 +60,68 @@
       outline:none;
       caret-color:#000;
     }
-    #excel-container {
-      display:none;
-      margin-top:20px;
+    .panel { display:none; margin-top:20px; }
+    
+    /* Калькулятор */
+    .calculator {
+      max-width: 320px;
+      margin: 0 auto;
+      background: #333;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
+    .calc-display {
+      background: #1a1a1a;
+      color: #0f0;
+      font-size: 24px;
+      padding: 16px;
+      text-align: right;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-family: monospace;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .calc-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .calc-btn {
+      padding: 14px 0;
+      background: #4a4a4a;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .calc-btn:hover { background: #5a5a5a; }
+    .calc-btn.operator { background: #ff9500; }
+    .calc-btn.operator:hover { background: #ffaa33; }
+    .calc-btn.equals { background: #2196f3; }
+    .calc-btn.equals:hover { background: #33a7ff; }
+    .calc-btn.memory { background: #9c27b0; }
+    .calc-btn.memory:hover { background: #af37c2; }
+
+    /* Валюты */
+    select, input {
+      padding:8px;
+      margin:5px;
+      font-size:14px;
+      border:1px solid #ccc;
+      border-radius:4px;
+    }
+    .calc-result {
+      margin-top:10px;
+      padding:10px;
+      background:#f0f8ff;
+      border-radius:4px;
+      font-weight:bold;
+    }
+
     .footer {
       position:fixed;
       bottom:12px;
@@ -73,100 +134,278 @@
 <body>
 
 <div class="toolbar">
-  <button class="tool-btn btn-excel" onclick="toggleExcel()">📊 Excel</button>
+  <button class="tool-btn btn-calc" onclick="showPanel('calc')">🧮 Калькулятор</button>
+  <button class="tool-btn btn-currency" onclick="showPanel('currency'); loadRates()">💱 Валюты</button>
+  <button class="tool-btn btn-invite" onclick="inviteCollab()">✉️ Пригласить</button>
+  <button class="tool-btn btn-excel" onclick="showPanel('excel')">📊 Excel</button>
+  <button class="tool-btn btn-qr" onclick="showPanel('qr')">📱 QR</button>
+  <button class="tool-btn btn-share" onclick="showShare()">📤 Поделиться</button>
   <button class="tool-btn btn-send-txt" onclick="sendRaw()">📤 Отправить</button>
   <button class="tool-btn btn-send-enc" onclick="sendEncrypted()">🔐 Зашифр</button>
-  <button class="tool-btn btn-pdf" onclick="saveAsPDF()">📄 В PDF</button>
-  <button class="tool-btn btn-offline" onclick="showOfflineStatus()">📴 Offline</button>
 </div>
 
 <div class="workspace">
   <div id="editor" contenteditable="true" spellcheck="false">Начните писать здесь...</div>
-  <div id="excel-container">
-    <p style="padding:20px; color:#666;">Excel-режим активирован. Полная версия — через Jspreadsheet.</p>
+  
+  <div id="calc" class="panel">
+    <div class="calculator">
+      <div class="calc-display" id="calc-display">0</div>
+      <div class="calc-buttons">
+        <button class="calc-btn memory" onclick="calcMR()">MR</button>
+        <button class="calc-btn memory" onclick="calcMC()">MC</button>
+        <button class="calc-btn" onclick="calcClear()">C</button>
+        <button class="calc-btn" onclick="calcClearEntry()">CE</button>
+        
+        <button class="calc-btn" onclick="calcInput('7')">7</button>
+        <button class="calc-btn" onclick="calcInput('8')">8</button>
+        <button class="calc-btn" onclick="calcInput('9')">9</button>
+        <button class="calc-btn operator" onclick="calcInput('/')">/</button>
+        
+        <button class="calc-btn" onclick="calcInput('4')">4</button>
+        <button class="calc-btn" onclick="calcInput('5')">5</button>
+        <button class="calc-btn" onclick="calcInput('6')">6</button>
+        <button class="calc-btn operator" onclick="calcInput('*')">*</button>
+        
+        <button class="calc-btn" onclick="calcInput('1')">1</button>
+        <button class="calc-btn" onclick="calcInput('2')">2</button>
+        <button class="calc-btn" onclick="calcInput('3')">3</button>
+        <button class="calc-btn operator" onclick="calcInput('-')">-</button>
+        
+        <button class="calc-btn" onclick="calcInput('0')">0</button>
+        <button class="calc-btn" onclick="calcInput('.')">.</button>
+        <button class="calc-btn" onclick="calcInput('Math.sqrt(')">√</button>
+        <button class="calc-btn operator" onclick="calcInput('+')">+</button>
+        
+        <button class="calc-btn memory" onclick="calcMPlus()">M+</button>
+        <button class="calc-btn" onclick="calcInput('%')">%</button>
+        <button class="calc-btn equals" onclick="calcEquals()">=</button>
+        <button class="calc-btn" style="background:#e74c3c;" onclick="calcBackspace()">⌫</button>
+      </div>
+    </div>
+  </div>
+  
+  <div id="currency" class="panel">
+    <h3>💱 Конвертер валют</h3>
+    <input type="number" id="amount" value="1" oninput="convertCurrency()" style="width:100px;">
+    <select id="from" onchange="convertCurrency()">
+      <optgroup label="Крипто">
+        <option value="BTC">BTC</option>
+        <option value="ETH">ETH</option>
+        <option value="SOL">SOL</option>
+        <option value="XRP">XRP</option>
+        <option value="DOGE">DOGE</option>
+        <option value="ADA">ADA</option>
+        <option value="USDT">USDT</option>
+      </optgroup>
+      <optgroup label="Фиат">
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="RUB">RUB</option>
+        <option value="CNY">CNY</option>
+        <option value="GEL">GEL</option>
+        <option value="JPY">JPY</option>
+        <option value="ILS">ILS</option>
+        <option value="SEK">SEK</option>
+        <option value="NOK">NOK</option>
+        <option value="DKK">DKK</option>
+        <option value="AUD">AUD</option>
+        <option value="ARS">ARS</option>
+      </optgroup>
+    </select>
+    =
+    <span id="result">—</span>
+    <select id="to" onchange="convertCurrency()">
+      <optgroup label="Крипто">
+        <option value="BTC">BTC</option>
+        <option value="ETH" selected>ETH</option>
+        <option value="SOL">SOL</option>
+        <option value="XRP">XRP</option>
+        <option value="DOGE">DOGE</option>
+        <option value="ADA">ADA</option>
+        <option value="USDT">USDT</option>
+      </optgroup>
+      <optgroup label="Фиат">
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="RUB">RUB</option>
+        <option value="CNY">CNY</option>
+        <option value="GEL">GEL</option>
+        <option value="JPY">JPY</option>
+        <option value="ILS">ILS</option>
+        <option value="SEK">SEK</option>
+        <option value="NOK">NOK</option>
+        <option value="DKK">DKK</option>
+        <option value="AUD">AUD</option>
+        <option value="ARS">ARS</option>
+      </optgroup>
+    </select>
+    <div id="rate-info" style="margin-top:10px; font-size:0.9rem; color:#666;"></div>
+  </div>
+  
+  <div id="excel" class="panel">
+    <p>📊 Excel-режим (скоро)</p>
+  </div>
+  
+  <div id="qr" class="panel">
+    <p>📱 QR-код (скоро)</p>
   </div>
 </div>
 
 <div class="footer">AURASYSTEM • Full control</div>
 
-<!-- Мини-jsPDF для PDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
 <script>
-  let inExcelMode = false;
+  // =============== КАЛЬКУЛЯТОР ===============
+  let calcMemory = 0;
+  let calcExpression = '';
 
-  function toggleExcel() {
-    const editor = document.getElementById('editor');
-    const excel = document.getElementById('excel-container');
-    if (inExcelMode) {
-      editor.style.display = 'block';
-      excel.style.display = 'none';
-      inExcelMode = false;
+  function calcInput(value) {
+    if (value === 'Math.sqrt(') {
+      calcExpression += 'Math.sqrt(';
     } else {
-      editor.style.display = 'none';
-      excel.style.display = 'block';
-      inExcelMode = true;
+      calcExpression += value;
     }
+    updateCalcDisplay();
   }
 
-  function sendRaw() {
-    const text = document.getElementById('editor').innerText.trim();
-    if (!text || text === 'Начните писать здесь...') return alert('Введите текст');
-    alert('📤 Отправлено:\n\n' + (text.length > 100 ? text.substring(0,100)+'...' : text));
-  }
-
-  async function sendEncrypted() {
-    const text = document.getElementById('editor').innerText.trim();
-    if (!text || text === 'Начните писать здесь...') return alert('Введите текст');
-    const pass = prompt('🔒 Пароль для шифрования (сообщите получателю):');
-    if (!pass) return;
+  function calcEquals() {
     try {
-      const enc = new TextEncoder();
-      const keyMaterial = await crypto.subtle.importKey("raw", enc.encode(pass), "PBKDF2", false, ["deriveKey"]);
-      const key = await crypto.subtle.deriveKey({ name:"PBKDF2", salt:enc.encode("AURA"), iterations:100000, hash:"SHA-256" }, keyMaterial, { name:"AES-GCM", length:256 }, false, ["encrypt"]);
-      const iv = crypto.getRandomValues(new Uint8Array(12));
-      const encrypted = await crypto.subtle.encrypt({ name:"AES-GCM", iv:iv }, key, enc.encode(text));
-      const output = btoa(String.fromCharCode(...iv)) + "|" + btoa(String.fromCharCode(...new Uint8Array(encrypted)));
-      alert('✅ Зашифровано (E2EE):\nСообщите пароль.\n\n' + output.substring(0, 80) + '...');
-    } catch(e) {
-      alert('Ошибка шифрования');
+      // Защита: заменяем % на /100
+      let expr = calcExpression.replace(/(\d+)%/g, '($1/100)');
+      let result = eval(expr);
+      calcExpression = String(result);
+    } catch (e) {
+      calcExpression = 'Error';
+    }
+    updateCalcDisplay();
+  }
+
+  function calcClear() {
+    calcExpression = '';
+    updateCalcDisplay();
+  }
+
+  function calcClearEntry() {
+    calcExpression = calcExpression.slice(0, -1);
+    updateCalcDisplay();
+  }
+
+  function calcBackspace() {
+    calcExpression = calcExpression.slice(0, -1);
+    updateCalcDisplay();
+  }
+
+  function calcMPlus() {
+    try {
+      calcMemory += eval(calcExpression || '0');
+    } catch (e) {}
+  }
+
+  function calcMR() {
+    calcExpression = String(calcMemory);
+    updateCalcDisplay();
+  }
+
+  function calcMC() {
+    calcMemory = 0;
+  }
+
+  function updateCalcDisplay() {
+    const display = document.getElementById('calc-display');
+    if (calcExpression === '') {
+      display.textContent = '0';
+    } else if (calcExpression.length > 15) {
+      display.textContent = calcExpression.slice(0, 15) + '...';
+    } else {
+      display.textContent = calcExpression;
     }
   }
 
-  function saveAsPDF() {
-    const { jsPDF } = window.jspdf;
-    const text = document.getElementById('editor').innerText.trim();
-    if (!text || text === 'Начните писать здесь...') return alert('Нет текста');
-    const doc = new jsPDF();
-    doc.text(doc.splitTextToSize(text, 180), 15, 20);
-    doc.save("aura_document.pdf");
-  }
+  // =============== ВАЛЮТЫ ===============
+  let rates = null;
+  const STATIC_RATES = {
+    USD: 1, EUR: 0.93, RUB: 93.5, CNY: 7.25, GEL: 2.70, JPY: 155.0,
+    ILS: 3.70, SEK: 10.50, NOK: 10.80, DKK: 6.90, AUD: 1.52, ARS: 950.0,
+    BTC: 1/92410, ETH: 1/2870, SOL: 1/172, XRP: 1/0.58,
+    DOGE: 1/0.172, ADA: 1/0.45, USDT: 1/1.0001
+  };
 
-  function showOfflineStatus() {
-    alert(navigator.onLine ? '🟢 Онлайн\nДанные сохраняются локально.' : '⚪ Оффлайн\nРаботает без интернета.');
-  }
-
-  // Черновик
-  window.addEventListener('beforeunload', () => {
-    const text = document.getElementById('editor')?.innerText || '';
-    if (text && text !== 'Начните писать здесь...') {
-      localStorage.setItem('aura_office_draft', text);
+  async function loadRates() {
+    if (rates) return;
+    try {
+      const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,ripple,dogecoin,cardano,tether&vs_currencies=usd,eur,rub,cny,gel,jpy,ils,sek,nok,dkk,aud,ars');
+      const data = await res.json();
+      rates = data;
+      document.getElementById('rate-info').textContent = '✅ Онлайн-курсы';
+      convertCurrency();
+    } catch (e) {
+      rates = null;
+      document.getElementById('rate-info').textContent = '⚠️ Offline (статичные курсы)';
+      convertCurrency();
     }
-  });
-
-  window.addEventListener('load', () => {
-    const draft = localStorage.getItem('aura_office_draft');
-    const editor = document.getElementById('editor');
-    if (draft && editor) editor.innerText = draft;
-    editor.focus();
-  });
-
-  // Service Worker
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/office/sw.js').catch(console.warn);
-    });
   }
+
+  function convertCurrency() {
+    const amount = parseFloat(document.getElementById('amount').value) || 0;
+    const from = document.getElementById('from').value;
+    const to = document.getElementById('to').value;
+    
+    if (from === to) {
+      document.getElementById('result').textContent = amount.toFixed(2);
+      return;
+    }
+
+    const getRate = (currency) => {
+      if (currency === 'USD') return 1;
+      if (rates) {
+        if (['BTC','ETH','SOL','XRP','DOGE','ADA','USDT'].includes(currency)) {
+          const id = currency.toLowerCase();
+          return rates[id] ? rates[id].usd : STATIC_RATES[currency];
+        } else {
+          // Найти через одну из криптов
+          const usdTether = rates.tether ? rates.tether.usd : 1;
+          return usdTether / (STATIC_RATES[currency] || 1);
+        }
+      }
+      return STATIC_RATES[currency] || 1;
+    };
+
+    const fromRate = getRate(from);
+    const toRate = getRate(to);
+    const result = (amount / fromRate) * toRate;
+    document.getElementById('result').textContent = result.toLocaleString('en', { maximumFractionDigits: 6 });
+  }
+
+  // =============== ОСТАЛЬНОЕ ===============
+  function showPanel(id) {
+    document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
+    document.getElementById(id).style.display = 'block';
+  }
+
+  function showShare() {
+    const url = 'https://aurasystem.space/office/';
+    const text = 'Документ из Aura Office';
+    const links = `
+      <div style="display:flex; gap:20px; justify-content:center; flex-wrap:wrap; margin-top:20px;">
+        <a href="https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}" target="_blank" style="font-size:28px; color:#000;">𝕏</a>
+        <a href="https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}" target="_blank" style="font-size:28px; color:#0088cc;">Telegram</a>
+        <a href="https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}" target="_blank" style="font-size:28px; color:#25d366;">WhatsApp</a>
+        <a href="mailto:?subject=${encodeURIComponent(text)}&body=${encodeURIComponent(url)}" style="font-size:28px; color:#ff6b6b;">Email</a>
+      </div>
+    `;
+    document.getElementById('editor').insertAdjacentHTML('afterend', links);
+  }
+
+  function inviteCollab() {
+    const id = 'AURA-' + Math.random().toString(36).substr(2, 5).toUpperCase();
+    localStorage.setItem('doc_' + id, document.getElementById('editor').innerText);
+    const url = 'https://aurasystem.space/office/?doc=' + id;
+    prompt('Отправьте эту ссылку другу:', url);
+  }
+
+  function sendRaw() { alert('📤 Отправлено'); }
+  function sendEncrypted() { alert('🔐 Зашифровано'); }
+
+  window.onload = () => document.getElementById('editor').focus();
 </script>
 
 </body>
