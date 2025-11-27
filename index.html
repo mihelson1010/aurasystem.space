@@ -22,7 +22,7 @@
     body {
       margin: 0;
       padding: 0;
-      background: #0d0d1a; /* тёмно-синий фон как на скрине */
+      background: #0d0d1a; /* тёмно-синий фон как на первом скрине */
       color: #fff;
       font-family: Arial, Helvetica, sans-serif;
       text-align: center;
@@ -34,12 +34,12 @@
     }
 
     h1 {
-      font-size: 3.5rem;
+      font-size: 3.5rem; /* точный размер, как на первом скрине */
       font-weight: bold;
-      color: #ff7700; /* оранжевый как на скрине */
+      color: #ff7700; /* оранжевый */
       margin: 20px 0 10px;
       letter-spacing: 2px;
-      text-shadow: 0 0 10px rgba(255, 119, 0, 0.5);
+      text-shadow: none; /* без неона */
     }
 
     .tagline {
@@ -59,12 +59,6 @@
       padding: 0 20px;
     }
 
-    .button-text {
-      font-size: 1.1rem;
-      color: #fff;
-      margin-bottom: 8px;
-    }
-
     .btn {
       padding: 14px 24px;
       border-radius: 25px;
@@ -81,6 +75,10 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
 
+    .btn-office {
+      background: linear-gradient(135deg, #ff7700, #ffaa00);
+    }
+
     .btn-shop {
       background: linear-gradient(135deg, #4a90e2, #50b4ff);
     }
@@ -93,32 +91,21 @@
       background: linear-gradient(135deg, #2ecc71, #34e07c);
     }
 
-    .btn-office {
-      background: transparent;
-      color: #fff;
-      border: 2px solid #fff;
-      padding: 12px 24px;
-    }
-
-    .btn-office:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-
     .footer {
       position: fixed;
       bottom: 12px;
       right: 16px;
       font-size: 0.85rem;
-      color: #ffcc00;
-      text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+      color: #4cff4c; /* зелёный как на втором скрине */
+      text-shadow: 0 0 8px rgba(76, 255, 76, 0.5);
       opacity: 0.9;
       animation: neonFlicker 3.5s infinite alternate;
       pointer-events: none;
     }
 
     @keyframes neonFlicker {
-      0%, 100% { opacity: 0.9; text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); }
-      50% { opacity: 0.6; text-shadow: 0 0 4px rgba(255, 204, 0, 0.3); }
+      0%, 100% { opacity: 0.9; text-shadow: 0 0 8px rgba(76, 255, 76, 0.5); }
+      50% { opacity: 0.6; text-shadow: 0 0 4px rgba(76, 255, 76, 0.3); }
     }
   </style>
 </head>
@@ -132,17 +119,13 @@
 </div>
 
 <div class="buttons">
-  <div class="button-text">Aura Office</div>
   <a href="#" class="btn btn-office">Aura Office</a>
-
-  <a href="cryptoaura.html" class="btn btn-crypto">CryptoAura →</a>
-
-  <a href="#" class="btn btn-shop">Aura Shop →</a>
-
+  <a href="#" class="btn btn-shop">Aura Shop</a>
   <a href="#" class="btn btn-proxy">Aura Proxy</a>
+  <a href="cryptoaura.html" class="btn btn-crypto">CryptoAura</a>
 </div>
 
-<div class="footer">© AURASYSTEM • Full control. No tracking. • aurasystem.space</div>
+<div class="footer">Produced by Mihelson © 2025</div>
 
 <script>
   // Очистка URL от параметров
