@@ -15,59 +15,124 @@
     }
 
     h1 {
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 2.6rem;
+      font-size: 2.8rem;
       font-weight: bold;
       text-align: center;
-      margin: 25px 0 15px;
-      letter-spacing: 1px;
+      margin: 25px 0 20px;
+      letter-spacing: 1.5px;
+      background: linear-gradient(90deg, #ff00cc, #00ccff, #00ff9d, #ffcc00, #ff00cc);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gradientGlow 10s ease infinite;
+      text-shadow: 0 0 15px rgba(255, 0, 204, 0.4);
     }
 
-    .marquee-container {
-      width: 100%;
-      overflow: hidden;
+    @keyframes gradientGlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .ticker {
       white-space: nowrap;
+      overflow: hidden;
+      width: 100%;
+      padding: 10px 0;
+      background: #000;
+      font-size: 1.15rem;
+      position: relative;
     }
 
-    .marquee {
+    .ticker-inner {
       display: inline-block;
       padding-left: 100%;
-      animation: scroll 45s linear infinite;
+      animation: ticker-scroll 60s linear infinite;
     }
 
-    .marquee.faster {
-      animation-duration: 35s;
+    .ticker.tips .ticker-inner {
+      color: #a0e0ff;
+      text-shadow: 0 0 10px #0ff;
+      animation-duration: 70s;
     }
 
-    @keyframes scroll {
+    .ticker.prices .ticker-inner {
+      color: #4cff4c;
+      text-shadow: 0 0 10px #0f0;
+      animation-duration: 50s;
+    }
+
+    @keyframes ticker-scroll {
       0% { transform: translateX(0); }
       100% { transform: translateX(-100%); }
     }
 
-    .tip-line {
-      background: #000;
-      color: #a0e0ff;
-      text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
-      font-size: 1.15rem;
-      padding: 10px 0;
-      margin: 0;
+    .exchanges-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 30px 20px;
+      max-width: 1400px;
+      margin: 0 auto;
     }
 
-    .price-line {
-      background: #000;
-      color: #4cff4c;
-      text-shadow: 0 0 8px #0f0;
-      font-size: 1.15rem;
-      padding: 10px 0;
-      margin: 0;
+    .exchange-card {
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 20px 15px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .exchange-card:hover {
+      border-color: #0ff;
+      box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
+    }
+
+    .exchange-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.35rem;
+    }
+
+    .exchange-card a {
+      color: #0ff;
+      text-decoration: none;
+      font-weight: bold;
+      display: block;
+      margin-top: 8px;
+    }
+
+    .exchange-card a:hover {
+      color: #fff;
+      text-shadow: 0 0 8px #0ff;
     }
 
     .footer {
-      position: fixed;
-      bottom: 10px;
-      right: 15px;
-      font-size: 0.9rem;
-      color: #aaa;
+      text-align: center;
+      padding: 25px 10px 15px;
+      font-size: 1rem;
+      color: #bbb;
+      animation: flicker 2.5s infinite alternate;
+    }
+
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+      }
+      20%, 24%, 55% {
+        opacity: 0.4;
+      }
+    }
+
+    /* Скрыть элемент цены до загрузки */
+    #priceTicker {
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+    #priceTicker.loaded {
+      opacity: 1;
     }
   </style>
 </head>
@@ -75,21 +140,126 @@
 
 <h1>CryptoAura</h1>
 
-<!-- Верхняя бегущая строка: советы, прогнозы -->
-<div class="marquee-container">
-  <div class="marquee tip-line">
-    💡 BTC may dip below $88K if ETF outflows continue • Avoid SHIB – no utility • ETH strong ahead of Pectra upgrade • DOGE overhyped • XRP legal clarity coming? • ADA lacks volume • Only buy what you understand!
+<!-- Советы -->
+<div class="ticker tips">
+  <div class="ticker-inner">
+    💡 BTC overbought — DO NOT BUY • Fed rate hike expected — volatility ahead • Altseason delayed • NEVER chase FOMO • Privacy > profit • No servers. No accounts. • Only buy what you understand • DYOR always • Avoid memecoins with no utility
   </div>
 </div>
 
-<!-- Нижняя бегущая строка: цены и курсы -->
-<div class="marquee-container">
-  <div class="marquee price-line faster">
-    BTC: $92,410 ▲ • ETH: $2,870 ▲ • XRP: $0.58 ▼ • DOGE: $0.172 ▲ • ADA: $0.45 ▲ • EUR: ₽102.3 • USD: ₽93.7 • GBP: ₽118.1
+<!-- Биржи -->
+<div class="exchanges-grid">
+  <div class="exchange-card">
+    <h3>💱 Binance</h3>
+    <a href="https://www.binance.com/" target="_blank" rel="noopener">binance.com</a>
+  </div>
+  <div class="exchange-card">
+    <h3>⚡ Bybit</h3>
+    <a href="https://www.bybit.com/" target="_blank" rel="noopener">bybit.com</a>
+  </div>
+  <div class="exchange-card">
+    <h3>📊 OKX</h3>
+    <a href="https://www.okx.com/" target="_blank" rel="noopener">okx.com</a>
+  </div>
+  <div class="exchange-card">
+    <h3>📈 CoinMarketCap</h3>
+    <a href="https://coinmarketcap.com/" target="_blank" rel="noopener">coinmarketcap.com</a>
+  </div>
+  <div class="exchange-card">
+    <h3>🆕 DexScreener</h3>
+    <a href="https://dexscreener.com/new-pairs" target="_blank" rel="noopener">dexscreener.com</a>
+  </div>
+  <div class="exchange-card">
+    <h3>🌐 Poloniex</h3>
+    <a href="https://www.poloniex.com/ru/" target="_blank" rel="noopener">poloniex.com</a>
   </div>
 </div>
 
-<div class="footer">Produced by Mihelson © 2025</div>
+<!-- Динамическая строка цен -->
+<div class="ticker prices">
+  <div id="priceTicker" class="ticker-inner">Загрузка цен...</div>
+</div>
+
+<div class="footer">
+  © AURASYSTEM • Full control. No tracking. • 
+  <a href="https://aurasystem.space" style="color:#0ff; text-decoration:none;">aurasystem.space</a>
+</div>
+
+<script>
+  // === WebSocket: Binance (BTC, ETH, XRP, DOGE, ADA, SOL) ===
+  const symbols = ['BTCUSDT', 'ETHUSDT', 'XRPUSDT', 'DOGEUSDT', 'ADAUSDT', 'SOLUSDT'];
+  const prices = {};
+  let usdRUB = 93.7;
+  let eurRUB = 102.3;
+
+  // Загрузка курсов RUB
+  async function fetchRUBRates() {
+    try {
+      const res = await fetch('https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd/rub.json');
+      const data = await res.json();
+      usdRUB = data.rub || usdRUB;
+
+      const res2 = await fetch('https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/eur/rub.json');
+      const data2 = await res2.json();
+      eurRUB = data2.rub || eurRUB;
+    } catch (e) {
+      console.warn('Не удалось загрузить RUB курсы. Используются значения по умолчанию.');
+    }
+    updatePriceDisplay();
+  }
+
+  // Подключение к Binance
+  const ws = new WebSocket('wss://stream.binance.com:9443/ws/' + symbols.map(s => s.toLowerCase()).join('/') + '@ticker');
+
+  ws.onmessage = (event) => {
+    const msg = JSON.parse(event.data);
+    if (msg.s && msg.c) {
+      prices[msg.s] = parseFloat(msg.c);
+      updatePriceDisplay();
+    }
+  };
+
+  ws.onopen = () => {
+    console.log('Binance WebSocket подключён');
+  };
+
+  function formatPrice(num) {
+    if (num >= 1) return '$' + num.toFixed(2);
+    return '$' + num.toPrecision(4);
+  }
+
+  function updatePriceDisplay() {
+    if (Object.keys(prices).length === 0) return;
+
+    const items = [
+      `BTC: ${formatPrice(prices.BTCUSDT)} ▲`,
+      `ETH: ${formatPrice(prices.ETHUSDT)} ▲`,
+      `XRP: ${formatPrice(prices.XRPUSDT)} ▼`,
+      `DOGE: ${formatPrice(prices.DOGEUSDT)} ▲`,
+      `ADA: ${formatPrice(prices.ADAUSDT)} ▲`,
+      `SOL: ${formatPrice(prices.SOLUSDT)} ▲`,
+      `USD: ₽${usdRUB.toFixed(1)}`,
+      `EUR: ₽${eurRUB.toFixed(1)}`
+    ];
+
+    const tickerEl = document.getElementById('priceTicker');
+    tickerEl.textContent = items.join(' • ');
+    tickerEl.classList.add('loaded');
+  }
+
+  // Запуск
+  fetchRUBRates();
+  setInterval(fetchRUBRates, 5 * 60 * 1000); // обновление каждые 5 минут
+
+  // Fallback текст через 5 сек, если сокет не ответил
+  setTimeout(() => {
+    if (!document.getElementById('priceTicker').classList.contains('loaded')) {
+      document.getElementById('priceTicker').textContent = 
+        'BTC: $92,410 ▲ • ETH: $2,870 ▲ • XRP: $0.58 ▼ • DOGE: $0.172 ▲ • ADA: $0.45 ▲ • SOL: $172 ▲ • USD: ₽93.7 • EUR: ₽102.3';
+      document.getElementById('priceTicker').classList.add('loaded');
+    }
+  }, 5000);
+</script>
 
 </body>
 </html>
