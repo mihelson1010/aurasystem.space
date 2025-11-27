@@ -3,31 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AURASYSTEM — Privacy-native tools for crypto natives</title>
-  
-  <!-- Описание и Open Graph для красивого превью -->
-  <meta name="description" content="AURASYSTEM: Privacy-native tools ecosystem. No servers. No accounts. One file. Full control. Built with ❤️ for privacy and crypto natives.">
-  <meta property="og:title" content="AURASYSTEM — Privacy-native tools for crypto natives">
-  <meta property="og:description" content="No servers. No accounts. Full control. Built for privacy and crypto natives.">
+  <title>AURASYSTEM — Privacy-native tools</title>
+
+  <!-- 🔖 Краткое описание — без мусора в превью -->
+  <meta name="description" content="No servers. No accounts. Full control.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="AURASYSTEM — Privacy-native tools">
+  <meta property="og:description" content="No servers. No accounts. Full control.">
   <meta property="og:image" content="https://aurasystem.space/logo.png">
   <meta property="og:url" content="https://aurasystem.space/">
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AURASYSTEM">
+
+  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="AURASYSTEM — Privacy-native tools for crypto natives">
-  <meta name="twitter:description" content="No servers. No accounts. Full control. Built for privacy and crypto natives.">
+  <meta name="twitter:title" content="AURASYSTEM — Privacy-native tools">
+  <meta name="twitter:description" content="No servers. No accounts. Full control.">
   <meta name="twitter:image" content="https://aurasystem.space/logo.png">
 
-  <!-- Безопасность -->
+  <!-- 🔒 Безопасность -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  script-src 'self' 'unsafe-inline';
                  style-src 'self' 'unsafe-inline';
                  img-src 'self' https:;
-                 font-src 'self';
-                 connect-src 'self';
                  frame-ancestors 'none';
                  base-uri 'self';">
   <meta name="referrer" content="no-referrer">
+  <link rel="canonical" href="https://aurasystem.space/">
 
   <style>
     body {
@@ -75,7 +79,7 @@
       text-decoration: none;
       color: white;
       text-align: center;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s;
     }
 
     .btn:hover {
@@ -125,7 +129,6 @@
 <div class="footer">Produced by Mihelson © 2025</div>
 
 <script>
-  // Очистка URL от трекинговых параметров (например, ?spm=...)
   if (window.location.search && window.location.search !== '?') {
     history.replaceState(null, '', window.location.pathname);
   }
