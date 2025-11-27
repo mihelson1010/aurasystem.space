@@ -3,9 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AURASYSTEM</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https:; frame-ancestors 'none'; base-uri 'self';">
+  <title>AURASYSTEM — Privacy-native tools</title>
+  
+  <!-- 🔖 Open Graph + Twitter Card для красивого превью -->
+  <meta name="description" content="No servers. No accounts. Full control. Built for privacy and crypto natives.">
+  <meta property="og:title" content="AURASYSTEM — Privacy-native tools">
+  <meta property="og:description" content="No servers. No accounts. Full control. Built for privacy and crypto natives.">
+  <meta property="og:image" content="https://aurasystem.space/logo.png">
+  <meta property="og:url" content="https://aurasystem.space/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AURASYSTEM — Privacy-native tools">
+  <meta name="twitter:description" content="No servers. No accounts. Full control. Built for privacy and crypto natives.">
+  <meta name="twitter:image" content="https://aurasystem.space/logo.png">
+
+  <!-- 🔒 Безопасность -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 script-src 'self' 'unsafe-inline';
+                 style-src 'self' 'unsafe-inline';
+                 img-src 'self' https:;
+                 frame-ancestors 'none';
+                 base-uri 'self';">
   <meta name="referrer" content="no-referrer">
+
   <style>
     body {
       margin: 0;
@@ -20,6 +41,7 @@
       justify-content: center;
       align-items: center;
     }
+
     h1 {
       font-size: 7rem;
       font-weight: bold;
@@ -27,11 +49,13 @@
       margin: 10px 0 5px;
       letter-spacing: 3px;
     }
+
     .tagline {
       font-size: 1.3rem;
       margin-bottom: 30px;
       line-height: 1.4;
     }
+
     .buttons {
       display: flex;
       flex-direction: column;
@@ -40,6 +64,7 @@
       max-width: 320px;
       padding: 0 20px;
     }
+
     .btn {
       padding: 14px 24px;
       border-radius: 25px;
@@ -50,14 +75,17 @@
       text-align: center;
       transition: transform 0.2s;
     }
+
     .btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
+
     .btn-office { background: linear-gradient(135deg, #ff7700, #ffaa00); }
     .btn-shop  { background: linear-gradient(135deg, #4a90e2, #50b4ff); }
     .btn-proxy { background: linear-gradient(135deg, #8e44ad, #9b59b6); }
     .btn-crypto{ background: linear-gradient(135deg, #2ecc71, #34e07c); }
+
     .footer {
       position: fixed;
       bottom: 12px;
@@ -69,6 +97,7 @@
       animation: neonFlicker 3.5s infinite alternate;
       pointer-events: none;
     }
+
     @keyframes neonFlicker {
       0%, 100% { opacity: 0.9; text-shadow: 0 0 8px rgba(76, 255, 76, 0.5); }
       50% { opacity: 0.6; text-shadow: 0 0 4px rgba(76, 255, 76, 0.3); }
