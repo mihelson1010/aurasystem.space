@@ -41,14 +41,15 @@
       transition: all 0.3s ease;
       text-decoration: none;
       color: white;
+      background: linear-gradient(45deg, var(--start), var(--end));
     }
-    .btn-cryptobros { background: #ffd700; color: #000; }
-    .btn-office { background: #4a8eff; }
-    .btn-shop { background: #9b59b6; }
-    .btn-proxy { background: #e74c3c; }
+    .btn-office { --start: #ff6b6b; --end: #ffa502; }
+    .btn-shop { --start: #4a90e2; --end: #50c8ff; }
+    .btn-proxy { --start: #9b59b6; --end: #e91e63; }
+    .btn-cryptoa.'ura { --start: #2ecc71; --end: #27ae60; }
     .btn:hover {
       transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
     }
   </style>
 </head>
@@ -57,10 +58,10 @@
   <div class="tagline">No servers. No accounts. Full control.</div>
 
   <div class="btn-container">
-    <a href="/cryptobros/" class="btn btn-cryptobros">ENTER CRYPTOBROS →</a>
     <a href="#" class="btn btn-office">Aura Office</a>
     <a href="#" class="btn btn-shop">Aura Shop</a>
     <a href="#" class="btn btn-proxy">Aura Proxy</a>
+    <a href="#" class="btn btn-cryptoa.'ura">CryptoAura</a>
   </div>
 </body>
 </html>
