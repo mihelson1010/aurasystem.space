@@ -65,7 +65,7 @@
       100% { transform: translateX(-100%); }
     }
 
-    /* Сетка бирж — симметричная */
+    /* Сетка бирж */
     .exchanges-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -145,10 +145,12 @@
   No servers. No accounts. Full control.
 </div>
 
+<!-- Верхняя живая строка -->
 <div class="ticker tips">
   <div id="tipTicker" class="ticker-inner">Загрузка советов...</div>
 </div>
 
+<!-- Окна бирж -->
 <div class="exchanges-grid">
   <div class="exchange-card">
     <h3>🟡 Binance</h3>
@@ -176,14 +178,17 @@
   </div>
 </div>
 
+<!-- Нижняя строка — пока статичная (можно добавить CoinGecko позже) -->
 <div class="ticker prices">
-  <div id="priceTicker" class="ticker-inner">Загрузка цен...</div>
+  <div id="priceTicker" class="ticker-inner">
+    BTC: $92,410 ▲ • ETH: $2,870 ▲ • XRP: $0.58 ▼ • DOGE: $0.172 ▲ • ADA: $0.45 ▲ • SOL: $172 ▲ • USD: ₽93.7 • EUR: ₽102.3
+  </div>
 </div>
 
 <div class="footer">© AURASYSTEM • Full control. No tracking. • aurasystem.space</div>
 
 <script>
-  // === Советы ===
+  // === ЖИВАЯ ВЕРХНЯЯ СТРОКА ===
   const STATIC_TIPS = [
     "Market overbought — DO NOT BUY •",
     "BTC dominance rising — altseason delayed •",
@@ -192,14 +197,46 @@
     "Privacy > profit •",
     "No servers. No accounts. Full control •"
   ];
-  document.getElementById('tipTicker').textContent = STATIC_TIPS.join(' ');
 
-  // === Цены ===
-  function useStaticPrices() {
-    document.getElementById('priceTicker').textContent = 
-      'BTC: $92,410 ▲ • ETH: $2,870 ▲ • XRP: $0.58 ▼ • DOGE: $0.172 ▲ • ADA: $0.45 ▲ • SOL: $172 ▲ • USD: ₽93.7 • EUR: ₽102.3';
+  function updateTips(tips) {
+    document.getElementById('tipTicker').textContent = tips.join(' ');
   }
-  useStaticPrices();
+
+  async function fetchLiveTips() {
+    try {
+      // Используем публичный RSS-прокси (работает без API-ключа)
+      const proxy = 'https://rsshub.app/twitter/user/AuraCryptoLive';
+      const response = await fetch(proxy);
+      const xmlText = await response.text();
+      
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(xmlText, 'application/xml');
+      const items = doc.querySelectorAll('item');
+      
+      if (items.length === 0) throw new Error('No items');
+      
+      const tips = Array.from(items)
+        .slice(0, 5)
+        .map(item => {
+          let text = item.querySelector('title').textContent;
+          // Очищаем от лишнего (например, от "AuraCryptoLive:")
+          text = text.replace(/^AuraCryptoLive:\s*/, '');
+          return text + ' •';
+        });
+      
+      updateTips(tips);
+      console.log('✅ Советы загружены из @AuraCryptoLive');
+    } catch (error) {
+      console.warn('⚠️ RSS недоступен — использую статические советы', error);
+      updateTips(STATIC_TIPS);
+    }
+  }
+
+  // Первый запуск
+  fetchLiveTips();
+  
+  // Обновление каждые 30 минут
+  setInterval(fetchLiveTips, 30 * 60 * 1000);
 </script>
 
 </body>
