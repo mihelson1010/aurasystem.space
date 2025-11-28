@@ -24,12 +24,10 @@
       color: #ff7700;
       margin: 20px 0 10px;
       letter-spacing: 2px;
-      text-shadow: none;
     }
 
     .tagline {
       font-size: 1.3rem;
-      color: #fff;
       margin-bottom: 30px;
       line-height: 1.4;
     }
@@ -67,16 +65,15 @@
       100% { transform: translateX(-100%); }
     }
 
-    /* Сетка бирж */
+    /* Сетка бирж — симметричная */
     .exchanges-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 24px;
-      padding: 20px;
-      flex: 1;
-      max-width: 1800px;
-      margin: 0 auto;
+      padding: 0 20px 30px;
+      max-width: 1200px;
       width: 100%;
+      margin: 0 auto;
     }
 
     @media (max-width: 900px) {
@@ -90,14 +87,9 @@
       background: #0b0b0b;
       border: 1px solid #333;
       border-radius: 16px;
-      padding: 30px 20px;
+      padding: 24px 20px;
       text-align: center;
-      transition: all 0.35s ease;
-      min-height: 180px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      transition: all 0.3s ease;
     }
 
     .exchange-card:hover {
@@ -105,24 +97,19 @@
       box-shadow: 0 0 16px rgba(0, 255, 255, 0.35);
     }
 
-    .exchange-logo {
-      width: 48px;
-      height: 48px;
-      margin-bottom: 14px;
-      filter: brightness(0) invert(1);
-    }
-
     .exchange-card h3 {
-      margin: 0 0 14px;
       font-size: 1.4rem;
+      margin: 8px 0 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
     .exchange-card a {
       color: #0ff;
       text-decoration: none;
       font-weight: bold;
-      display: block;
-      margin-top: 8px;
       font-size: 1.1rem;
     }
 
@@ -131,7 +118,6 @@
       text-shadow: 0 0 8px #0ff;
     }
 
-    /* Мерцающая подпись */
     .footer {
       position: fixed;
       bottom: 12px;
@@ -148,12 +134,6 @@
       0%, 100% { opacity: 0.9; text-shadow: 0 0 8px rgba(76, 255, 76, 0.5); }
       50% { opacity: 0.6; text-shadow: 0 0 4px rgba(76, 255, 76, 0.3); }
     }
-
-    body::after {
-      content: '';
-      display: block;
-      height: 40px;
-    }
   </style>
 </head>
 <body>
@@ -165,46 +145,37 @@
   No servers. No accounts. Full control.
 </div>
 
-<!-- Верхняя бегущая строка: советы -->
 <div class="ticker tips">
   <div id="tipTicker" class="ticker-inner">Загрузка советов...</div>
 </div>
 
-<!-- Сетка бирж с логотипами -->
 <div class="exchanges-grid">
   <div class="exchange-card">
-    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cGF0aCBmaWxsPSIjRkZDQzAwIiBkPSJNMjI3LjYgMTcxLjJjLTIuNS0xLjMtNC45LTIuNy03LjMtNC4yLTIuNC0xLjUtNC44LTMtNy4yLTQuNi0yLjQtMS42LTQuNy0zLjItNy4yLTQuOC0yLjQtMS42LTQuNy0zLjMtNy4yLTQuOS0yLjQtMS42LTQuOC0zLjQtNy4yLTUtMi40LTEuNi00LjgtMy41LTcuMi01LjEtMi40LTEuNi00LjgtMy42LTcuMi01LjItMi40LTEuNi00LjgtMy43LTcuMi01LjMtMi40LTEuNi00LjgtMy44LTcuMi01LjQtMi40LTEuNS00LjgtMy45LTcuMi01LjUtMi40LTEuNS00LjgtNC03LjItNS42LTIuNC0xLjUtNC44LTQuMS03LjItNS43LTIuNC0xLjUtNC44LTQuMi03LjItNS44LTIuNC0xLjUtNC44LTQuMy03LjItNS45LTIuNC0xLjQtNC44LTQuNC03LjItNi0yLjQtMS40LTQuOC00LjUtNy4yLTYuMS0yLjQtMS40LTQuOC00LjYtNy4yLTYuMi0yLjQtMS40LTQuOC00LjctNy4yLTYuMy0yLjQtMS4zLTQuOC00LjgtNy4yLTYuNC0yLjQtMS4zLTQuOC00LjktNy4yLTYuNS0yLjQtMS4zLTQuOC01LjEtNy4yLTYuNi0yLjQtMS4zLTQuOC01LjItNy4yLTYuNy0yLjQtMS4yLTQuOC01LjMtNy4yLTYuOC0yLjQtMS4yLTQuOC01LjQ6Ny4yLTYuOS0yLjQtMS4yLTQuOC01LjU6Ny4yLTctMi40LTEuMi00LjgtNS42LTcuMi03LjFjLTIuNC0xLjItNC44LTUuNy03LjItNy4yLTIuNC0xLjItNC44LTUuOC03LjItNy4zLTIuNC0xLjItNC44LTUuOS03LjItNy40LTIuNC0xLjItNC44LTYtNy4yLTcuNS0yLjQtMS4yLTQuOC02LjEtNy4yLTcuNi0yLjQtMS4xLTQuOC02LjItNy4yLTcuNy0yLjQtMS4xLTQuOC02LjMtNy4yLTcuOC0yLjQtMS4xLTQuOC02LjQtNy4yLTcuOS0yLjQtMS4xLTQuOC02LjUtNy4yLTgtMi40LTEuMS00LjgtNi42LTcuMi04LjEtMi40LTEtNC44LTYuNy03LjItOC4yLTIuNC0xLTQuOC02LjgtNy4yLTguMy0yLjQtMS00LjgtNi45LTcuMi04LjQtMi40LTEtNC44LTctNy4yLTguNS0yLjQtMS00LjgtNy4xLTcuMi04LjYtMi40LTEtNC44LTcuMi03LjItOC43Yy0yLjQtMS00LjgtNy4zLTcuMi04LjgtMi40LTEtNC44LTcuNC03LjItOC45LTIuNC0xLTQuOC03LjUtNy4yLTktMi40LTEtNC44LTcuNi03LjItOS4xLTIuNC0xLTQuOC03LjctNy4yLTkuMi0yLjQtMS00LjgtNy44LTcuMi05LjMtMi40LTFoLTcuMlY5Yy4yLjEuNCAuMi42LjMuMi4xLjQuMy42LjQuMi4xLjQuNS42LjYuMi4xLjQuNy42LjguMi4xLjQuOS42LjkuMi4xLjUgMS42IDEuMS4yLjEuNSAxLjEgLjYuMi4xLjUgMS4yLjYuMi4xLjUgMS4zLjYuMi4xLjUgMS40LjYuMi4xLjUgMS41LjYuMi4xLjUgMS42LjYuMi4xLjUgMS43LjYuMi4xLjUgMS44LjYuMi4xLjUgMS45LjYuMi4xLjUgMi4uNi4yLjEuNSAyLjEuNi4yLjEuNSAyLjIuNi4yLjEuNSAyLjMuNi4yLjEuNSAyLjQuNi4yLjEuNSAyLjUuNi4yLjEuNSAyLjYuNi4yLjEuNSAyLjcuNi4yLjEuNSAyLjguNi4yLjEuNSAyLjkuNi4yLjEuNSAzLjAuNi4yLjEuNSAzLjEuNi4yLjEuNSAzLjIuNi4yLjEuNSAzLjMuNi4yLjEuNSAzLjQuNi4yLjEuNSAzLjUuNi4yLjEuNSAzLjYuNi4yLjEuNSAzLjcuNi4yLjEuNSAzLjguNi4yLjEuNSAzLjkuNi4yLjEuNSA0LjAuNi4yLjEuNSA0LjEuNi4yLjEuNSA0LjIuNi4yLjEuNSA0LjMuNi4yLjEuNSA0LjQuNi4yLjEuNSA0LjUuNi4yLjEuNSA0LjYuNi4yLjEuNSA0LjcuNi4yLjEuNSA0LjguNi4yLjEuNSA0LjkuNi4yLjEuNSA1LjAuNi4y" data-lazy="true" />
-    <h3>Binance</h3>
+    <h3>🟡 Binance</h3>
     <a href="https://www.binance.com/" target="_blank" rel="noopener">binance.com</a>
   </div>
   <div class="exchange-card">
-    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cGF0aCBmaWxsPSIjMDAwIiBkPSJNMjU2IDEyOEMxNi43IDEyOCAwIDE0NC43IDAgMjU2YzAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgM......" data-lazy="true" />
-    <h3>Bybit</h3>
+    <h3>🔵 Bybit</h3>
     <a href="https://www.bybit.com/" target="_blank" rel="noopener">bybit.com</a>
   </div>
   <div class="exchange-card">
-    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cGF0aCBmaWxsPSIjMkY0RkZGIiBkPSJNMjA0LjggMTI4QzIwNC44IDU3LjIgMTQ3LjYgMCA3Ni44IDBDMTYuNyAwIDAgMTYuNyAwIDg3LjZjMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAw......" data-lazy="true" />
-    <h3>OKX</h3>
+    <h3>🟣 OKX</h3>
     <a href="https://www.okx.com/" target="_blank" rel="noopener">okx.com</a>
   </div>
   <div class="exchange-card">
-    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cGF0aCBmaWxsPSIjQjM4OEU0IiBkPSJNMTI4IDBDMTU2LjEgMCAxNzguOSAyMi44IDE3OC45IDUwLjlDMTc4LjkgNzkgMTU2LjEgMTAxLjEgMTI4IDEwMS4xQzEwMC4xIDEwMS4xIDc3LjMgNzkgNzcuMyA1MC45Qzc3LjMgMjIuOCAxMDAuMSAwIDEyOCAweiIvPjxwYXRoIGZpbGw9IiNDN0M3QzciIGQ9Ik0xMjggNDcuNkMxNTAuMiA0Ny42IDE2OC4zIDY1LjcgMTY4LjMgODcuOEMxNjguMyAxMTAgMTUwLjIgMTI4IDEyOCAxMjhDMTA1LjcgMTI4IDg3LjYgMTEwIDg3LjYgODcuOEM4Ny42IDY1LjcgMTA1LjcgNDcuNiAxMjggNDcuNnoiLz48L3N2Zz4=" data-lazy="true" />
-    <h3>CoinMarketCap</h3>
+    <h3>📊 CoinMarketCap</h3>
     <a href="https://coinmarketcap.com/" target="_blank" rel="noopener">coinmarketcap.com</a>
   </div>
   <div class="exchange-card">
-    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNMjU2IDEyOEMxMzAuNiAxMjggMjguNiAyMzAgMjguNiAyMzB2MjYuNmMwIDAgxMjggMTAyLjQgMjI3LjQgMjI3LjR2LTI2LjZ6Ii8+PHBhdGggZmlsbD0iI0ZGRkZGRiIgZD0iTTEyOCAwaC0yNi42YzAgMCAxMDEuNCAxMjggMjI3LjQgMjI3LjR2MjYuNkMyMzAgMjI3LjQgMTI4IDEyNS40IDEyOCAweiIvPjwvc3ZnPg==" data-lazy="true" />
-    <h3>DexScreener</h3>
+    <h3>🆕 DexScreener</h3>
     <a href="https://dexscreener.com/new-pairs" target="_blank" rel="noopener">dexscreener.com</a>
   </div>
   <div class="exchange-card">
-    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cGF0aCBmaWxsPSIjODhDM0ZGIiBkPSJNMTI4IDBDMTU2LjEgMCAxNzguOSAyMi44IDE3OC45IDUwLjlDMTc4LjkgNzkgMTU2LjEgMTAxLjEgMTI4IDEwMS4xQzEwMC4xIDEwMS4xIDc3LjMgNzkgNzcuMyA1MC45Qzc3LjMgMjIuOCAxMDAuMSAwIDEyOCAweiIvPjxwYXRoIGZpbGw9IiNGRkNGNDAiIGQ9Ik0xMjggMTI4YzI4LjEgMCA1MC45IDIyLjggNTAuOSA1MC45YzAgMjguMS0yMi44IDUwLjktNTAuOSA1MC45Yy0yOC4xIDAtNTAuOS0yMi44LTUwLjktNTAuOUM3Ny4zIDE1MC44IDEwMC4xIDEyOCAxMjggMTI4eiIvPjwvc3ZnPg==" data-lazy="true" />
-    <h3>Poloniex</h3>
+    <h3>🌐 Poloniex</h3>
     <a href="https://www.poloniex.com/ru/" target="_blank" rel="noopener">poloniex.com</a>
   </div>
 </div>
 
-<!-- Нижняя бегущая строка: цены -->
 <div class="ticker prices">
   <div id="priceTicker" class="ticker-inner">Загрузка цен...</div>
 </div>
@@ -212,7 +183,7 @@
 <div class="footer">© AURASYSTEM • Full control. No tracking. • aurasystem.space</div>
 
 <script>
-  // === ВЕРХНЯЯ СТРОКА: Советы из RSS (AuraCryptoLive) ===
+  // === Советы ===
   const STATIC_TIPS = [
     "Market overbought — DO NOT BUY •",
     "BTC dominance rising — altseason delayed •",
@@ -221,100 +192,14 @@
     "Privacy > profit •",
     "No servers. No accounts. Full control •"
   ];
+  document.getElementById('tipTicker').textContent = STATIC_TIPS.join(' ');
 
-  function updateTipsDisplay(tips = STATIC_TIPS) {
-    document.getElementById('tipTicker').textContent = tips.join(' ');
-  }
-
-  async function fetchTipsFromRSS() {
-    try {
-      // Используем CORS-прокси через rsshub.app (публичный, без трекинга)
-      const rssUrl = 'https://rsshub.app/twitter/user/AuraCryptoLive';
-      const res = await fetch(rssUrl);
-      const xml = await res.text();
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(xml, 'text/xml');
-      const items = [...doc.querySelectorAll('item')].slice(0, 5);
-      const tips = items.map(item => 
-        item.querySelector('title').textContent.replace(/\s+/g, ' ') + ' •'
-      );
-      if (tips.length > 0) updateTipsDisplay(tips);
-    } catch (e) {
-      console.warn('RSS недоступен — fallback на статику');
-      updateTipsDisplay();
-    }
-  }
-
-  fetchTipsFromRSS();
-  setInterval(fetchTipsFromRSS, 30 * 60 * 1000); // обновление каждые 30 минут
-
-  // === НИЖНЯЯ СТРОКА: Котировки ===
-  let prices = {};
-  const fiatRates = { usd_rub: 93.5, eur_rub: 102.3 };
-
-  async function fetchCryptoPrices() {
-    try {
-      const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,xrp,dogecoin,cardano,solana&vs_currencies=usd');
-      const data = await res.json();
-      prices = {
-        BTC: data.bitcoin.usd,
-        ETH: data.ethereum.usd,
-        XRP: data.xrp.usd,
-        DOGE: data.dogecoin.usd,
-        ADA: data.cardano.usd,
-        SOL: data.solana.usd
-      };
-      updatePriceDisplay();
-    } catch (e) {
-      useStaticPrices();
-    }
-  }
-
-  async function fetchRUBRates() {
-    try {
-      const res1 = await fetch('https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd/rub.json');
-      const res2 = await fetch('https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/eur/rub.json');
-      fiatRates.usd_rub = (await res1.json()).rub || 93.5;
-      fiatRates.eur_rub = (await res2.json()).rub || 102.3;
-    } catch (e) {}
-  }
-
-  function formatPrice(num) {
-    if (num >= 1) return '$' + num.toFixed(2);
-    return '$' + num.toPrecision(4);
-  }
-
-  function updatePriceDisplay() {
-    if (!prices.BTC) return useStaticPrices();
-    const items = [
-      `BTC: ${formatPrice(prices.BTC)} ▲`,
-      `ETH: ${formatPrice(prices.ETH)} ▲`,
-      `XRP: ${formatPrice(prices.XRP)} ▼`,
-      `DOGE: ${formatPrice(prices.DOGE)} ▲`,
-      `ADA: ${formatPrice(prices.ADA)} ▲`,
-      `SOL: ${formatPrice(prices.SOL)} ▲`,
-      `USD: ₽${fiatRates.usd_rub.toFixed(1)}`,
-      `EUR: ₽${fiatRates.eur_rub.toFixed(1)}`
-    ];
-    document.getElementById('priceTicker').textContent = items.join(' • ');
-  }
-
+  // === Цены ===
   function useStaticPrices() {
     document.getElementById('priceTicker').textContent = 
       'BTC: $92,410 ▲ • ETH: $2,870 ▲ • XRP: $0.58 ▼ • DOGE: $0.172 ▲ • ADA: $0.45 ▲ • SOL: $172 ▲ • USD: ₽93.7 • EUR: ₽102.3';
   }
-
-  // Запуск
-  fetchCryptoPrices();
-  fetchRUBRates();
-  setInterval(() => {
-    fetchCryptoPrices();
-    fetchRUBRates();
-  }, 20 * 60 * 1000); // каждые 20 минут
-
-  setTimeout(() => {
-    if (!prices.BTC) useStaticPrices();
-  }, 5000);
+  useStaticPrices();
 </script>
 
 </body>
