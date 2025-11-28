@@ -13,7 +13,7 @@
       display: grid;
       place-items: center;
       position: relative;
-      background: #0d0d1a;
+      background: #000;
     }
 
     .background {
@@ -22,10 +22,15 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-size: cover;
-      background-position: center;
-      transition: opacity 1s ease-in-out;
+      background: linear-gradient(45deg, #0d0d1a, #1a1a2a, #0d0d1a);
+      background-size: 600% 600%;
+      animation: gradientBG 21s ease infinite;
       z-index: -1;
+    }
+
+    @keyframes gradientBG {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
 
     .dropzone {
@@ -51,9 +56,6 @@
       text-align: center;
       padding: 0 2rem;
     }
-
-    .fade-out { opacity: 0; }
-    .fade-in { opacity: 1; }
 
     .result {
       display: none;
@@ -88,7 +90,7 @@
 </head>
 <body>
 
-<div class="background" id="bg"></div>
+<div class="background"></div>
 
 <div class="dropzone" id="dropzone">
   <p>📷 Перетащите фото товара<br><small>(JPG, PNG)</small></p>
@@ -107,43 +109,6 @@
 </div>
 
 <script>
-  // Предзагрузка фонов — устраняет белые пробелы
-  const backgrounds = [
-    'bg1.jpg',
-    'bg2.jpg',
-    'bg3.jpg',
-    'bg4.jpg',
-    'bg5.jpg',
-    'bg6.jpg',
-    'bg7.jpg'
-  ];
-
-  // Загружаем все фоны в кэш
-  backgrounds.forEach(url => {
-    const img = new Image();
-    img.src = url;
-  });
-
-  let currentBg = 0;
-
-  function changeBackground() {
-    const bg = document.getElementById('bg');
-    bg.classList.remove('fade-in');
-    bg.classList.add('fade-out');
-
-    setTimeout(() => {
-      currentBg = (currentBg + 1) % backgrounds.length;
-      bg.style.backgroundImage = `url('${backgrounds[currentBg]}')`;
-      bg.classList.remove('fade-out');
-      bg.classList.add('fade-in');
-    }, 1000);
-  }
-
-  setInterval(changeBackground, 7000);
-  document.getElementById('bg').style.backgroundImage = `url('${backgrounds[0]}')`;
-  document.getElementById('bg').classList.add('fade-in');
-
-  // Обработка фото
   const dropzone = document.getElementById('dropzone');
   dropzone.addEventListener('dragover', (e) => {
     e.preventDefault();
@@ -176,10 +141,10 @@
     if (!cat) return prices.innerHTML = '';
 
     const data = {
-      smartphone: { name: 'iPhone 15 Pro Max', prices: [{s:'Amazon',p:'$999'},{s:'eBay',p:'$950'}] },
-      laptop: { name: 'MacBook Pro M3', prices: [{s:'Apple',p:'$1999'},{s:'Amazon',p:'$1799'}] },
-      watch: { name: 'Apple Watch S9', prices: [{s:'Apple',p:'$399'},{s:'Amazon',p:'$379'}] },
-      headphones: { name: 'Sony WH-1000XM5', prices: [{s:'Amazon',p:'$399'},{s:'BestBuy',p:'$379'}] }
+      smartphone: { name: 'iPhone 15 Pro Max', prices: [{s:'Amazon',p:'$999'},{s:'eBay',p:'$950'},{s:'AliExpress',p:'$899'}] },
+      laptop: { name: 'MacBook Pro M3', prices: [{s:'Apple',p:'$1999'},{s:'Amazon',p:'$1799'},{s:'Best Buy',p:'$1899'}] },
+      watch: { name: 'Apple Watch S9', prices: [{s:'Apple',p:'$399'},{s:'Amazon',p:'$379'},{s:'Walmart',p:'$369'}] },
+      headphones: { name: 'Sony WH-1000XM5', prices: [{s:'Amazon',p:'$399'},{s:'Best Buy',p:'$379'},{s:'Sony Store',p:'$399'}] }
     }[cat];
 
     prices.innerHTML = `
