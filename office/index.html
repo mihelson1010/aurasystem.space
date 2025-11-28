@@ -135,17 +135,15 @@
       background: #0d0d1a;
       border-radius: 20px;
       padding: 24px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
       color: #fff;
     }
-
     .currency-header {
       position: relative;
       height: 32px;
       margin-bottom: 20px;
       text-align: center;
     }
-
     .currency-header::after {
       content: "AURASYSTEM";
       position: absolute;
@@ -157,13 +155,11 @@
       animation: blink 1.2s infinite;
       opacity: 0.8;
     }
-
     .currency-input-group {
       display: flex;
       gap: 12px;
       margin: 12px 0;
     }
-
     .currency-input-field {
       width: 100px;
       padding: 12px;
@@ -176,12 +172,10 @@
       outline: none;
       transition: border 0.3s;
     }
-
     .currency-input-field:focus {
       border-color: #ff7700;
       box-shadow: 0 0 0 2px rgba(255, 119, 0, 0.2);
     }
-
     .currency-select {
       flex: 1;
       padding: 12px;
@@ -192,11 +186,9 @@
       color: white;
       outline: none;
     }
-
     .currency-select:focus {
       border-color: #ff7700;
     }
-
     .currency-swap {
       text-align: center;
       font-size: 24px;
@@ -205,11 +197,9 @@
       margin: 10px 0;
       transition: transform 0.3s;
     }
-
     .currency-swap:hover {
       transform: scale(1.2);
     }
-
     .currency-result {
       font-size: 20px;
       font-weight: bold;
@@ -221,20 +211,51 @@
       color: #ffaa00;
       border: 1px solid rgba(255, 119, 0, 0.2);
     }
-
     .currency-rate {
       font-size: 14px;
       color: #aaa;
       text-align: center;
       margin: 8px 0;
     }
-
     .currency-info {
       font-size: 13px;
       color: #777;
       text-align: center;
       margin-top: 12px;
     }
+
+    /* Excel */
+    .excel-container {
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 16px;
+      margin-top: 20px;
+    }
+    .jexcel {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      font-size: 14px;
+    }
+    .jexcel td, .jexcel th {
+      padding: 6px 8px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    .jexcel_toolbar {
+      padding: 8px;
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+    }
+    .jexcel_toolbar button {
+      padding: 4px 10px;
+      margin: 0 4px;
+      border: 1px solid #999;
+      background: #eee;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .jexcel_toolbar button:hover { background: #ddd; }
 
     .footer {
       position:fixed;
@@ -365,11 +386,17 @@
   </div>
   
   <div id="excel" class="panel">
-    <p style="color:#fff; padding:20px; text-align:center;">📊 Excel-режим (скоро)</p>
+    <div class="excel-container">
+      <div id="spreadsheet"></div>
+      <div style="margin-top:15px;">
+        <button class="tool-btn" style="font-size:14px;" onclick="exportCSV()">📥 Экспорт CSV</button>
+        <button class="tool-btn" style="font-size:14px;" onclick="clearSheet()">🗑️ Очистить</button>
+      </div>
+    </div>
   </div>
   
   <div id="qr" class="panel">
-    <p style="color:#fff; padding:20px; text-align:center;">📱 QR-код (скоро)</p>
+    <p>📱 QR-код (скоро)</p>
   </div>
 </div>
 
@@ -540,10 +567,64 @@
     convertFrom();
   }
 
+  // =============== EXCEL ===============
+  let spreadsheet = null;
+
+  function showExcel() {
+    if (!spreadsheet) {
+      // Инициализация таблицы
+      spreadsheet = jspreadsheet(document.getElementById('spreadsheet'), {
+        data: loadTableData() || [['']],
+        rows: 30,
+        columns: 15,
+        allowInsertRow: true,
+        allowInsertColumn: true,
+        allowDeleteRow: true,
+        allowDeleteColumn: true,
+        columnDrag: true,
+        search: true,
+        pagination: 100,
+        onchange: saveTableData
+      });
+    }
+  }
+
+  function saveTableData() {
+    const data = spreadsheet.getData();
+    localStorage.setItem('aura_excel', JSON.stringify(data));
+  }
+
+  function loadTableData() {
+    const saved = localStorage.getItem('aura_excel');
+    return saved ? JSON.parse(saved) : [['']];
+  }
+
+  function exportCSV() {
+    if (spreadsheet) {
+      const csv = spreadsheet.toCSV();
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.setAttribute('href', URL.createObjectURL(blob));
+      link.setAttribute('download', 'table.csv');
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
+
+  function clearSheet() {
+    if (spreadsheet) {
+      spreadsheet.setData([['']]);
+      localStorage.removeItem('aura_excel');
+    }
+  }
+
   // =============== ОСТАЛЬНОЕ ===============
   function showPanel(id) {
     document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
     document.getElementById(id).style.display = 'block';
+    if (id === 'excel') showExcel();
   }
 
   function showShare() {
@@ -571,6 +652,14 @@
   function sendEncrypted() { alert('🔐 Зашифровано'); }
 
   window.onload = () => document.getElementById('editor').focus();
+</script>
+
+<!-- ВСТРОЕННЫЙ JSPREADSHEET CE -->
+<script>
+// ВСТАВЛЯЕМ СОДЕРЖИМОЕ jsuites.js
+</script>
+<script>
+// ВСТАВЛЯЕМ СОДЕРЖИМОЕ jspreadsheet.js
 </script>
 
 </body>
