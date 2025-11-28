@@ -2,87 +2,126 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>АУРАСИСТЕМА ПРОКСИ</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aura Proxy</title>
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      background: #0a0a0a;
+      background: #000;
       color: #fff;
-      font-family: 'Inter', sans-serif;
+      font-family: Arial, sans-serif;
       text-align: center;
-      padding: 60px 20px;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      margin: 0;
     }
     h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 3.5rem;
-      background: linear-gradient(45deg, #00ff88, #00ccff);
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin: 20px 0 10px;
+      letter-spacing: 2px;
+      background: linear-gradient(45deg, #ff7700, #ffaa00);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 1rem;
-      text-shadow: 0 0 20px rgba(0,255,136,0.3);
     }
-    p {
-      font-size: 1.1rem;
+    .tagline {
       color: #aaa;
-      margin-bottom: 2rem;
-      max-width: 600px;
-    }
-    .input-group {
-      display: flex;
-      gap: 10px;
-      max-width: 500px;
-      width: 100%;
       margin-bottom: 30px;
+      font-size: 1.2rem;
     }
-    input {
-      flex: 1;
-      padding: 16px 20px;
-      font-size: 1.1rem;
-      border: none;
-      border-radius: 16px;
-      background: #1a1a1a;
+    .input-box {
+      width: 80%;
+      max-width: 500px;
+      padding: 12px;
+      margin: 20px 0;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
       color: #fff;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      outline: none;
+      font-size: 16px;
+      text-align: center;
     }
-    input::placeholder { color: #666; }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin: 20px 0;
+    }
     .btn {
-      padding: 16px 28px;
+      padding: 12px 24px;
+      border-radius: 24px;
       font-size: 1rem;
-      font-weight: 600;
-      border: none;
-      border-radius: 16px;
-      cursor: pointer;
+      font-weight: bold;
+      text-decoration: none;
+      color: white;
+      text-align: center;
       transition: all 0.3s ease;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      min-width: 160px;
+      cursor: pointer;
     }
-    .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-    
-    .btn-primary { background: linear-gradient(45deg, #ff6b6b, #feca57); color: white; }
-    .btn-secondary { background: linear-gradient(45deg, #1e90ff, #00d2ff); color: white; }
-    .btn-accent { background: linear-gradient(45deg, #9c27b0, #e91e63); color: white; }
-
-    .btn-primary:hover { box-shadow: 0 10px 30px rgba(255,107,107,0.4); }
-    .btn-secondary:hover { box-shadow: 0 10px 30px rgba(30,144,255,0.4); }
-    .btn-accent:hover { box-shadow: 0 10px 30px rgba(156,39,176,0.4); }
-
+    .btn-orange { background: linear-gradient(135deg, #ff7700, #ffaa00); }
+    .btn-blue { background: linear-gradient(135deg, #4a90e2, #50b4ff); }
+    .btn-purple { background: linear-gradient(135deg, #8e44ad, #9b59b6); }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
     .footer {
-      margin-top: 50px;
-      font-size: 0.9rem;
-      color: #555;
+      position: fixed;
+      bottom: 12px;
+      left: 16px;
+      font-size: 0.85rem;
+      color: #4cff4c;
+      text-shadow: 0 0 8px rgba(76, 255, 76, 0.5);
+      opacity: 0.9;
+      animation: neonFlicker 3.5s infinite alternate;
+      pointer-events: none;
     }
-    .footer a { color: #00ff88; text-decoration: none; }
+    @keyframes neonFlicker {
+      0%, 100% { opacity: 0.9; text-shadow: 0 0 8px rgba(76, 255, 76, 0.5); }
+      50% { opacity: 0.6; text-shadow: 0 0 4px rgba(76, 255, 76, 0.3); }
+    }
   </style>
 </head>
 <body>
-  <
+
+<h1>AURASYSTEM</h1>
+<div class="tagline">Privacy-native proxy. Works everywhere.</div>
+
+<input type="text" class="input-box" placeholder="x.com, dexscreener.com..." id="proxy-url">
+
+<div class="buttons">
+  <button class="btn btn-orange" onclick="openViaProxy()">OPEN VIA PROXY</button>
+  <button class="btn btn-blue" onclick="openNewTab()">NEW TAB</button>
+  <button class="btn btn-purple" onclick="copyLink()">COPY LINK</button>
+</div>
+
+<div class="footer">
+  © 2025 AuraSystem • aurasystem.space
+</div>
+
+<script>
+  function openViaProxy() {
+    const url = document.getElementById('proxy-url').value.trim();
+    if (!url) return alert('Введите адрес');
+    window.location.href = 'https://aurasystem.space/proxy/?url=' + encodeURIComponent(url);
+  }
+
+  function openNewTab() {
+    const url = document.getElementById('proxy-url').value.trim();
+    if (!url) return alert('Введите адрес');
+    window.open(url, '_blank');
+  }
+
+  function copyLink() {
+    const url = document.getElementById('proxy-url').value.trim();
+    if (!url) return alert('Введите адрес');
+    navigator.clipboard.writeText(url).then(() => {
+      alert('Ссылка скопирована!');
+    });
+  }
+</script>
+
+</body>
+</html>
