@@ -25,7 +25,7 @@
     .logo-img {
       width: 100%;
       height: auto;
-      max-width: 250px;
+      max-width: 300px;
       border-radius: 16px;
       box-shadow: 0 8px 30px rgba(255, 255, 255, 0.1);
     }
@@ -36,50 +36,29 @@
       margin: 10px 0 20px;
       letter-spacing: 2px;
     }
-    .manifest {
-      background: rgba(0,0,0,0.4);
-      border: 1px solid #555;
-      border-radius: 16px;
-      padding: 20px;
-      margin: 20px 0;
-      max-width: 800px;
-      text-align: left;
-      font-size: 1.1rem;
-      line-height: 1.6;
-    }
-    [lang="he"] .manifest { text-align: right; direction: rtl; }
-    .lang-switch {
+    .lang-selector {
       position: absolute;
       top: 20px;
       right: 20px;
       display: flex;
-      gap: 8px;
+      flex-direction: column;
+      align-items: flex-end;
     }
-    .lang-btn {
-      padding: 6px 12px;
+    .lang-label {
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-bottom: 4px;
+    }
+    .lang-select {
+      padding: 4px 8px;
       background: rgba(255,255,255,0.1);
       border: 1px solid #666;
       color: white;
-      cursor: pointer;
-      border-radius: 6px;
+      border-radius: 4px;
     }
-    .lang-btn.active {
-      background: #ff7700;
-      border-color: #ffaa00;
-    }
-    .consent {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 20px 0;
-      max-width: 800px;
-    }
-    .consent input {
-      width: 20px;
-      height: 20px;
-    }
-    #connect-btn, #pay-btn {
-      display: none;
+    #create-btn {
+      display: block;
+      margin: 30px auto;
     }
     .btn {
       padding: 14px 32px;
@@ -99,20 +78,69 @@
       box-shadow: 0 6px 16px rgba(255, 119, 0, 0.4);
     }
     .footer {
-      margin-top: 30px;
+      position: fixed;
+      bottom: 12px;
+      right: 16px;
       font-size: 0.85rem;
       color: #4cff4c;
       text-shadow: 0 0 8px rgba(76, 255, 76, 0.5);
-      text-align: center;
+      opacity: 0.9;
+      animation: neonFlicker 3.5s infinite alternate;
+      pointer-events: none;
+    }
+    @keyframes neonFlicker {
+      0%, 100% { opacity: 0.9; text-shadow: 0 0 8px rgba(76, 255, 76, 0.5); }
+      50% { opacity: 0.6; text-shadow: 0 0 4px rgba(76, 255, 76, 0.3); }
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+    }
+    .modal-content {
+      background: #0d0d1a;
+      margin: 50px auto;
+      padding: 30px;
+      border-radius: 16px;
+      max-width: 800px;
+      margin-top: 100px;
+    }
+    .manifest-text {
+      background: rgba(0,0,0,0.4);
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+      line-height: 1.6;
+    }
+    .consent {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .close {
+      float: right;
+      cursor: pointer;
+      font-size: 1.4rem;
     }
   </style>
 </head>
 <body>
 
-<div class="lang-switch" id="lang-switch">
-  <button class="lang-btn" data-lang="en">EN</button>
-  <button class="lang-btn" data-lang="he">עברית</button>
-  <button class="lang-btn" data-lang="ru">RU</button>
+<div class="lang-selector">
+  <div class="lang-label">Language</div>
+  <select class="lang-select" id="lang-select">
+    <option value="en">EN</option>
+    <option value="he">עברית</option>
+    <option value="ru">RU</option>
+  </select>
 </div>
 
 <div class="logo-container">
@@ -121,25 +149,30 @@
 
 <h1>CRYPTOBROS</h1>
 
-<div class="manifest" id="manifest">
-  <strong>CRYPTOBROS MANIFESTO</strong><br>
-  Bros in. Noise out.<br>
-  No servers. Zero KYC. Only wallet.<br>
-  We do not advise buying! We advise not buying!<br>
-  Pay with $AuraSpace to prove you’re real.<br>
-  Privacy-native. End-to-end encrypted.<br>
-  Full control. No tracking. Ever.
+<button id="create-btn" class="btn">Create Account</button>
+
+<div class="footer">Produced by Mihelson © 2025</div>
+
+<!-- Modal -->
+<div id="manifest-modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2 id="modal-title">CRYPTOBROS MANIFESTO</h2>
+    <div class="manifest-text" id="modal-manifest">
+      Bros in. Noise out.<br>
+      No servers. Zero KYC. Only wallet.<br>
+      We do not advise buying! We advise not buying!<br>
+      Pay with $AuraSpace to prove you’re real.<br>
+      Privacy-native. End-to-end encrypted.<br>
+      Full control. No tracking. Ever.
+    </div>
+    <div class="consent">
+      <input type="checkbox" id="modal-consent">
+      <label for="modal-consent" id="modal-consent-label">I agree with the CRYPTOBROS Manifest</label>
+    </div>
+    <button id="modal-pay-btn" class="btn">Confirm & Pay 300 AUS</button>
+  </div>
 </div>
-
-<div class="consent">
-  <input type="checkbox" id="consent">
-  <label for="consent" id="consent-label">I agree with the CRYPTOBROS Manifest</label>
-</div>
-
-<button id="connect-btn" class="btn">Connect Wallet</button>
-<button id="pay-btn" class="btn">Pay 300 AUS → Enter</button>
-
-<div class="footer">© CRYPTOBROS • Full control. No tracking. • aurasystem.space</div>
 
 <script>
   const manifestTexts = {
@@ -183,13 +216,13 @@
 
   let currentLang = 'en';
 
-  function setLanguage(lang) {
+  function updateManifest(lang) {
     currentLang = lang;
-    const manifest = document.getElementById('manifest');
+    const manifest = document.getElementById('modal-manifest');
     const lines = manifestTexts[lang].lines.join('<br>');
-    manifest.innerHTML = `<strong>${manifestTexts[lang].title}</strong><br>${lines}`;
-    
-    document.getElementById('consent-label').textContent = manifestTexts[lang].consent;
+    document.getElementById('modal-title').textContent = manifestTexts[lang].title;
+    manifest.innerHTML = lines;
+    document.getElementById('modal-consent-label').textContent = manifestTexts[lang].consent;
     document.getElementById('html-root').lang = lang;
     
     if (lang === 'he') {
@@ -197,43 +230,34 @@
     } else {
       document.body.style.direction = 'ltr';
     }
-
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.lang === lang);
-    });
   }
 
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
-  });
-  setLanguage('en');
-
-  document.getElementById('consent').addEventListener('change', function() {
-    if (this.checked) {
-      document.getElementById('connect-btn').style.display = 'block';
-    } else {
-      document.getElementById('connect-btn').style.display = 'none';
-      document.getElementById('pay-btn').style.display = 'none';
-    }
+  document.getElementById('lang-select').addEventListener('change', function() {
+    updateManifest(this.value);
   });
 
-  document.getElementById('connect-btn').onclick = function() {
-    if (typeof window.solana !== 'undefined') {
-      alert('Phantom detected. Ready to pay.');
-      document.getElementById('pay-btn').style.display = 'block';
-    } else {
-      alert('Please install Phantom: https://phantom.app');
-    }
+  document.getElementById('create-btn').onclick = function() {
+    document.getElementById('manifest-modal').style.display = 'block';
   };
 
-  document.getElementById('pay-btn').onclick = function() {
-    if (!document.getElementById('consent').checked) {
+  document.getElementById('modal-pay-btn').onclick = function() {
+    if (!document.getElementById('modal-consent').checked) {
       alert('Please agree to the Manifest');
       return;
     }
     const wallet = '5R8wHTuWuhxGE6qUHbPh4RZatKBAvxJKpmLAdA2GbzPL';
     alert(`Send 300 AUS to:\n${wallet}\n\nAfter confirmation, you’ll enter CRYPTOBROS.`);
+    closeModal();
   };
+
+  function closeModal() {
+    document.getElementById('manifest-modal').style.display = 'none';
+  }
+
+  // Close modal on ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
 </script>
 
 </body>
