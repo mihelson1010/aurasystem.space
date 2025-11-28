@@ -13,10 +13,9 @@
       display: grid;
       place-items: center;
       position: relative;
-      background: #fff;
+      background: #0d0d1a;
     }
 
-    /* Фоновое изображение */
     .background {
       position: fixed;
       top: 0;
@@ -29,7 +28,6 @@
       z-index: -1;
     }
 
-    /* Центральное поле */
     .dropzone {
       width: 100%;
       max-width: 600px;
@@ -40,11 +38,11 @@
       place-items: center;
       cursor: pointer;
       transition: all 0.3s;
-      background: rgba(255,255,255,0.9);
-      box-shadow: 0 16px 40px rgba(0,0,0,0.05);
+      background: rgba(255,255,255,0.05);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.2);
     }
-    .dropzone.dragover {
-      background: rgba(255,255,255,0.95);
+    .dropzone:hover, .dropzone.dragover {
+      background: rgba(255,255,255,0.1);
       transform: scale(1.02);
     }
     .dropzone p {
@@ -54,17 +52,20 @@
       padding: 0 2rem;
     }
 
-    /* Результат */
+    .fade-out { opacity: 0; }
+    .fade-in { opacity: 1; }
+
     .result {
       display: none;
       width: 100%;
       max-width: 600px;
       padding: 20px;
-      background: #f9f9f9;
-      border: 1px solid #ddd;
+      background: rgba(0,0,0,0.7);
+      border: 1px solid #ea580c;
       border-radius: 16px;
       margin-top: 20px;
       text-align: left;
+      color: white;
     }
     .result.active {
       display: block;
@@ -76,12 +77,12 @@
     .price-item {
       margin: 10px 0;
       padding: 10px;
-      background: white;
-      border: 1px solid #eee;
+      background: rgba(255,255,255,0.1);
       border-radius: 8px;
     }
     .price-item span {
       font-weight: bold;
+      color: #ff7700;
     }
   </style>
 </head>
@@ -94,14 +95,19 @@
 </div>
 
 <div class="result" id="result">
-  <h3>🔍 Распознанный текст:</h3>
-  <div id="recognized-text">—</div>
-  <h3>💰 Найденные цены:</h3>
+  <h3>Выберите категорию:</h3>
+  <select id="category" onchange="updatePrices()">
+    <option value="">—</option>
+    <option value="smartphone">Смартфон</option>
+    <option value="laptop">Ноутбук</option>
+    <option value="watch">Часы</option>
+    <option value="headphones">Наушники</option>
+  </select>
   <div id="prices"></div>
 </div>
 
 <script>
-  // ✅ ВАШИ ОРИГИНАЛЬНЫЕ ФОНЫ — без placeholder’ов
+  // Предзагрузка фонов — устраняет белые пробелы
   const backgrounds = [
     'bg1.jpg',
     'bg2.jpg',
@@ -111,6 +117,12 @@
     'bg6.jpg',
     'bg7.jpg'
   ];
+
+  // Загружаем все фоны в кэш
+  backgrounds.forEach(url => {
+    const img = new Image();
+    img.src = url;
+  });
 
   let currentBg = 0;
 
@@ -127,67 +139,54 @@
     }, 1000);
   }
 
-  // Запускаем смену фона каждые 7 секунд
   setInterval(changeBackground, 7000);
-
-  // Инициализируем первый фон
   document.getElementById('bg').style.backgroundImage = `url('${backgrounds[0]}')`;
   document.getElementById('bg').classList.add('fade-in');
 
-  // Обработчики drag & drop
+  // Обработка фото
   const dropzone = document.getElementById('dropzone');
-  const result = document.getElementById('result');
-  const recognizedText = document.getElementById('recognized-text');
-  const prices = document.getElementById('prices');
-
   dropzone.addEventListener('dragover', (e) => {
     e.preventDefault();
     dropzone.classList.add('dragover');
   });
-
   dropzone.addEventListener('dragleave', () => {
     dropzone.classList.remove('dragover');
   });
-
-  dropzone.addEventListener('drop', async (e) => {
+  dropzone.addEventListener('drop', (e) => {
     e.preventDefault();
     dropzone.classList.remove('dragover');
-    const file = e.dataTransfer.files[0];
-    if (!file || !file.type.match('image.*')) return;
-
-    // Показываем сообщение о распознавании
-    dropzone.innerHTML = '<p>🔍 Распознаю текст…</p>';
-
-    setTimeout(() => {
-      // Имитация распознавания
-      const fakeText = "iPhone 15 Pro Max 256GB";
-      recognizedText.textContent = fakeText;
-
-      // Имитация поиска цен
-      prices.innerHTML = `
-        <div class="price-item">Amazon: <span>$999</span></div>
-        <div class="price-item">eBay: <span>$950</span></div>
-        <div class="price-item">AliExpress: <span>$899</span></div>
-        <div class="price-item">Local Store: <span>$1050</span></div>
-      `;
-
-      // Показываем результат
-      dropzone.style.display = 'none';
-      result.classList.add('active');
-    }, 2000);
+    showResult();
   });
-
-  // Клик = выбор файла
   dropzone.addEventListener('click', () => {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
-    input.onchange = (e) => {
-      const event = new DragEvent('drop', { dataTransfer: { files: e.target.files } });
-      dropzone.dispatchEvent(event);
-    };
+    input.onchange = () => showResult();
     input.click();
   });
+
+  function showResult() {
+    dropzone.style.display = 'none';
+    document.getElementById('result').classList.add('active');
+  }
+
+  function updatePrices() {
+    const cat = document.getElementById('category').value;
+    const prices = document.getElementById('prices');
+    if (!cat) return prices.innerHTML = '';
+
+    const data = {
+      smartphone: { name: 'iPhone 15 Pro Max', prices: [{s:'Amazon',p:'$999'},{s:'eBay',p:'$950'}] },
+      laptop: { name: 'MacBook Pro M3', prices: [{s:'Apple',p:'$1999'},{s:'Amazon',p:'$1799'}] },
+      watch: { name: 'Apple Watch S9', prices: [{s:'Apple',p:'$399'},{s:'Amazon',p:'$379'}] },
+      headphones: { name: 'Sony WH-1000XM5', prices: [{s:'Amazon',p:'$399'},{s:'BestBuy',p:'$379'}] }
+    }[cat];
+
+    prices.innerHTML = `
+      <h4>${data.name}</h4>
+      ${data.prices.map(item => `<div class="price-item">${item.s}: <span>${item.p}</span></div>`).join('')}
+    `;
+  }
 </script>
 
 </body>
