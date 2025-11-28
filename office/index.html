@@ -38,7 +38,7 @@
       box-shadow:0 6px 14px rgba(0,0,0,0.15);
     }
     .btn-calc      { background:linear-gradient(135deg, #3498db, #2980b9); }
-    .btn-currency  { background:linear-gradient(135deg, #f1c40f, #f39c12); }
+    .btn-currency  { background:linear-gradient(135deg, #ff7700, #ffaa00); }
     .btn-invite    { background:linear-gradient(135deg, #9b59b6, #8e44ad); }
     .btn-excel     { background:linear-gradient(135deg, #4a90e2, #50b4ff); }
     .btn-qr        { background:linear-gradient(135deg, #8e44ad, #9b59b6); }
@@ -64,17 +64,18 @@
     
     /* Простой калькулятор */
     .calculator {
-      max-width: 320px;
+      max-width: 360px;
       margin: 0 auto;
-      background: #333;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      background: #0d0d1a;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+      color: #fff;
     }
     .calc-header {
-      height: 30px;
+      height: 32px;
       position: relative;
-      margin-bottom: 10px;
+      margin-bottom: 16px;
     }
     .calc-header::after {
       content: "AURASYSTEM";
@@ -84,21 +85,21 @@
       right: 0;
       text-align: center;
       color: #ff7700;
-      font-size: 14px;
+      font-size: 16px;
       animation: blink 1.5s infinite;
-      opacity: 0.7;
+      opacity: 0.8;
     }
     @keyframes blink {
-      0%, 100% { opacity: 0.7; }
-      50% { opacity: 0.3; }
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 0.4; }
     }
     .calc-display {
-      background: #1a1a1a;
-      color: #0f0;
+      background: #1a1a2a;
+      color: #4cff4c;
       font-size: 24px;
       padding: 16px;
       text-align: right;
-      border-radius: 8px;
+      border-radius: 12px;
       font-family: monospace;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -106,22 +107,22 @@
     .calc-buttons {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-top: 10px;
+      gap: 12px;
+      margin-top: 16px;
     }
     .calc-btn {
       padding: 14px 0;
-      background: #4a4a4a;
+      background: #2c2c3a;
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 12px;
       font-size: 18px;
       cursor: pointer;
       transition: background 0.2s;
     }
-    .calc-btn:hover { background: #5a5a5a; }
-    .calc-btn.operator { background: #ff9500; }
-    .calc-btn.operator:hover { background: #ffaa33; }
+    .calc-btn:hover { background: #3a3a4a; }
+    .calc-btn.operator { background: #ff7700; }
+    .calc-btn.operator:hover { background: #ffaa00; }
     .calc-btn.equals { background: #2196f3; }
     .calc-btn.equals:hover { background: #33a7ff; }
     .calc-btn.memory { background: #9c27b0; }
@@ -129,82 +130,110 @@
 
     /* Валютный конвертер */
     .currency-converter {
-      max-width: 320px;
+      max-width: 360px;
       margin: 0 auto;
-      background: #fff;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      background: #0d0d1a;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+      color: #fff;
     }
+
     .currency-header {
-      text-align: center;
-      font-size: 18px;
-      font-weight: bold;
-      color: #333;
-      margin-bottom: 10px;
       position: relative;
-      height: 30px;
+      height: 32px;
+      margin-bottom: 20px;
+      text-align: center;
     }
+
     .currency-header::after {
       content: "AURASYSTEM";
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      text-align: center;
       color: #ff7700;
-      animation: blink 1s infinite;
-      font-size: 14px;
-      opacity: 0.7;
+      font-size: 16px;
+      animation: blink 1.2s infinite;
+      opacity: 0.8;
     }
-    .currency-input {
+
+    .currency-input-group {
       display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 10px 0;
+      gap: 12px;
+      margin: 12px 0;
     }
-    .currency-input input {
-      width: 80px;
-      padding: 8px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+
+    .currency-input-field {
+      width: 100px;
+      padding: 12px;
+      font-size: 16px;
+      background: #1a1a2a;
+      border: 1px solid #333;
+      border-radius: 12px;
+      color: white;
       text-align: right;
+      outline: none;
+      transition: border 0.3s;
     }
-    .currency-input select {
+
+    .currency-input-field:focus {
+      border-color: #ff7700;
+      box-shadow: 0 0 0 2px rgba(255, 119, 0, 0.2);
+    }
+
+    .currency-select {
       flex: 1;
-      padding: 8px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      padding: 12px;
+      font-size: 15px;
+      background: #1a1a2a;
+      border: 1px solid #333;
+      border-radius: 12px;
+      color: white;
+      outline: none;
     }
-    .currency-arrow {
-      font-size: 20px;
-      color: #666;
-      cursor: pointer;
-      transition: color 0.2s;
+
+    .currency-select:focus {
+      border-color: #ff7700;
     }
-    .currency-arrow:hover { color: #ff7700; }
-    .currency-result {
-      font-size: 18px;
-      font-weight: bold;
-      margin: 10px 0;
-      padding: 10px;
-      background: #f0f8ff;
-      border-radius: 4px;
+
+    .currency-swap {
       text-align: center;
+      font-size: 24px;
+      color: #ff7700;
+      cursor: pointer;
+      margin: 10px 0;
+      transition: transform 0.3s;
     }
+
+    .currency-swap:hover {
+      transform: scale(1.2);
+    }
+
+    .currency-result {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 16px 0;
+      padding: 14px;
+      background: rgba(255, 119, 0, 0.08);
+      border-radius: 12px;
+      text-align: center;
+      color: #ffaa00;
+      border: 1px solid rgba(255, 119, 0, 0.2);
+    }
+
     .currency-rate {
       font-size: 14px;
-      color: #666;
+      color: #aaa;
       text-align: center;
-      margin: 5px 0;
+      margin: 8px 0;
     }
+
     .currency-info {
-      font-size: 12px;
-      color: #999;
+      font-size: 13px;
+      color: #777;
       text-align: center;
-      margin-top: 10px;
+      margin-top: 12px;
     }
 
     .footer {
@@ -268,9 +297,10 @@
   <div id="currency" class="panel">
     <div class="currency-converter">
       <div class="currency-header"></div>
-      <div class="currency-input">
-        <input type="number" id="fromAmount" value="1" oninput="convertCurrency()">
-        <select id="fromCurrency" onchange="convertCurrency()">
+      
+      <div class="currency-input-group">
+        <input type="number" id="fromAmount" value="1" oninput="convertFrom()" class="currency-input-field">
+        <select id="fromCurrency" onchange="convertFrom()" class="currency-select">
           <optgroup label="Крипто">
             <option value="BTC">BTC</option>
             <option value="ETH">ETH</option>
@@ -296,12 +326,12 @@
           </optgroup>
         </select>
       </div>
-      <div style="text-align: center; margin: 10px;">
-        <span class="currency-arrow" onclick="swapCurrencies()">↔</span>
-      </div>
-      <div class="currency-input">
-        <input type="number" id="toAmount" readonly>
-        <select id="toCurrency" onchange="convertCurrency()">
+      
+      <div class="currency-swap" onclick="swapCurrencies()">↔</div>
+      
+      <div class="currency-input-group">
+        <input type="number" id="toAmount" value="" oninput="convertTo()" class="currency-input-field">
+        <select id="toCurrency" onchange="convertTo()" class="currency-select">
           <optgroup label="Крипто">
             <option value="BTC">BTC</option>
             <option value="ETH">ETH</option>
@@ -327,6 +357,7 @@
           </optgroup>
         </select>
       </div>
+      
       <div class="currency-result" id="result">—</div>
       <div class="currency-rate" id="rate">—</div>
       <div class="currency-info" id="rate-info">Загрузка курсов...</div>
@@ -334,11 +365,11 @@
   </div>
   
   <div id="excel" class="panel">
-    <p>📊 Excel-режим (скоро)</p>
+    <p style="color:#fff; padding:20px; text-align:center;">📊 Excel-режим (скоро)</p>
   </div>
   
   <div id="qr" class="panel">
-    <p>📱 QR-код (скоро)</p>
+    <p style="color:#fff; padding:20px; text-align:center;">📱 QR-код (скоро)</p>
   </div>
 </div>
 
@@ -420,6 +451,8 @@
     DOGE: 1/0.172, ADA: 1/0.45, USDT: 1/1.0001
   };
 
+  let isConverting = false;
+
   async function loadRates() {
     if (rates) return;
     try {
@@ -430,11 +463,11 @@
         rates[id.toUpperCase()] = data[id];
       }
       document.getElementById('rate-info').textContent = '✅ Онлайн-курсы';
-      convertCurrency();
+      convertFrom();
     } catch (e) {
       rates = null;
       document.getElementById('rate-info').textContent = '⚠️ Offline (статичные курсы)';
-      convertCurrency();
+      convertFrom();
     }
   }
 
@@ -446,42 +479,65 @@
         return amount * rates[id].usd;
       }
     }
-    // fallback to static
     return amount / STATIC_RATES_USD[currency];
   }
 
-  function convertCurrency() {
-    const fromAmount = parseFloat(document.getElementById('fromAmount').value) || 0;
+  function convertFrom() {
+    if (isConverting) return;
+    isConverting = true;
     const from = document.getElementById('fromCurrency').value;
     const to = document.getElementById('toCurrency').value;
-
+    const fromAmount = parseFloat(document.getElementById('fromAmount').value) || 0;
+    
     if (from === to) {
-      const v = fromAmount.toFixed(6);
+      const v = fromAmount;
       document.getElementById('toAmount').value = v;
       document.getElementById('result').textContent = `${fromAmount} ${from} = ${v} ${to}`;
       document.getElementById('rate').textContent = '';
-      return;
+    } else {
+      const usd = getUSDPrice(from, fromAmount);
+      const toAmount = usd / getUSDPrice(to, 1);
+      document.getElementById('toAmount').value = toAmount.toFixed(6);
+      document.getElementById('result').textContent = `${fromAmount} ${from} = ${toAmount.toFixed(6)} ${to}`;
+      document.getElementById('rate').textContent = `1 ${from} = ${(toAmount / fromAmount).toFixed(6)} ${to}`;
     }
+    isConverting = false;
+  }
 
-    // Convert from -> USD
-    const usd = getUSDPrice(from, fromAmount);
-    // Convert USD -> to
-    const toAmount = usd / getUSDPrice(to, 1);
-
-    document.getElementById('toAmount').value = toAmount.toFixed(6);
-    document.getElementById('result').textContent = `${fromAmount} ${from} = ${toAmount.toFixed(6)} ${to}`;
-    document.getElementById('rate').textContent = `1 ${from} = ${(toAmount / fromAmount).toFixed(6)} ${to}`;
+  function convertTo() {
+    if (isConverting) return;
+    isConverting = true;
+    const from = document.getElementById('fromCurrency').value;
+    const to = document.getElementById('toCurrency').value;
+    const toAmount = parseFloat(document.getElementById('toAmount').value) || 0;
+    
+    if (from === to) {
+      document.getElementById('fromAmount').value = toAmount;
+      document.getElementById('result').textContent = `${toAmount} ${to} = ${toAmount} ${from}`;
+      document.getElementById('rate').textContent = '';
+    } else {
+      const usd = getUSDPrice(to, toAmount);
+      const fromAmount = usd / getUSDPrice(from, 1);
+      document.getElementById('fromAmount').value = fromAmount.toFixed(6);
+      document.getElementById('result').textContent = `${fromAmount.toFixed(6)} ${from} = ${toAmount} ${to}`;
+      document.getElementById('rate').textContent = `1 ${to} = ${(fromAmount / toAmount).toFixed(6)} ${from}`;
+    }
+    isConverting = false;
   }
 
   function swapCurrencies() {
-    const from = document.getElementById('fromCurrency');
-    const to = document.getElementById('toCurrency');
-    const fromAmount = document.getElementById('fromAmount').value;
-    const tempFrom = from.value;
-    from.value = to.value;
-    to.value = tempFrom;
+    const fromSel = document.getElementById('fromCurrency');
+    const toSel = document.getElementById('toCurrency');
+    const fromVal = fromSel.value;
+    const fromAmt = document.getElementById('fromAmount').value;
+    
+    fromSel.value = toSel.value;
+    toSel.value = fromVal;
+    
     document.getElementById('fromAmount').value = document.getElementById('toAmount').value;
-    convertCurrency();
+    document.getElementById('toAmount').value = fromAmt;
+    
+    convertFrom();
   }
 
   // =============== ОСТАЛЬНОЕ ===============
