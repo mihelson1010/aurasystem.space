@@ -21,14 +21,10 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(45deg, #0d0d1a, #1a1a2a, #0d0d1a);
-      background-size: 600% 600%;
-      animation: gradientBG 21s ease infinite;
+      background-size: cover;
+      background-position: center;
+      transition: opacity 1s ease-in-out;
       z-index: -1;
-    }
-    @keyframes gradientBG {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
     }
     .dropzone {
       width: 100%;
@@ -62,7 +58,7 @@
 </head>
 <body>
 
-<div class="background"></div>
+<div class="background" id="bg"></div>
 
 <div class="dropzone" id="dropzone">
   <p>📷 Перетащите фото товара<br><small>(JPG, PNG)</small></p>
@@ -81,11 +77,53 @@
 </div>
 
 <script>
+  // Предзагрузка фонов
+  const backgrounds = [
+    'bg1.jpg',
+    'bg2.jpg',
+    'bg3.jpg',
+    'bg4.jpg',
+    'bg5.jpg',
+    'bg6.jpg',
+    'bg7.jpg'
+  ];
+
+  backgrounds.forEach(url => {
+    const img = new Image();
+    img.src = url;
+  });
+
+  let currentBg = 0;
+  function changeBackground() {
+    const bg = document.getElementById('bg');
+    bg.classList.remove('fade-in');
+    bg.classList.add('fade-out');
+
+    setTimeout(() => {
+      currentBg = (currentBg + 1) % backgrounds.length;
+      bg.style.backgroundImage = `url('${backgrounds[currentBg]}')`;
+      bg.classList.remove('fade-out');
+      bg.classList.add('fade-in');
+    }, 1000);
+  }
+
+  // Запуск смены фона
+  setInterval(changeBackground, 7000);
+  document.getElementById('bg').style.backgroundImage = `url('${backgrounds[0]}')`;
+  document.getElementById('bg').classList.add('fade-in');
+
+  // Обработка фото
   const dropzone = document.getElementById('dropzone');
   dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
   dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
   dropzone.addEventListener('drop', (e) => { e.preventDefault(); showResult(); });
-  dropzone.addEventListener('click', () => { const input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*'; input.onchange = () => showResult(); input.click(); });
+  dropzone.addEventListener('click', () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = () => showResult();
+    input.click();
+  });
 
   function showResult() {
     dropzone.style.display = 'none';
