@@ -59,11 +59,20 @@
       caret-color:#000;
     }
     .panel { display:none; margin-top:20px; }
+    .calc-container {
+      max-width: 360px;
+      margin: 0 auto;
+      background: #0d0d1a;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+      color: #fff;
+    }
     .calc-header {
-      height:32px;
-      position:relative;
-      margin-bottom:16px;
-      background: #999;
+      height: 32px;
+      position: relative;
+      margin-bottom: 16px;
+      background: #0d0d1a;
       border-radius: 12px;
       padding: 8px;
       text-align: center;
@@ -76,7 +85,7 @@
       50% { opacity: 0.4; }
     }
     .calc-display {
-      background: #0d0d1a;
+      background: #1a1a2a;
       color: #4cff4c;
       font-size: 24px;
       padding: 16px;
@@ -107,8 +116,8 @@
     .calc-btn.orange:hover { background: #ffaa00; }
     .calc-btn.green { background: #2ecc71; }
     .calc-btn.green:hover { background: #27ae60; }
-    .calc-btn.purple { background: #9b59b6; }
-    .calc-btn.purple:hover { background: #af37c2; }
+    .calc-btn.memory { background: #9b59b6; }
+    .calc-btn.memory:hover { background: #af37c2; }
 
     .footer {
       position:fixed;
@@ -136,33 +145,35 @@
   <div id="editor" contenteditable="true" spellcheck="false">Start typing here...</div>
   
   <div id="calc" class="panel">
-    <div class="calc-header">CryptoAura</div>
-    <div class="calc-display" id="calc-display">0</div>
-    <div class="calc-buttons">
-      <button class="calc-btn purple" onclick="calcMR()">MR</button>
-      <button class="calc-btn purple" onclick="calcMC()">MC</button>
-      <button class="calc-btn gray" onclick="calcClear()">C</button>
-      <button class="calc-btn gray" onclick="calcClearEntry()">CE</button>
-      <button class="calc-btn gray" onclick="calcInput('7')">7</button>
-      <button class="calc-btn gray" onclick="calcInput('8')">8</button>
-      <button class="calc-btn gray" onclick="calcInput('9')">9</button>
-      <button class="calc-btn orange" onclick="calcInput('/')">/</button>
-      <button class="calc-btn gray" onclick="calcInput('4')">4</button>
-      <button class="calc-btn gray" onclick="calcInput('5')">5</button>
-      <button class="calc-btn gray" onclick="calcInput('6')">6</button>
-      <button class="calc-btn orange" onclick="calcInput('*')">*</button>
-      <button class="calc-btn gray" onclick="calcInput('1')">1</button>
-      <button class="calc-btn gray" onclick="calcInput('2')">2</button>
-      <button class="calc-btn gray" onclick="calcInput('3')">3</button>
-      <button class="calc-btn orange" onclick="calcInput('-')">-</button>
-      <button class="calc-btn gray" onclick="calcInput('0')">0</button>
-      <button class="calc-btn gray" onclick="calcInput('.')">.</button>
-      <button class="calc-btn green" onclick="calcInput('Math.sqrt(')">√</button>
-      <button class="calc-btn orange" onclick="calcInput('+')">+</button>
-      <button class="calc-btn purple" onclick="calcMPlus()">M+</button>
-      <button class="calc-btn gray" onclick="calcInput('%')">%</button>
-      <button class="calc-btn green" onclick="calcEquals()">=</button>
-      <button class="calc-btn" style="background:#e74c3c;" onclick="calcBackspace()">⌫</button>
+    <div class="calc-container">
+      <div class="calc-header">CryptoAura</div>
+      <div class="calc-display" id="calc-display">0</div>
+      <div class="calc-buttons">
+        <button class="calc-btn memory" onclick="calcMR()">MR</button>
+        <button class="calc-btn memory" onclick="calcMC()">MC</button>
+        <button class="calc-btn gray" onclick="calcClear()">C</button>
+        <button class="calc-btn gray" onclick="calcClearEntry()">CE</button>
+        <button class="calc-btn gray" onclick="calcInput('7')">7</button>
+        <button class="calc-btn gray" onclick="calcInput('8')">8</button>
+        <button class="calc-btn gray" onclick="calcInput('9')">9</button>
+        <button class="calc-btn orange" onclick="calcInput('/')">/</button>
+        <button class="calc-btn gray" onclick="calcInput('4')">4</button>
+        <button class="calc-btn gray" onclick="calcInput('5')">5</button>
+        <button class="calc-btn gray" onclick="calcInput('6')">6</button>
+        <button class="calc-btn orange" onclick="calcInput('*')">*</button>
+        <button class="calc-btn gray" onclick="calcInput('1')">1</button>
+        <button class="calc-btn gray" onclick="calcInput('2')">2</button>
+        <button class="calc-btn gray" onclick="calcInput('3')">3</button>
+        <button class="calc-btn orange" onclick="calcInput('-')">-</button>
+        <button class="calc-btn gray" onclick="calcInput('0')">0</button>
+        <button class="calc-btn gray" onclick="calcInput('.')">.</button>
+        <button class="calc-btn green" onclick="calcInput('Math.sqrt(')">√</button>
+        <button class="calc-btn orange" onclick="calcInput('+')">+</button>
+        <button class="calc-btn memory" onclick="calcMPlus()">M+</button>
+        <button class="calc-btn gray" onclick="calcInput('%')">%</button>
+        <button class="calc-btn green" onclick="calcEquals()">=</button>
+        <button class="calc-btn" style="background:#e74c3c;" onclick="calcBackspace()">⌫</button>
+      </div>
     </div>
   </div>
   
