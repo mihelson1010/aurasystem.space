@@ -15,7 +15,6 @@
       position: relative;
       background: #000;
     }
-
     .background {
       position: fixed;
       top: 0;
@@ -27,12 +26,10 @@
       animation: gradientBG 21s ease infinite;
       z-index: -1;
     }
-
     @keyframes gradientBG {
       0%, 100% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
     }
-
     .dropzone {
       width: 100%;
       max-width: 600px;
@@ -46,17 +43,6 @@
       background: rgba(255,255,255,0.05);
       box-shadow: 0 16px 40px rgba(0,0,0,0.2);
     }
-    .dropzone:hover, .dropzone.dragover {
-      background: rgba(255,255,255,0.1);
-      transform: scale(1.02);
-    }
-    .dropzone p {
-      color: #ea580c;
-      font-size: 1.4rem;
-      text-align: center;
-      padding: 0 2rem;
-    }
-
     .result {
       display: none;
       width: 100%;
@@ -71,20 +57,6 @@
     }
     .result.active {
       display: block;
-    }
-    .result h3 {
-      color: #ea580c;
-      margin-bottom: 10px;
-    }
-    .price-item {
-      margin: 10px 0;
-      padding: 10px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 8px;
-    }
-    .price-item span {
-      font-weight: bold;
-      color: #ff7700;
     }
   </style>
 </head>
@@ -110,25 +82,10 @@
 
 <script>
   const dropzone = document.getElementById('dropzone');
-  dropzone.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    dropzone.classList.add('dragover');
-  });
-  dropzone.addEventListener('dragleave', () => {
-    dropzone.classList.remove('dragover');
-  });
-  dropzone.addEventListener('drop', (e) => {
-    e.preventDefault();
-    dropzone.classList.remove('dragover');
-    showResult();
-  });
-  dropzone.addEventListener('click', () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.onchange = () => showResult();
-    input.click();
-  });
+  dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+  dropzone.addEventListener('drop', (e) => { e.preventDefault(); showResult(); });
+  dropzone.addEventListener('click', () => { const input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*'; input.onchange = () => showResult(); input.click(); });
 
   function showResult() {
     dropzone.style.display = 'none';
@@ -141,10 +98,10 @@
     if (!cat) return prices.innerHTML = '';
 
     const data = {
-      smartphone: { name: 'iPhone 15 Pro Max', prices: [{s:'Amazon',p:'$999'},{s:'eBay',p:'$950'},{s:'AliExpress',p:'$899'}] },
-      laptop: { name: 'MacBook Pro M3', prices: [{s:'Apple',p:'$1999'},{s:'Amazon',p:'$1799'},{s:'Best Buy',p:'$1899'}] },
-      watch: { name: 'Apple Watch S9', prices: [{s:'Apple',p:'$399'},{s:'Amazon',p:'$379'},{s:'Walmart',p:'$369'}] },
-      headphones: { name: 'Sony WH-1000XM5', prices: [{s:'Amazon',p:'$399'},{s:'Best Buy',p:'$379'},{s:'Sony Store',p:'$399'}] }
+      smartphone: { name: 'iPhone 15 Pro Max', prices: [{s:'Amazon',p:'$999'},{s:'eBay',p:'$950'}] },
+      laptop: { name: 'MacBook Pro M3', prices: [{s:'Apple',p:'$1999'},{s:'Amazon',p:'$1799'}] },
+      watch: { name: 'Apple Watch S9', prices: [{s:'Apple',p:'$399'},{s:'Amazon',p:'$379'}] },
+      headphones: { name: 'Sony WH-1000XM5', prices: [{s:'Amazon',p:'$399'},{s:'BestBuy',p:'$379'}] }
     }[cat];
 
     prices.innerHTML = `
