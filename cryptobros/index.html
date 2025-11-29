@@ -110,8 +110,15 @@
   <div class="lang-label" id="langLabel">Language</div>
   <div class="lang-dropdown" id="langDropdown">
     <div class="lang-item" data-lang="en">EN</div>
-    <div class="lang-item" data-lang="he">עברית</div>
     <div class="lang-item" data-lang="ru">RU</div>
+    <div class="lang-item" data-lang="es">ES</div>
+    <div class="lang-item" data-lang="fr">FR</div>
+    <div class="lang-item" data-lang="zh">中文</div>
+    <div class="lang-item" data-lang="ja">日本語</div>
+    <div class="lang-item" data-lang="he">עברית</div>
+    <div class="lang-item" data-lang="ar">العربية</div>
+    <div class="lang-item" data-lang="de">DE</div>
+    <div class="lang-item" data-lang="pt">PT</div>
   </div>
 </div>
 
@@ -139,10 +146,55 @@
 </div>
 
 <script>
+  // === 10 ЯЗЫКОВ ДЛЯ ИНТЕРФЕЙСА ===
+  const uiTexts = {
+    en: { create: "Create Account", agree: "I agree with the CRYPTOBROS Manifest", pay: "Confirm & Pay 300 AUS" },
+    ru: { create: "Создать аккаунт", agree: "Я согласен с Манифестом CRYPTOBROS", pay: "Подтвердить и оплатить 300 AUS" },
+    es: { create: "Crear cuenta", agree: "Acepto el Manifiesto de CRYPTOBROS", pay: "Confirmar y pagar 300 AUS" },
+    fr: { create: "Créer un compte", agree: "J'accepte le Manifeste CRYPTOBROS", pay: "Confirmer et payer 300 AUS" },
+    zh: { create: "创建账户", agree: "我同意 CRYPTOBROS 宣言", pay: "确认并支付 300 AUS" },
+    ja: { create: "アカウントを作成", agree: "CRYPTOBROS 宣言に同意します", pay: "確認して 300 AUS を支払う" },
+    he: { create: "יצירת חשבון", agree: "אני מסכים למניפסטו של CRYPTOBROS", pay: "אישור ותשלום 300 AUS" },
+    ar: { create: "إنشاء حساب", agree: "أوافق على بيان CRYPTOBROS", pay: "تأكيد ودفع 300 AUS" },
+    de: { create: "Konto erstellen", agree: "Ich stimme dem CRYPTOBROS-Manifest zu", pay: "Bestätigen und 300 AUS bezahlen" },
+    pt: { create: "Criar conta", agree: "Concordo com o Manifesto CRYPTOBROS", pay: "Confirmar e pagar 300 AUS" }
+  };
+
+  // Манифест — остаётся на EN/HE/RU как раньше
   const manifestTexts = {
-    en: { title: "CRYPTOBROS MANIFESTO", lines: ["Bros in. Noise out.","No servers. Zero KYC. Only wallet.","We do not advise buying! We advise not buying!","Pay with $AuraSpace to prove you’re real.","Privacy-native. End-to-end encrypted.","Full control. No tracking. Ever."], consent: "I agree with the CRYPTOBROS Manifest" },
-    he: { title: "מניפסטו של CRYPTOBROS", lines: ["בראס פנימה. רעש החוצה.","אין שרתים. אפס KYC. רק ארנק.","אנחנו לא מייעצים לקנות! אנחנו מייעצים לא לקנות!","שילמו ב-$AuraSpace כדי להוכיח שאתם אמיתיים.","פרטי מטבעו. מוצפן מקצה לקצה.","שליטה מלאה. אפס מעקב. לעולם לא."], consent: "אני מסכים למניפסטו של CRYPTOBROS" },
-    ru: { title: "МАНИФЕСТ CRYPTOBROS", lines: ["Братья — внутрь. Шум — наружу.","Нет серверов. Ноль KYC. Только кошелёк.","Мы не советуем покупать! Мы советуем не покупать!","Заплатите $AuraSpace, чтобы доказать, что вы настоящий.","Приватность — по умолчанию. Сквозное шифрование.","Полный контроль. Никакого трекинга. Никогда."], consent: "Я согласен с Манифестом CRYPTOBROS" }
+    en: {
+      title: "CRYPTOBROS MANIFESTO",
+      lines: [
+        "Bros in. Noise out.",
+        "No servers. Zero KYC. Only wallet.",
+        "We do not advise buying! We advise not buying!",
+        "Pay with $AuraSpace to prove you’re real.",
+        "Privacy-native. End-to-end encrypted.",
+        "Full control. No tracking. Ever."
+      ]
+    },
+    he: {
+      title: "מניפסטו של CRYPTOBROS",
+      lines: [
+        "בראס פנימה. רעש החוצה.",
+        "אין שרתים. אפס KYC. רק ארנק.",
+        "אנחנו לא מייעצים לקנות! אנחנו מייעצים לא לקנות!",
+        "שילמו ב-$AuraSpace כדי להוכיח שאתם אמיתיים.",
+        "פרטי מטבעו. מוצפן מקצה לקצה.",
+        "שליטה מלאה. אפס מעקב. לעולם לא."
+      ]
+    },
+    ru: {
+      title: "МАНИФЕСТ CRYPTOBROS",
+      lines: [
+        "Братья — внутрь. Шум — наружу.",
+        "Нет серверов. Ноль KYC. Только кошелёк.",
+        "Мы не советуем покупать! Мы советуем не покупать!",
+        "Заплатите $AuraSpace, чтобы доказать, что вы настоящий.",
+        "Приватность — по умолчанию. Сквозное шифрование.",
+        "Полный контроль. Никакого трекинга. Никогда."
+      ]
+    }
   };
 
   let currentLang = 'en';
@@ -157,31 +209,41 @@
     item.addEventListener('click', () => {
       const lang = item.getAttribute('data-lang');
       currentLang = lang;
-      label.textContent = lang === 'he' ? 'עברית' : (lang === 'ru' ? 'RU' : 'EN');
-      updateManifest(lang);
+      // Обновляем интерфейс
+      document.getElementById('create-btn').textContent = uiTexts[lang].create;
+      document.getElementById('modal-consent-label').textContent = uiTexts[lang].agree;
+      document.getElementById('modal-pay-btn').textContent = uiTexts[lang].pay;
+      // Обновляем язык документа
+      document.getElementById('html-root').lang = lang;
+      if (lang === 'he' || lang === 'ar') {
+        document.body.style.direction = 'rtl';
+      } else {
+        document.body.style.direction = 'ltr';
+      }
+      // Обновляем надпись языка
+      label.textContent = item.textContent;
       dropdown.style.display = 'none';
     });
   });
-
-  function updateManifest(lang) {
-    const manifest = document.getElementById('modal-manifest');
-    const lines = manifestTexts[lang].lines.join('<br>');
-    document.getElementById('modal-title').textContent = manifestTexts[lang].title;
-    manifest.innerHTML = lines;
-    document.getElementById('modal-consent-label').textContent = manifestTexts[lang].consent;
-    document.getElementById('html-root').lang = lang;
-    if (lang === 'he') document.body.style.direction = 'rtl';
-    else document.body.style.direction = 'ltr';
-  }
 
   document.getElementById('create-btn').onclick = () => {
     document.getElementById('manifest-modal').style.display = 'block';
     updateManifest(currentLang);
   };
 
+  function updateManifest(lang) {
+    // Для манифеста используем только en/he/ru
+    const manifestLang = ['he', 'ru'].includes(lang) ? lang : 'en';
+    const manifest = document.getElementById('modal-manifest');
+    const lines = manifestTexts[manifestLang].lines.join('<br>');
+    document.getElementById('modal-title').textContent = manifestTexts[manifestLang].title;
+    manifest.innerHTML = lines;
+    document.getElementById('modal-consent-label').textContent = uiTexts[currentLang].agree;
+  }
+
   document.getElementById('modal-pay-btn').onclick = () => {
     if (!document.getElementById('modal-consent').checked) {
-      alert('Please agree to the Manifest');
+      alert(uiTexts[currentLang].agree);
       return;
     }
     alert(`Send 300 AUS to:\n5R8wHTuWuhxGE6qUHbPh4RZatKBAvxJKpmLAdA2GbzPL`);
