@@ -63,7 +63,7 @@
       height:32px;
       position:relative;
       margin-bottom:16px;
-      background: #0d0d1a;
+      background: #999;
       border-radius: 12px;
       padding: 8px;
       text-align: center;
@@ -76,7 +76,7 @@
       50% { opacity: 0.4; }
     }
     .calc-display {
-      background: #1a1a2a;
+      background: #0d0d1a;
       color: #4cff4c;
       font-size: 24px;
       padding: 16px;
@@ -107,8 +107,8 @@
     .calc-btn.orange:hover { background: #ffaa00; }
     .calc-btn.green { background: #2ecc71; }
     .calc-btn.green:hover { background: #27ae60; }
-    .calc-btn.memory { background: #9b59b6; }
-    .calc-btn.memory:hover { background: #af37c2; }
+    .calc-btn.purple { background: #9b59b6; }
+    .calc-btn.purple:hover { background: #af37c2; }
 
     .footer {
       position:fixed;
@@ -139,8 +139,8 @@
     <div class="calc-header">CryptoAura</div>
     <div class="calc-display" id="calc-display">0</div>
     <div class="calc-buttons">
-      <button class="calc-btn memory" onclick="calcMR()">MR</button>
-      <button class="calc-btn memory" onclick="calcMC()">MC</button>
+      <button class="calc-btn purple" onclick="calcMR()">MR</button>
+      <button class="calc-btn purple" onclick="calcMC()">MC</button>
       <button class="calc-btn gray" onclick="calcClear()">C</button>
       <button class="calc-btn gray" onclick="calcClearEntry()">CE</button>
       <button class="calc-btn gray" onclick="calcInput('7')">7</button>
@@ -159,7 +159,7 @@
       <button class="calc-btn gray" onclick="calcInput('.')">.</button>
       <button class="calc-btn green" onclick="calcInput('Math.sqrt(')">√</button>
       <button class="calc-btn orange" onclick="calcInput('+')">+</button>
-      <button class="calc-btn memory" onclick="calcMPlus()">M+</button>
+      <button class="calc-btn purple" onclick="calcMPlus()">M+</button>
       <button class="calc-btn gray" onclick="calcInput('%')">%</button>
       <button class="calc-btn green" onclick="calcEquals()">=</button>
       <button class="calc-btn" style="background:#e74c3c;" onclick="calcBackspace()">⌫</button>
