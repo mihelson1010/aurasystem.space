@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -17,7 +17,6 @@
       justify-content: flex-start;
       align-items: center;
     }
-
     h1 {
       font-size: 3.5rem;
       font-weight: bold;
@@ -25,14 +24,11 @@
       margin: 20px 0 10px;
       letter-spacing: 2px;
     }
-
     .tagline {
       font-size: 1.3rem;
       margin-bottom: 30px;
       line-height: 1.4;
     }
-
-    /* Бегущие строки */
     .ticker {
       white-space: nowrap;
       overflow: hidden;
@@ -41,48 +37,40 @@
       background: #000;
       font-size: 1.15rem;
     }
-
     .ticker-inner {
       display: inline-block;
       padding-left: 100%;
       animation: ticker-scroll linear infinite;
     }
-
     .ticker.tips .ticker-inner {
       color: #a0e0ff;
       text-shadow: 0 0 10px #0ff;
       animation-duration: 80s;
     }
-
     .ticker.prices .ticker-inner {
       color: #4cff4c;
       text-shadow: 0 0 10px #0f0;
       animation-duration: 60s;
     }
-
     @keyframes ticker-scroll {
       0% { transform: translateX(0); }
       100% { transform: translateX(-100%); }
     }
-
-    /* Сетка бирж */
     .exchanges-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 24px;
-      padding: 0 20px 30px;
+      padding: 20px;
       max-width: 1200px;
-      width: 100%;
       margin: 0 auto;
+      width: 100%;
     }
-
     @media (max-width: 900px) {
       .exchanges-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 600px) {
       .exchanges-grid { grid-template-columns: 1fr; }
     }
-
     .exchange-card {
       background: #0b0b0b;
       border: 1px solid #333;
@@ -91,12 +79,6 @@
       text-align: center;
       transition: all 0.3s ease;
     }
-
-    .exchange-card:hover {
-      border-color: #0ff;
-      box-shadow: 0 0 16px rgba(0, 255, 255, 0.35);
-    }
-
     .exchange-card h3 {
       font-size: 1.4rem;
       margin: 8px 0 12px;
@@ -105,19 +87,16 @@
       justify-content: center;
       gap: 8px;
     }
-
     .exchange-card a {
       color: #0ff;
       text-decoration: none;
       font-weight: bold;
       font-size: 1.1rem;
     }
-
     .exchange-card a:hover {
       color: #fff;
       text-shadow: 0 0 8px #0ff;
     }
-
     .footer {
       position: fixed;
       bottom: 12px;
@@ -129,7 +108,6 @@
       animation: neonFlicker 3.5s infinite alternate;
       pointer-events: none;
     }
-
     @keyframes neonFlicker {
       0%, 100% { opacity: 0.9; text-shadow: 0 0 8px rgba(76, 255, 76, 0.5); }
       50% { opacity: 0.6; text-shadow: 0 0 4px rgba(76, 255, 76, 0.3); }
@@ -145,12 +123,10 @@
   No servers. No accounts. Full control.
 </div>
 
-<!-- Верхняя живая строка -->
 <div class="ticker tips">
-  <div id="tipTicker" class="ticker-inner">Загрузка советов...</div>
+  <div id="tipTicker" class="ticker-inner">Market overbought — DO NOT BUY • BTC dominance rising — altseason delayed • Fed rate decision tomorrow — expect volatility • NEVER chase pumps • Privacy > profit • No servers. No accounts. Full control •</div>
 </div>
 
-<!-- Окна бирж -->
 <div class="exchanges-grid">
   <div class="exchange-card">
     <h3>🟡 Binance</h3>
@@ -178,66 +154,11 @@
   </div>
 </div>
 
-<!-- Нижняя строка — пока статичная (можно добавить CoinGecko позже) -->
 <div class="ticker prices">
-  <div id="priceTicker" class="ticker-inner">
-    BTC: $92,410 ▲ • ETH: $2,870 ▲ • XRP: $0.58 ▼ • DOGE: $0.172 ▲ • ADA: $0.45 ▲ • SOL: $172 ▲ • USD: ₽93.7 • EUR: ₽102.3
-  </div>
+  <div id="priceTicker" class="ticker-inner">BTC: $92,410 ▲ • ETH: $2,870 ▲ • XRP: $0.58 ▼ • DOGE: $0.172 ▲ • ADA: $0.45 ▲ • SOL: $172 ▲ • USD: ₽93.7 • EUR: ₽102.3</div>
 </div>
 
 <div class="footer">© AURASYSTEM • Full control. No tracking. • aurasystem.space</div>
-
-<script>
-  // === ЖИВАЯ ВЕРХНЯЯ СТРОКА ===
-  const STATIC_TIPS = [
-    "Market overbought — DO NOT BUY •",
-    "BTC dominance rising — altseason delayed •",
-    "Fed rate decision tomorrow — expect volatility •",
-    "NEVER chase pumps •",
-    "Privacy > profit •",
-    "No servers. No accounts. Full control •"
-  ];
-
-  function updateTips(tips) {
-    document.getElementById('tipTicker').textContent = tips.join(' ');
-  }
-
-  async function fetchLiveTips() {
-    try {
-      // Используем публичный RSS-прокси (работает без API-ключа)
-      const proxy = 'https://rsshub.app/twitter/user/AuraCryptoLive';
-      const response = await fetch(proxy);
-      const xmlText = await response.text();
-      
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(xmlText, 'application/xml');
-      const items = doc.querySelectorAll('item');
-      
-      if (items.length === 0) throw new Error('No items');
-      
-      const tips = Array.from(items)
-        .slice(0, 5)
-        .map(item => {
-          let text = item.querySelector('title').textContent;
-          // Очищаем от лишнего (например, от "AuraCryptoLive:")
-          text = text.replace(/^AuraCryptoLive:\s*/, '');
-          return text + ' •';
-        });
-      
-      updateTips(tips);
-      console.log('✅ Советы загружены из @AuraCryptoLive');
-    } catch (error) {
-      console.warn('⚠️ RSS недоступен — использую статические советы', error);
-      updateTips(STATIC_TIPS);
-    }
-  }
-
-  // Первый запуск
-  fetchLiveTips();
-  
-  // Обновление каждые 30 минут
-  setInterval(fetchLiveTips, 30 * 60 * 1000);
-</script>
 
 </body>
 </html>
