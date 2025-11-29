@@ -18,14 +18,14 @@
     }
     .logo-container {
       width: 100%;
-      max-width: 400px;
+      max-width: 450px;
       margin: 20px auto;
       text-align: center;
     }
     .logo-img {
       width: 100%;
       height: auto;
-      max-width: 400px;
+      max-width: 450px;
       border-radius: 16px;
       box-shadow: 0 8px 30px rgba(255, 255, 255, 0.1);
     }
@@ -50,21 +50,26 @@
       text-shadow: 0 0 4px rgba(76, 255, 76, 0.5);
       animation: neonFlicker 3s infinite alternate;
       margin-bottom: 4px;
+      cursor: pointer;
     }
-    @keyframes neonFlicker {
-      0%, 100% { opacity: 0.9; text-shadow: 0 0 4px rgba(76, 255, 76, 0.5); }
-      50% { opacity: 0.6; text-shadow: 0 0 2px rgba(76, 255, 76, 0.3); }
+    .lang-dropdown {
+      display: none;
+      background: #0d0d1a;
+      border: 1px solid #444;
+      border-radius: 6px;
+      margin-top: 4px;
     }
-    .lang-select {
-      padding: 4px 8px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid #666;
+    .lang-item {
+      padding: 6px 12px;
       color: white;
-      border-radius: 4px;
+      cursor: pointer;
+    }
+    .lang-item:hover {
+      background: #222;
     }
     #create-btn {
       display: block;
-      margin: 50px auto;
+      margin: 80px auto 0;
     }
     .btn {
       padding: 14px 32px;
@@ -72,16 +77,9 @@
       font-size: 1.2rem;
       font-weight: bold;
       color: white;
-      text-decoration: none;
-      text-align: center;
       background: linear-gradient(135deg, #ff7700, #ffaa00);
       border: none;
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(255, 119, 0, 0.4);
     }
     .footer {
       position: fixed;
@@ -99,54 +97,22 @@
       50% { opacity: 0.6; text-shadow: 0 0 4px rgba(76, 255, 76, 0.3); }
     }
 
-    /* Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 100;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.8);
-    }
-    .modal-content {
-      background: #0d0d1a;
-      margin: 50px auto;
-      padding: 30px;
-      border-radius: 16px;
-      max-width: 800px;
-      margin-top: 100px;
-    }
-    .manifest-text {
-      background: rgba(0,0,0,0.4);
-      padding: 20px;
-      border-radius: 12px;
-      margin: 20px 0;
-      line-height: 1.6;
-    }
-    .consent {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 20px 0;
-    }
-    .close {
-      float: right;
-      cursor: pointer;
-      font-size: 1.4rem;
-    }
+    .modal { display: none; position: fixed; z-index:100; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.8); }
+    .modal-content { background:#0d0d1a; margin:100px auto; padding:30px; border-radius:16px; max-width:800px; }
+    .close { float:right; cursor:pointer; font-size:1.4rem; }
+    .manifest-text { background:rgba(0,0,0,0.4); padding:20px; border-radius:12px; margin:20px 0; line-height:1.6; }
+    .consent { display:flex; align-items:center; gap:12px; margin:20px 0; }
   </style>
 </head>
 <body>
 
-<div class="lang-selector">
-  <div class="lang-label">Language</div>
-  <select class="lang-select" id="lang-select">
-    <option value="en">EN</option>
-    <option value="he">עברית</option>
-    <option value="ru">RU</option>
-  </select>
+<div class="lang-selector" id="langSelector">
+  <div class="lang-label" id="langLabel">Language</div>
+  <div class="lang-dropdown" id="langDropdown">
+    <div class="lang-item" data-lang="en">EN</div>
+    <div class="lang-item" data-lang="he">עברית</div>
+    <div class="lang-item" data-lang="ru">RU</div>
+  </div>
 </div>
 
 <div class="logo-container">
@@ -159,19 +125,11 @@
 
 <div class="footer">Produced by Mihelson © 2025</div>
 
-<!-- Modal -->
 <div id="manifest-modal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeModal()">&times;</span>
     <h2 id="modal-title">CRYPTOBROS MANIFESTO</h2>
-    <div class="manifest-text" id="modal-manifest">
-      Bros in. Noise out.<br>
-      No servers. Zero KYC. Only wallet.<br>
-      We do not advise buying! We advise not buying!<br>
-      Pay with $AuraSpace to prove you’re real.<br>
-      Privacy-native. End-to-end encrypted.<br>
-      Full control. No tracking. Ever.
-    </div>
+    <div class="manifest-text" id="modal-manifest"></div>
     <div class="consent">
       <input type="checkbox" id="modal-consent">
       <label for="modal-consent" id="modal-consent-label">I agree with the CRYPTOBROS Manifest</label>
@@ -182,77 +140,51 @@
 
 <script>
   const manifestTexts = {
-    en: {
-      title: "CRYPTOBROS MANIFESTO",
-      lines: [
-        "Bros in. Noise out.",
-        "No servers. Zero KYC. Only wallet.",
-        "We do not advise buying! We advise not buying!",
-        "Pay with $AuraSpace to prove you’re real.",
-        "Privacy-native. End-to-end encrypted.",
-        "Full control. No tracking. Ever."
-      ],
-      consent: "I agree with the CRYPTOBROS Manifest"
-    },
-    he: {
-      title: "מניפסטו של CRYPTOBROS",
-      lines: [
-        "בראס פנימה. רעש החוצה.",
-        "אין שרתים. אפס KYC. רק ארנק.",
-        "אנחנו לא מייעצים לקנות! אנחנו מייעצים לא לקנות!",
-        "שילמו ב-$AuraSpace כדי להוכיח שאתם אמיתיים.",
-        "פרטי מטבעו. מוצפן מקצה לקצה.",
-        "שליטה מלאה. אפס מעקב. לעולם לא."
-      ],
-      consent: "אני מסכים למניפסטו של CRYPTOBROS"
-    },
-    ru: {
-      title: "МАНИФЕСТ CRYPTOBROS",
-      lines: [
-        "Братья — внутрь. Шум — наружу.",
-        "Нет серверов. Ноль KYC. Только кошелёк.",
-        "Мы не советуем покупать! Мы советуем не покупать!",
-        "Заплатите $AuraSpace, чтобы доказать, что вы настоящий.",
-        "Приватность — по умолчанию. Сквозное шифрование.",
-        "Полный контроль. Никакого трекинга. Никогда."
-      ],
-      consent: "Я согласен с Манифестом CRYPTOBROS"
-    }
+    en: { title: "CRYPTOBROS MANIFESTO", lines: ["Bros in. Noise out.","No servers. Zero KYC. Only wallet.","We do not advise buying! We advise not buying!","Pay with $AuraSpace to prove you’re real.","Privacy-native. End-to-end encrypted.","Full control. No tracking. Ever."], consent: "I agree with the CRYPTOBROS Manifest" },
+    he: { title: "מניפסטו של CRYPTOBROS", lines: ["בראס פנימה. רעש החוצה.","אין שרתים. אפס KYC. רק ארנק.","אנחנו לא מייעצים לקנות! אנחנו מייעצים לא לקנות!","שילמו ב-$AuraSpace כדי להוכיח שאתם אמיתיים.","פרטי מטבעו. מוצפן מקצה לקצה.","שליטה מלאה. אפס מעקב. לעולם לא."], consent: "אני מסכים למניפסטו של CRYPTOBROS" },
+    ru: { title: "МАНИФЕСТ CRYPTOBROS", lines: ["Братья — внутрь. Шум — наружу.","Нет серверов. Ноль KYC. Только кошелёк.","Мы не советуем покупать! Мы советуем не покупать!","Заплатите $AuraSpace, чтобы доказать, что вы настоящий.","Приватность — по умолчанию. Сквозное шифрование.","Полный контроль. Никакого трекинга. Никогда."], consent: "Я согласен с Манифестом CRYPTOBROS" }
   };
 
   let currentLang = 'en';
+  const dropdown = document.getElementById('langDropdown');
+  const label = document.getElementById('langLabel');
+
+  document.getElementById('langLabel').addEventListener('click', () => {
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  });
+
+  document.querySelectorAll('.lang-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const lang = item.getAttribute('data-lang');
+      currentLang = lang;
+      label.textContent = lang === 'he' ? 'עברית' : (lang === 'ru' ? 'RU' : 'EN');
+      updateManifest(lang);
+      dropdown.style.display = 'none';
+    });
+  });
 
   function updateManifest(lang) {
-    currentLang = lang;
     const manifest = document.getElementById('modal-manifest');
     const lines = manifestTexts[lang].lines.join('<br>');
     document.getElementById('modal-title').textContent = manifestTexts[lang].title;
     manifest.innerHTML = lines;
     document.getElementById('modal-consent-label').textContent = manifestTexts[lang].consent;
     document.getElementById('html-root').lang = lang;
-    
-    if (lang === 'he') {
-      document.body.style.direction = 'rtl';
-    } else {
-      document.body.style.direction = 'ltr';
-    }
+    if (lang === 'he') document.body.style.direction = 'rtl';
+    else document.body.style.direction = 'ltr';
   }
 
-  document.getElementById('lang-select').addEventListener('change', function() {
-    updateManifest(this.value);
-  });
-
-  document.getElementById('create-btn').onclick = function() {
+  document.getElementById('create-btn').onclick = () => {
     document.getElementById('manifest-modal').style.display = 'block';
+    updateManifest(currentLang);
   };
 
-  document.getElementById('modal-pay-btn').onclick = function() {
+  document.getElementById('modal-pay-btn').onclick = () => {
     if (!document.getElementById('modal-consent').checked) {
       alert('Please agree to the Manifest');
       return;
     }
-    const wallet = '5R8wHTuWuhxGE6qUHbPh4RZatKBAvxJKpmLAdA2GbzPL';
-    alert(`Send 300 AUS to:\n${wallet}\n\nAfter confirmation, you’ll enter CRYPTOBROS.`);
+    alert(`Send 300 AUS to:\n5R8wHTuWuhxGE6qUHbPh4RZatKBAvxJKpmLAdA2GbzPL`);
     closeModal();
   };
 
@@ -260,9 +192,8 @@
     document.getElementById('manifest-modal').style.display = 'none';
   }
 
-  // Close modal on ESC
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeModal();
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.lang-selector')) dropdown.style.display = 'none';
   });
 </script>
 
