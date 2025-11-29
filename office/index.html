@@ -59,16 +59,15 @@
       caret-color:#000;
     }
     .panel { display:none; margin-top:20px; }
-    .calc-header { height:32px; position:relative; margin-bottom:16px; }
-    .calc-header::after {
-      content: "AURASYSTEM";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
+    .calc-header {
+      height:32px;
+      position:relative;
+      margin-bottom:16px;
+      background: #0d0d1a;
+      border-radius: 12px;
+      padding: 8px;
       text-align: center;
       color: #ff7700;
-      font-size: 16px;
       animation: blink 1.5s infinite;
       opacity: 0.8;
     }
@@ -110,6 +109,10 @@
     .calc-btn.equals:hover { background: #33a7ff; }
     .calc-btn.memory { background: #9c27b0; }
     .calc-btn.memory:hover { background: #af37c2; }
+    .calc-btn.orange { background: #ff7700; }
+    .calc-btn.orange:hover { background: #ffaa00; }
+    .calc-btn.gray { background: #999; }
+    .calc-btn.gray:hover { background: #aaa; }
 
     .currency-converter {
       max-width: 360px;
@@ -239,21 +242,21 @@
       <button class="calc-btn memory" onclick="calcMC()">MC</button>
       <button class="calc-btn" onclick="calcClear()">C</button>
       <button class="calc-btn" onclick="calcClearEntry()">CE</button>
-      <button class="calc-btn" onclick="calcInput('7')">7</button>
-      <button class="calc-btn" onclick="calcInput('8')">8</button>
-      <button class="calc-btn" onclick="calcInput('9')">9</button>
+      <button class="calc-btn gray" onclick="calcInput('7')">7</button>
+      <button class="calc-btn gray" onclick="calcInput('8')">8</button>
+      <button class="calc-btn gray" onclick="calcInput('9')">9</button>
       <button class="calc-btn operator" onclick="calcInput('/')">/</button>
-      <button class="calc-btn" onclick="calcInput('4')">4</button>
-      <button class="calc-btn" onclick="calcInput('5')">5</button>
-      <button class="calc-btn" onclick="calcInput('6')">6</button>
+      <button class="calc-btn gray" onclick="calcInput('4')">4</button>
+      <button class="calc-btn gray" onclick="calcInput('5')">5</button>
+      <button class="calc-btn gray" onclick="calcInput('6')">6</button>
       <button class="calc-btn operator" onclick="calcInput('*')">*</button>
-      <button class="calc-btn" onclick="calcInput('1')">1</button>
-      <button class="calc-btn" onclick="calcInput('2')">2</button>
-      <button class="calc-btn" onclick="calcInput('3')">3</button>
+      <button class="calc-btn gray" onclick="calcInput('1')">1</button>
+      <button class="calc-btn gray" onclick="calcInput('2')">2</button>
+      <button class="calc-btn gray" onclick="calcInput('3')">3</button>
       <button class="calc-btn operator" onclick="calcInput('-')">-</button>
-      <button class="calc-btn" onclick="calcInput('0')">0</button>
-      <button class="calc-btn" onclick="calcInput('.')">.</button>
-      <button class="calc-btn" onclick="calcInput('Math.sqrt(')">√</button>
+      <button class="calc-btn gray" onclick="calcInput('0')">0</button>
+      <button class="calc-btn gray" onclick="calcInput('.')">.</button>
+      <button class="calc-btn orange" onclick="calcInput('Math.sqrt(')">√</button>
       <button class="calc-btn operator" onclick="calcInput('+')">+</button>
       <button class="calc-btn memory" onclick="calcMPlus()">M+</button>
       <button class="calc-btn" onclick="calcInput('%')">%</button>
