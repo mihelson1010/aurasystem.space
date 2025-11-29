@@ -94,7 +94,6 @@
     }
     .calc-btn {
       padding: 14px 0;
-      background: #2c2c3a;
       color: white;
       border: none;
       border-radius: 12px;
@@ -102,112 +101,14 @@
       cursor: pointer;
       transition: background 0.2s;
     }
-    .calc-btn:hover { background: #3a3a4a; }
-    .calc-btn.operator { background: #ff7700; }
-    .calc-btn.operator:hover { background: #ffaa00; }
-    .calc-btn.equals { background: #2196f3; }
-    .calc-btn.equals:hover { background: #33a7ff; }
-    .calc-btn.memory { background: #9c27b0; }
-    .calc-btn.memory:hover { background: #af37c2; }
+    .calc-btn.gray { background: #4b4b4b; }
+    .calc-btn.gray:hover { background: #5b5b5b; }
     .calc-btn.orange { background: #ff7700; }
     .calc-btn.orange:hover { background: #ffaa00; }
-    .calc-btn.gray { background: #999; }
-    .calc-btn.gray:hover { background: #aaa; }
-
-    .currency-converter {
-      max-width: 360px;
-      margin: 0 auto;
-      background: #0d0d1a;
-      border-radius: 20px;
-      padding: 24px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-      color: #fff;
-    }
-    .currency-header {
-      position: relative;
-      height: 32px;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    .currency-header::after {
-      content: "AURASYSTEM";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      color: #ff7700;
-      font-size: 16px;
-      animation: blink 1.2s infinite;
-      opacity: 0.8;
-    }
-    .currency-input-group {
-      display: flex;
-      gap: 12px;
-      margin: 12px 0;
-    }
-    .currency-input-field {
-      width: 100px;
-      padding: 12px;
-      font-size: 16px;
-      background: #1a1a2a;
-      border: 1px solid #333;
-      border-radius: 12px;
-      color: white;
-      text-align: right;
-      outline: none;
-      transition: border 0.3s;
-    }
-    .currency-input-field:focus {
-      border-color: #ff7700;
-      box-shadow: 0 0 0 2px rgba(255, 119, 0, 0.2);
-    }
-    .currency-select {
-      flex: 1;
-      padding: 12px;
-      font-size: 15px;
-      background: #1a1a2a;
-      border: 1px solid #333;
-      border-radius: 12px;
-      color: white;
-      outline: none;
-    }
-    .currency-select:focus {
-      border-color: #ff7700;
-    }
-    .currency-swap {
-      text-align: center;
-      font-size: 24px;
-      color: #ff7700;
-      cursor: pointer;
-      margin: 10px 0;
-      transition: transform 0.3s;
-    }
-    .currency-swap:hover {
-      transform: scale(1.2);
-    }
-    .currency-result {
-      font-size: 20px;
-      font-weight: bold;
-      margin: 16px 0;
-      padding: 14px;
-      background: rgba(255, 119, 0, 0.08);
-      border-radius: 12px;
-      text-align: center;
-      color: #ffaa00;
-      border: 1px solid rgba(255, 119, 0, 0.2);
-    }
-    .currency-rate {
-      font-size: 14px;
-      color: #aaa;
-      text-align: center;
-      margin: 8px 0;
-    }
-    .currency-info {
-      font-size: 13px;
-      color: #777;
-      text-align: center;
-      margin-top: 12px;
-    }
+    .calc-btn.green { background: #2ecc71; }
+    .calc-btn.green:hover { background: #27ae60; }
+    .calc-btn.memory { background: #9b59b6; }
+    .calc-btn.memory:hover { background: #af37c2; }
 
     .footer {
       position:fixed;
@@ -235,32 +136,32 @@
   <div id="editor" contenteditable="true" spellcheck="false">Start typing here...</div>
   
   <div id="calc" class="panel">
-    <div class="calc-header"></div>
+    <div class="calc-header">CryptoAura</div>
     <div class="calc-display" id="calc-display">0</div>
     <div class="calc-buttons">
       <button class="calc-btn memory" onclick="calcMR()">MR</button>
       <button class="calc-btn memory" onclick="calcMC()">MC</button>
-      <button class="calc-btn" onclick="calcClear()">C</button>
-      <button class="calc-btn" onclick="calcClearEntry()">CE</button>
+      <button class="calc-btn gray" onclick="calcClear()">C</button>
+      <button class="calc-btn gray" onclick="calcClearEntry()">CE</button>
       <button class="calc-btn gray" onclick="calcInput('7')">7</button>
       <button class="calc-btn gray" onclick="calcInput('8')">8</button>
       <button class="calc-btn gray" onclick="calcInput('9')">9</button>
-      <button class="calc-btn operator" onclick="calcInput('/')">/</button>
+      <button class="calc-btn orange" onclick="calcInput('/')">/</button>
       <button class="calc-btn gray" onclick="calcInput('4')">4</button>
       <button class="calc-btn gray" onclick="calcInput('5')">5</button>
       <button class="calc-btn gray" onclick="calcInput('6')">6</button>
-      <button class="calc-btn operator" onclick="calcInput('*')">*</button>
+      <button class="calc-btn orange" onclick="calcInput('*')">*</button>
       <button class="calc-btn gray" onclick="calcInput('1')">1</button>
       <button class="calc-btn gray" onclick="calcInput('2')">2</button>
       <button class="calc-btn gray" onclick="calcInput('3')">3</button>
-      <button class="calc-btn operator" onclick="calcInput('-')">-</button>
+      <button class="calc-btn orange" onclick="calcInput('-')">-</button>
       <button class="calc-btn gray" onclick="calcInput('0')">0</button>
       <button class="calc-btn gray" onclick="calcInput('.')">.</button>
-      <button class="calc-btn orange" onclick="calcInput('Math.sqrt(')">√</button>
-      <button class="calc-btn operator" onclick="calcInput('+')">+</button>
+      <button class="calc-btn green" onclick="calcInput('Math.sqrt(')">√</button>
+      <button class="calc-btn orange" onclick="calcInput('+')">+</button>
       <button class="calc-btn memory" onclick="calcMPlus()">M+</button>
-      <button class="calc-btn" onclick="calcInput('%')">%</button>
-      <button class="calc-btn equals" onclick="calcEquals()">=</button>
+      <button class="calc-btn gray" onclick="calcInput('%')">%</button>
+      <button class="calc-btn green" onclick="calcEquals()">=</button>
       <button class="calc-btn" style="background:#e74c3c;" onclick="calcBackspace()">⌫</button>
     </div>
   </div>
@@ -343,18 +244,10 @@
 <div class="footer">AURASYSTEM • Full control</div>
 
 <script>
+  // === CALCULATOR ===
   let calcMemory = 0;
   let calcExpression = '';
-  let rates = null;
-  const STATIC_RATES_USD = {
-    USD: 1, EUR: 0.93, RUB: 93.5, CNY: 7.25, GEL: 2.70, JPY: 155.0,
-    ILS: 3.70, SEK: 10.50, NOK: 10.80, DKK: 6.90, AUD: 1.52, ARS: 950.0,
-    BTC: 1/92410, ETH: 1/2870, SOL: 1/172, XRP: 1/0.58,
-    DOGE: 1/0.172, ADA: 1/0.45, USDT: 1/1.0001
-  };
-  let isConverting = false;
 
-  // ================= CALCULATOR =================
   function calcInput(value) {
     if (value === 'Math.sqrt(') {
       calcExpression += 'Math.sqrt(';
@@ -417,7 +310,16 @@
     }
   }
 
-  // ================= CURRENCY =================
+  // === CURRENCY ===
+  let rates = null;
+  const STATIC_RATES_USD = {
+    USD: 1, EUR: 0.93, RUB: 93.5, CNY: 7.25, GEL: 2.70, JPY: 155.0,
+    ILS: 3.70, SEK: 10.50, NOK: 10.80, DKK: 6.90, AUD: 1.52, ARS: 950.0,
+    BTC: 1/92410, ETH: 1/2870, SOL: 1/172, XRP: 1/0.58,
+    DOGE: 1/0.172, ADA: 1/0.45, USDT: 1/1.0001
+  };
+  let isConverting = false;
+
   async function loadRates() {
     if (rates) return;
     try {
@@ -505,24 +407,10 @@
     convertFrom();
   }
 
-  // ================= OTHER =================
+  // === OTHER ===
   function showPanel(id) {
     document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
     document.getElementById(id).style.display = 'block';
-  }
-
-  function showShare() {
-    const url = 'https://aurasystem.space/office/';
-    const text = 'Document from Aura Office';
-    const links = `
-      <div style="display:flex; gap:20px; justify-content:center; flex-wrap:wrap; margin-top:20px;">
-        <a href="https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}" target="_blank" style="font-size:28px; color:#000;">𝕏</a>
-        <a href="https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}" target="_blank" style="font-size:28px; color:#0088cc;">Telegram</a>
-        <a href="https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}" target="_blank" style="font-size:28px; color:#25d366;">WhatsApp</a>
-        <a href="mailto:?subject=${encodeURIComponent(text)}&body=${encodeURIComponent(url)}" style="font-size:28px; color:#ff6b6b;">Email</a>
-      </div>
-    `;
-    document.getElementById('editor').insertAdjacentHTML('afterend', links);
   }
 
   function inviteCollab() {
@@ -535,7 +423,9 @@
   function sendRaw() { alert('📤 Sent'); }
   function sendEncrypted() { alert('🔐 Encrypted'); }
 
-  window.onload = () => document.getElementById('editor').focus();
+  window.onload = () => {
+    document.getElementById('editor').focus();
+  };
 </script>
 
 </body>
