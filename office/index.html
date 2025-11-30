@@ -495,8 +495,10 @@
   function sendRaw() { alert('📤 Sent'); }
   function sendEncrypted() { alert('🔐 Encrypted'); }
 
+  // Загружаем курсы при открытии страницы
   window.onload = () => {
     document.getElementById('editor').focus();
+    loadRates(); // ← это исправляет проблему с "Offline"
   };
 </script>
 
