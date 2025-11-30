@@ -60,21 +60,21 @@
     }
     .panel { display:none; margin-top:20px; }
 
-    /* Простой калькулятор */
+    /* Калькулятор Deli M010 */
     .calc-container {
       max-width: 360px;
       margin: 0 auto;
-      background: #fff;
+      background: #0d0d1a;
       border-radius: 16px;
       padding: 20px;
       box-shadow: 0 12px 30px rgba(0,0,0,0.4);
-      color: #000;
+      color: #fff;
     }
     .calc-header {
       height:32px;
       position:relative;
       margin-bottom:16px;
-      background: #f9f9f9;
+      background: #0d0d1a;
       border-radius: 12px;
       padding: 8px;
       text-align: center;
@@ -87,8 +87,8 @@
       50% { opacity: 0.4; }
     }
     .calc-display {
-      background: #eee;
-      color: #000;
+      background: #1a1a2a;
+      color: #4cff4c;
       font-size: 24px;
       padding: 16px;
       text-align: right;
@@ -105,32 +105,116 @@
     }
     .calc-btn {
       padding: 14px 0;
-      color: #000;
-      border: 1px solid #ddd;
+      color: white;
+      border: none;
       border-radius: 12px;
       font-size: 18px;
       cursor: pointer;
       transition: background 0.2s;
     }
-    .calc-btn:hover {
-      background: #f0f0f0;
-    }
-    .calc-btn.operator { background: #ff7700; color: white; }
-    .calc-btn.operator:hover { background: #ffaa00; }
-    .calc-btn.equals { background: #2196f3; color: white; }
-    .calc-btn.equals:hover { background: #33a7ff; }
-    .calc-btn.memory { background: #9c27b0; color: white; }
+    .calc-btn.gray { background: #4b4b4b; }
+    .calc-btn.gray:hover { background: #5b5b5b; }
+    .calc-btn.orange { background: #ff7700; }
+    .calc-btn.orange:hover { background: #ffaa00; }
+    .calc-btn.green { background: #2ecc71; }
+    .calc-btn.green:hover { background: #27ae60; }
+    .calc-btn.memory { background: #9b59b6; }
     .calc-btn.memory:hover { background: #af37c2; }
+
+    /* Валютный калькулятор */
+    .currency-converter {
+      max-width: 400px;
+      margin: 0 auto;
+      background: #0d0d1a;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+      color: #fff;
+    }
+    .currency-header {
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #9b59b6;
+    }
+    .currency-input-group {
+      display: flex;
+      gap: 12px;
+      margin: 12px 0;
+    }
+    .currency-input-field {
+      width: 100px;
+      padding: 12px;
+      font-size: 16px;
+      background: #1a1a2a;
+      border: 1px solid #555;
+      border-radius: 12px;
+      color: white;
+      text-align: right;
+      outline: none;
+      transition: border 0.3s;
+    }
+    .currency-input-field:focus {
+      border-color: #9b59b6;
+      box-shadow: 0 0 0 2px rgba(155, 89, 182, 0.3);
+    }
+    .currency-select {
+      flex: 1;
+      padding: 12px;
+      font-size: 15px;
+      background: #1a1a2a;
+      border: 1px solid #555;
+      border-radius: 12px;
+      color: white;
+      outline: none;
+    }
+    .currency-select:focus {
+      border-color: #9b59b6;
+    }
+    .currency-swap {
+      text-align: center;
+      font-size: 24px;
+      color: #9b59b6;
+      cursor: pointer;
+      margin: 10px 0;
+      transition: transform 0.3s;
+    }
+    .currency-swap:hover {
+      transform: scale(1.2);
+    }
+    .currency-result {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 16px 0;
+      padding: 14px;
+      background: rgba(155, 89, 182, 0.1);
+      border-radius: 12px;
+      text-align: center;
+      color: #ffaa00;
+      border: 1px solid rgba(155, 89, 182, 0.3);
+    }
+    .currency-rate {
+      font-size: 14px;
+      color: #aaa;
+      text-align: center;
+      margin: 8px 0;
+    }
+    .currency-info {
+      font-size: 13px;
+      color: #777;
+      text-align: center;
+      margin-top: 12px;
+    }
 
     /* QR и Share */
     .qr-output, .share-links {
       padding: 20px;
-      background: #fff;
+      background: #0d0d1a;
       border-radius: 16px;
       text-align: center;
       margin: 20px auto;
       max-width: 400px;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
     }
     #qrcode canvas {
       margin: 10px auto;
@@ -179,27 +263,27 @@
       <div class="calc-buttons">
         <button class="calc-btn memory" onclick="calcMR()">MR</button>
         <button class="calc-btn memory" onclick="calcMC()">MC</button>
-        <button class="calc-btn" onclick="calcClear()">C</button>
-        <button class="calc-btn" onclick="calcClearEntry()">CE</button>
-        <button class="calc-btn" onclick="calcInput('7')">7</button>
-        <button class="calc-btn" onclick="calcInput('8')">8</button>
-        <button class="calc-btn" onclick="calcInput('9')">9</button>
-        <button class="calc-btn operator" onclick="calcInput('/')">/</button>
-        <button class="calc-btn" onclick="calcInput('4')">4</button>
-        <button class="calc-btn" onclick="calcInput('5')">5</button>
-        <button class="calc-btn" onclick="calcInput('6')">6</button>
-        <button class="calc-btn operator" onclick="calcInput('*')">*</button>
-        <button class="calc-btn" onclick="calcInput('1')">1</button>
-        <button class="calc-btn" onclick="calcInput('2')">2</button>
-        <button class="calc-btn" onclick="calcInput('3')">3</button>
-        <button class="calc-btn operator" onclick="calcInput('-')">-</button>
-        <button class="calc-btn" onclick="calcInput('0')">0</button>
-        <button class="calc-btn" onclick="calcInput('.')">.</button>
-        <button class="calc-btn" onclick="calcInput('Math.sqrt(')">√</button>
-        <button class="calc-btn operator" onclick="calcInput('+')">+</button>
+        <button class="calc-btn gray" onclick="calcClear()">C</button>
+        <button class="calc-btn gray" onclick="calcClearEntry()">CE</button>
+        <button class="calc-btn gray" onclick="calcInput('7')">7</button>
+        <button class="calc-btn gray" onclick="calcInput('8')">8</button>
+        <button class="calc-btn gray" onclick="calcInput('9')">9</button>
+        <button class="calc-btn orange" onclick="calcInput('/')">/</button>
+        <button class="calc-btn gray" onclick="calcInput('4')">4</button>
+        <button class="calc-btn gray" onclick="calcInput('5')">5</button>
+        <button class="calc-btn gray" onclick="calcInput('6')">6</button>
+        <button class="calc-btn orange" onclick="calcInput('*')">*</button>
+        <button class="calc-btn gray" onclick="calcInput('1')">1</button>
+        <button class="calc-btn gray" onclick="calcInput('2')">2</button>
+        <button class="calc-btn gray" onclick="calcInput('3')">3</button>
+        <button class="calc-btn orange" onclick="calcInput('-')">-</button>
+        <button class="calc-btn gray" onclick="calcInput('0')">0</button>
+        <button class="calc-btn gray" onclick="calcInput('.')">.</button>
+        <button class="calc-btn green" onclick="calcInput('Math.sqrt(')">√</button>
+        <button class="calc-btn orange" onclick="calcInput('+')">+</button>
         <button class="calc-btn memory" onclick="calcMPlus()">M+</button>
-        <button class="calc-btn" onclick="calcInput('%')">%</button>
-        <button class="calc-btn equals" onclick="calcEquals()">=</button>
+        <button class="calc-btn gray" onclick="calcInput('%')">%</button>
+        <button class="calc-btn green" onclick="calcEquals()">=</button>
         <button class="calc-btn" style="background:#e74c3c;" onclick="calcBackspace()">⌫</button>
       </div>
     </div>
@@ -207,7 +291,7 @@
   
   <div id="currency" class="panel">
     <div class="currency-converter">
-      <div class="currency-header"></div>
+      <div class="currency-header">💱 Live Forex</div>
       <div class="currency-input-group">
         <input type="number" id="fromAmount" value="1" oninput="convertFrom()" class="currency-input-field">
         <select id="fromCurrency" onchange="convertFrom()" class="currency-select">
