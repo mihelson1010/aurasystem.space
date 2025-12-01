@@ -57,9 +57,10 @@
       line-height:1.6;
       outline:none;
       caret-color:#000;
+      background:white;
     }
 
-    /* === ФИКСИРОВАННЫЕ ПАНЕЛИ В ЛЕВОМ ВЕРХНЕМ УГЛУ === */
+    /* ФИКСИРОВАННЫЕ ПАНЕЛИ В ЛЕВОМ ВЕРХНЕМ УГЛУ */
     .panel {
       position: fixed;
       top: 80px;
@@ -76,7 +77,7 @@
       display: none;
     }
 
-    /* Калькулятор */
+    /* КАЛЬКУЛЯТОР */
     .calc-header {
       height:32px;
       position:relative;
@@ -128,7 +129,7 @@
     .calc-btn.memory { background: #9b59b6; }
     .calc-btn.memory:hover { background: #af37c2; }
 
-    /* Валютный калькулятор */
+    /* ВАЛЮТНЫЙ КАЛЬКУЛЯТОР */
     .currency-header {
       text-align: center;
       font-size: 1.4rem;
@@ -198,7 +199,6 @@
       color:#888;
     }
 
-    /* QR и Share — оставить как всплывающие (не фиксировать) */
     .qr-output, .share-links {
       padding: 20px;
       background: #0d0d1a;
@@ -320,7 +320,6 @@
     <div class="currency-info" id="rate-info">Loading rates...</div>
   </div>
   
-  <!-- QR и Share — остаются как всплывающие (не фиксированные) -->
   <div id="qr" class="qr-output" style="display:none;">
     <h3>📱 QR Code</h3>
     <div id="qrcode"></div>
@@ -332,7 +331,7 @@
     <div id="share-buttons"></div>
   </div>
   
-  <div id="excel" class="panel">
+  <div id="excel" class="panel" style="display:none;">
     <div style="padding:20px; color:#666;">📊 Excel mode (demo)</div>
   </div>
 </div>
@@ -341,7 +340,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.0/dist/qrious.min.js"></script>
 <script>
-  // === ВСЯ ЛОГИКА ОСТАЛАСЬ БЕЗ ИЗМЕНЕНИЙ ===
+  // === ВСЯ ЛОГИКА БЕЗ ИЗМЕНЕНИЙ ===
   let calcMemory = 0;
   let calcExpression = '';
   let rates = null;
@@ -353,7 +352,6 @@
   };
   let isConverting = false;
 
-  // === ФУНКЦИИ КАЛЬКУЛЯТОРА ===
   function calcInput(value) {
     if (value === 'Math.sqrt(') {
       calcExpression += 'Math.sqrt(';
@@ -408,16 +406,12 @@
     }
   }
 
-  // === ФУНКЦИИ ВАЛЮТ ===
   async function loadRates() {
     if (rates) return;
     try {
       const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,ripple,dogecoin,cardano,tether&vs_currencies=usd,eur,rub,cny,gel,jpy,ils,sek,nok,dkk,aud,ars');
       const data = await res.json();
-      rates = {
-        BTC: { usd: data.bitcoin.usd, eur: data.bitcoin.eur, rub: data.bitcoin.rub },
-        ETH: { usd: data.ethereum.usd, eur: data.ethereum.eur, rub: data.ethereum.rub },
-      };
+      rates = { BTC: data.bitcoin, ETH: data.ethereum };
       document.getElementById('rate-info').textContent = '✅ Online rates';
       convertFrom();
     } catch (e) {
@@ -442,7 +436,6 @@
     const from = document.getElementById('fromCurrency').value;
     const to = document.getElementById('toCurrency').value;
     const fromAmount = parseFloat(document.getElementById('fromAmount').value) || 0;
-    
     if (from === to) {
       const v = fromAmount;
       document.getElementById('toAmount').value = v;
@@ -463,7 +456,6 @@
     const from = document.getElementById('fromCurrency').value;
     const to = document.getElementById('toCurrency').value;
     const toAmount = parseFloat(document.getElementById('toAmount').value) || 0;
-    
     if (from === to) {
       document.getElementById('fromAmount').value = toAmount;
       document.getElementById('result').textContent = `${toAmount} ${to} = ${toAmount} ${from}`;
@@ -482,37 +474,28 @@
     const toSel = document.getElementById('toCurrency');
     const fromVal = fromSel.value;
     const fromAmt = document.getElementById('fromAmount').value;
-    
     fromSel.value = toSel.value;
     toSel.value = fromVal;
-    
     document.getElementById('fromAmount').value = document.getElementById('toAmount').value;
     document.getElementById('toAmount').value = fromAmt;
-    
     convertFrom();
   }
 
-  // === УПРАВЛЕНИЕ ПАНЕЛЯМИ ===
   function showPanel(id) {
-    // Скрыть все фиксированные панели
     document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
-    // Показать выбранную
     document.getElementById(id).style.display = 'block';
   }
   function showQR() {
-    // QR — не фиксированный, а как элемент в тексте
     const qr = document.getElementById('qr');
     qr.style.display = 'block';
     qr.scrollIntoView({ behavior: 'smooth' });
   }
   function showShare() {
-    // Share — не фиксированный, а как элемент в тексте
     const share = document.getElementById('share');
     share.style.display = 'block';
     share.scrollIntoView({ behavior: 'smooth' });
   }
 
-  // === ОСТАЛЬНЫЕ ФУНКЦИИ (без изменений) ===
   function inviteCollab() {
     const id = 'AURA-' + Math.random().toString(36).substr(2, 5).toUpperCase();
     localStorage.setItem('doc_' + id, document.getElementById('editor').innerText);
@@ -532,6 +515,26 @@
     });
     qrContainer.appendChild(qr.element);
   }
+
+  // === КЛАВИАТУРА ДЛЯ КАЛЬКУЛЯТОРА ===
+  document.addEventListener('keydown', function(e) {
+    const calcPanel = document.getElementById('calc');
+    if (calcPanel.style.display !== 'block' || document.activeElement === document.getElementById('editor')) return;
+    e.preventDefault();
+    const key = e.key;
+    if (key >= '0' && key <= '9') calcInput(key);
+    else if (key === '.') calcInput('.');
+    else if (key === '+') calcInput('+');
+    else if (key === '-') calcInput('-');
+    else if (key === '*') calcInput('*');
+    else if (key === '/') calcInput('/');
+    else if (key === 'Enter' || key === '=') calcEquals();
+    else if (key === 'Escape') calcClear();
+    else if (key === 'Backspace') calcBackspace();
+    else if (key === 'm' || key === 'M') calcMPlus();
+    else if (key === 'r' || key === 'R') calcMR();
+    else if (key === '%') calcInput('%');
+  });
 
   window.onload = () => {
     document.getElementById('editor').focus();
