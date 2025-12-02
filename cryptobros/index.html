@@ -233,7 +233,7 @@
     }
   }
 
-  // === ОСТАЛЬНОЙ КОД (язык, модалка, логика) ===
+  // === ОСТАЛЬНОЙ КОД ===
   document.getElementById('create-btn').onclick = () => {
     document.getElementById('manifest-modal').style.display = 'block';
     updateManifest(currentLang);
@@ -255,7 +255,30 @@
     document.getElementById('chat-container').style.display = 'flex';
   }
 
-  // ... (языковой переключатель, закрытие модалки и т.д. — без изменений)
+  function closeModal() {
+    document.getElementById('manifest-modal').style.display = 'none';
+  }
+
+  // Языковой переключатель
+  document.getElementById('langLabel').addEventListener('click', () => {
+    document.getElementById('langDropdown').style.display = 
+      document.getElementById('langDropdown').style.display === 'block' ? 'none' : 'block';
+  });
+
+  document.querySelectorAll('.lang-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const lang = item.getAttribute('data-lang');
+      currentLang = lang;
+      document.getElementById('langLabel').textContent = 
+        lang === 'he' ? 'עברית' : (lang === 'ru' ? 'RU' : 'EN');
+      document.getElementById('langDropdown').style.display = 'none';
+      // Обновить интерфейс
+      document.getElementById('create-btn').textContent = uiTexts[lang].create;
+      if (document.getElementById('modal-consent-label')) {
+        document.getElementById('modal-consent-label').textContent = uiTexts[lang].agree;
+      }
+    });
+  });
 
   window.onload = function() {
     if (localStorage.getItem('cryptobros_access') === 'granted') {
