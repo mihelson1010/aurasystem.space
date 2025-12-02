@@ -110,6 +110,54 @@
     .close { float:right; cursor:pointer; font-size:1.4rem; }
     .manifest-text { background:rgba(0,0,0,0.4); padding:20px; border-radius:12px; margin:20px 0; line-height:1.6; }
     .consent { display:flex; align-items:center; gap:12px; margin:20px 0; }
+    #chat-container {
+      width: 100%;
+      max-width: 800px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: rgba(10, 10, 26, 0.7);
+      border-radius: 16px;
+      padding: 20px;
+      margin-top: 20px;
+      display: none;
+    }
+    #messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #333;
+      border-radius: 12px;
+      background: #000;
+    }
+    .message {
+      margin: 10px 0;
+      padding: 8px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+    }
+    #input-area {
+      display: flex;
+      gap: 10px;
+    }
+    #input-area input {
+      flex: 1;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #444;
+      background: #111;
+      color: white;
+      font-size: 16px;
+    }
+    #input-area button {
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #2ecc71, #27ae60);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -138,6 +186,16 @@
 
 <button id="create-btn" class="btn">Create Account</button>
 
+<div id="chat-container">
+  <div id="messages">
+    <div class="message">🔒 Welcome to CRYPTOBROS. Only real cryptobros allowed.</div>
+  </div>
+  <div id="input-area">
+    <input type="text" id="message-input" placeholder="Write advice or question..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
 <div class="footer">Produced by Mihelson © 2025</div>
 
 <div id="manifest-modal" class="modal">
@@ -151,27 +209,95 @@
     </div>
     <div style="display: flex; gap: 16px; margin-top: 20px;">
       <button id="modal-pay-btn" class="btn">Confirm & Pay 300 AUS</button>
-      <button id="modal-promo-btn" class="btn btn-promo" onclick="enterPromo()">Ввести промокод</button>
+      <button id="modal-promo-btn" class="btn btn-promo">Ввести промокод</button>
     </div>
   </div>
 </div>
 
 <script>
-  // === 10 ЯЗЫКОВ ДЛЯ ИНТЕРФЕЙСА ===
   const uiTexts = {
-    en: { create: "Create Account", agree: "I agree with the CRYPTOBROS Manifest", pay: "Confirm & Pay 300 AUS", promo: "Enter promo code" },
-    ru: { create: "Создать аккаунт", agree: "Я согласен с Манифестом CRYPTOBROS", pay: "Подтвердить и оплатить 300 AUS", promo: "Ввести промокод" },
-    es: { create: "Crear cuenta", agree: "Acepto el Manifiesto de CRYPTOBROS", pay: "Confirmar y pagar 300 AUS", promo: "Ingresar código promocional" },
-    fr: { create: "Créer un compte", agree: "J'accepte le Manifeste CRYPTOBROS", pay: "Confirmer et payer 300 AUS", promo: "Entrer le code promo" },
-    zh: { create: "创建账户", agree: "我同意 CRYPTOBROS 宣言", pay: "确认并支付 300 AUS", promo: "输入促销代码" },
-    ja: { create: "アカウントを作成", agree: "CRYPTOBROS 宣言に同意します", pay: "確認して 300 AUS を支払う", promo: "プロモコードを入力" },
-    he: { create: "יצירת חשבון", agree: "אני מסכים למניפסטו של CRYPTOBROS", pay: "אישור ותשלום 300 AUS", promo: "הזן קוד קופון" },
-    ar: { create: "إنشاء حساب", agree: "أوافق على بيان CRYPTOBROS", pay: "تأكيد ودفع 300 AUS", promo: "أدخل رمز الترويج" },
-    de: { create: "Konto erstellen", agree: "Ich stimme dem CRYPTOBROS-Manifest zu", pay: "Bestätigen und 300 AUS bezahlen", promo: "Geben Sie den Promo-Code ein" },
-    pt: { create: "Criar conta", agree: "Concordo com o Manifesto CRYPTOBROS", pay: "Confirmar e pagar 300 AUS", promo: "Insira o código promocional" }
+    en: { 
+      create: "Create Account", 
+      agree: "I agree with the CRYPTOBROS Manifest", 
+      pay: "Confirm & Pay 300 AUS", 
+      promo: "Enter promo code",
+      welcome: "Welcome to CRYPTOBROS. Only real cryptobros allowed.",
+      input: "Write advice or question..."
+    },
+    ru: { 
+      create: "Создать аккаунт", 
+      agree: "Я согласен с Манифестом CRYPTOBROS", 
+      pay: "Подтвердить и оплатить 300 AUS", 
+      promo: "Ввести промокод",
+      welcome: "Добро пожаловать в CRYPTOBROS. Только настоящие криптаны.",
+      input: "Напишите совет или вопрос..."
+    },
+    es: { 
+      create: "Crear cuenta", 
+      agree: "Acepto el Manifiesto de CRYPTOBROS", 
+      pay: "Confirmar y pagar 300 AUS", 
+      promo: "Ingresar código promocional",
+      welcome: "Bienvenido a CRYPTOBROS. Solo criptobros reales.",
+      input: "Escribe un consejo o pregunta..."
+    },
+    fr: { 
+      create: "Créer un compte", 
+      agree: "J'accepte le Manifeste CRYPTOBROS", 
+      pay: "Confirmer et payer 300 AUS", 
+      promo: "Entrer le code promo",
+      welcome: "Bienvenue sur CRYPTOBROS. Seuls les vrais cryptobros.",
+      input: "Écrivez un conseil ou une question..."
+    },
+    zh: { 
+      create: "创建账户", 
+      agree: "我同意 CRYPTOBROS 宣言", 
+      pay: "确认并支付 300 AUS", 
+      promo: "输入促销代码",
+      welcome: "欢迎来到 CRYPTOBROS。仅限真正的加密兄弟。",
+      input: "写下建议或问题..."
+    },
+    ja: { 
+      create: "アカウントを作成", 
+      agree: "CRYPTOBROS 宣言に同意します", 
+      pay: "確認して 300 AUS を支払う", 
+      promo: "プロモコードを入力",
+      welcome: "CRYPTOBROSへようこそ。本物のクリプトブロスのみ。",
+      input: "アドバイスや質問を入力..."
+    },
+    he: { 
+      create: "יצירת חשבון", 
+      agree: "אני מסכים למניפסטו של CRYPTOBROS", 
+      pay: "אישור ותשלום 300 AUS", 
+      promo: "הזן קוד קופון",
+      welcome: "ברוך הבא ל-CRYPTOBROS. רק קרייפטוברוס אמיתיים.",
+      input: "רשום עצה או שאלה..."
+    },
+    ar: { 
+      create: "إنشاء حساب", 
+      agree: "أوافق على بيان CRYPTOBROS", 
+      pay: "تأكيد ودفع 300 AUS", 
+      promo: "أدخل رمز الترويج",
+      welcome: "مرحباً بك في CRYPTOBROS. فقط الإخوة الحقيقيون.",
+      input: "اكتب نصيحة أو سؤال..."
+    },
+    de: { 
+      create: "Konto erstellen", 
+      agree: "Ich stimme dem CRYPTOBROS-Manifest zu", 
+      pay: "Bestätigen und 300 AUS bezahlen", 
+      promo: "Geben Sie den Promo-Code ein",
+      welcome: "Willkommen bei CRYPTOBROS. Nur echte Cryptobros.",
+      input: "Schreiben Sie einen Rat oder eine Frage..."
+    },
+    pt: { 
+      create: "Criar conta", 
+      agree: "Concordo com o Manifesto CRYPTOBROS", 
+      pay: "Confirmar e pagar 300 AUS", 
+      promo: "Insira o código promocional",
+      welcome: "Bem-vindo ao CRYPTOBROS. Apenas cryptobros reais.",
+      input: "Escreva um conselho ou pergunta..."
+    }
   };
 
-  // Манифест — на EN/HE/RU
   const manifestTexts = {
     en: {
       title: "CRYPTOBROS MANIFESTO",
@@ -210,33 +336,43 @@
 
   let currentLang = 'en';
 
-  function updateManifest(lang) {
+  function updateUI(lang) {
+    currentLang = lang;
+    document.getElementById('create-btn').textContent = uiTexts[lang].create;
+    document.getElementById('modal-consent-label').textContent = uiTexts[lang].agree;
+    document.getElementById('modal-pay-btn').textContent = uiTexts[lang].pay;
+    document.getElementById('modal-promo-btn').textContent = uiTexts[lang].promo;
+    document.getElementById('langLabel').textContent = 
+      lang === 'he' ? 'עברית' : (lang === 'ru' ? 'RU' : 'EN');
+    
+    // Обновить манифест
     const manifestLang = ['he', 'ru'].includes(lang) ? lang : 'en';
-    const manifest = document.getElementById('modal-manifest');
-    const lines = manifestTexts[manifestLang].lines.join('<br>');
     document.getElementById('modal-title').textContent = manifestTexts[manifestLang].title;
-    manifest.innerHTML = lines;
-    document.getElementById('modal-consent-label').textContent = uiTexts[currentLang].agree;
-  }
-
-  // === ПРОМОКОД ===
-  function enterPromo() {
-    const promo = prompt('Введите промокод:');
-    if (promo === 'AURAFIRE7') {
-      localStorage.setItem('cryptobros_access', 'granted');
-      localStorage.setItem('access_type', 'promo');
-      alert('Промокод активирован! Добро пожаловать в CRYPTOBROS.');
-      closeModal();
-      showChat();
-    } else {
-      alert('Неверный промокод.');
+    document.getElementById('modal-manifest').innerHTML = manifestTexts[manifestLang].lines.join('<br>');
+    
+    // Обновить чат, если открыт
+    if (document.getElementById('chat-container').style.display === 'flex') {
+      const messages = document.getElementById('messages');
+      messages.innerHTML = `<div class="message">${uiTexts[lang].welcome}</div>`;
+      document.getElementById('message-input').placeholder = uiTexts[lang].input;
     }
   }
 
-  // === ОСТАЛЬНОЙ КОД ===
+  document.getElementById('langLabel').addEventListener('click', () => {
+    const dropdown = document.getElementById('langDropdown');
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  });
+
+  document.querySelectorAll('.lang-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const lang = item.getAttribute('data-lang');
+      updateUI(lang);
+      document.getElementById('langDropdown').style.display = 'none';
+    });
+  });
+
   document.getElementById('create-btn').onclick = () => {
     document.getElementById('manifest-modal').style.display = 'block';
-    updateManifest(currentLang);
   };
 
   document.getElementById('modal-pay-btn').onclick = () => {
@@ -244,14 +380,24 @@
       alert('Please agree to the Manifest');
       return;
     }
-    alert(`Send 300 AUS to:\n5R8wHTuWuhxGE6qUHbPh4RZatKBAvxJKpmLAdA2GbzPL`);
     localStorage.setItem('cryptobros_access', 'granted');
-    localStorage.setItem('access_type', 'paid');
-    closeModal();
     showChat();
   };
 
+  document.getElementById('modal-promo-btn').onclick = () => {
+    const promo = prompt(uiTexts[currentLang].promo + ':');
+    if (promo === 'AURAFIRE7') {
+      localStorage.setItem('cryptobros_access', 'granted');
+      alert('✅ Промокод активирован! Добро пожаловать в CRYPTOBROS.');
+      closeModal();
+      showChat();
+    } else {
+      alert('❌ Неверный промокод.');
+    }
+  };
+
   function showChat() {
+    document.getElementById('manifest-modal').style.display = 'none';
     document.getElementById('chat-container').style.display = 'flex';
   }
 
@@ -259,32 +405,38 @@
     document.getElementById('manifest-modal').style.display = 'none';
   }
 
-  // Языковой переключатель
-  document.getElementById('langLabel').addEventListener('click', () => {
-    document.getElementById('langDropdown').style.display = 
-      document.getElementById('langDropdown').style.display === 'block' ? 'none' : 'block';
-  });
+  function sendMessage() {
+    const input = document.getElementById('message-input');
+    const msg = input.value.trim();
+    if (!msg) return;
+    const messages = document.getElementById('messages');
+    const div = document.createElement('div');
+    div.className = 'message';
+    div.textContent = msg;
+    messages.appendChild(div);
+    input.value = '';
+    messages.scrollTop = messages.scrollHeight;
+  }
 
-  document.querySelectorAll('.lang-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const lang = item.getAttribute('data-lang');
-      currentLang = lang;
-      document.getElementById('langLabel').textContent = 
-        lang === 'he' ? 'עברית' : (lang === 'ru' ? 'RU' : 'EN');
-      document.getElementById('langDropdown').style.display = 'none';
-      // Обновить интерфейс
-      document.getElementById('create-btn').textContent = uiTexts[lang].create;
-      if (document.getElementById('modal-consent-label')) {
-        document.getElementById('modal-consent-label').textContent = uiTexts[lang].agree;
-      }
-    });
-  });
-
+  // Проверка доступа при загрузке
   window.onload = function() {
     if (localStorage.getItem('cryptobros_access') === 'granted') {
       document.getElementById('chat-container').style.display = 'flex';
+      document.getElementById('create-btn').style.display = 'none';
     }
   };
+
+  // Закрытие модального окна по ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // Закрытие выпадающего меню при клике вне
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.lang-selector')) {
+      document.getElementById('langDropdown').style.display = 'none';
+    }
+  });
 </script>
 
 </body>
