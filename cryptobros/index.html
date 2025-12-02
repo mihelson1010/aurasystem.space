@@ -110,53 +110,44 @@
     .close { float:right; cursor:pointer; font-size:1.4rem; }
     .manifest-text { background:rgba(0,0,0,0.4); padding:20px; border-radius:12px; margin:20px 0; line-height:1.6; }
     .consent { display:flex; align-items:center; gap:12px; margin:20px 0; }
-    #chat-container {
-      width: 100%;
-      max-width: 800px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      background: rgba(10, 10, 26, 0.7);
-      border-radius: 16px;
-      padding: 20px;
-      margin-top: 20px;
+    #account-form {
       display: none;
+      margin-top: 20px;
+      padding: 20px;
+      background: #0d0d1a;
+      border-radius: 16px;
+      max-width: 800px;
     }
-    #messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #333;
-      border-radius: 12px;
-      background: #000;
-    }
-    .message {
+    #avatar-upload {
+      width: 100%;
       margin: 10px 0;
-      padding: 8px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 8px;
     }
-    #input-area {
-      display: flex;
-      gap: 10px;
-    }
-    #input-area input {
-      flex: 1;
+    #bio-input {
+      width: 100%;
+      margin: 10px 0;
       padding: 12px;
       border-radius: 12px;
-      border: 1px solid #444;
-      background: #111;
+      border: 1px solid #555;
+      background: #1a1a2a;
       color: white;
       font-size: 16px;
+      resize: vertical;
     }
-    #input-area button {
-      padding: 12px 20px;
+    #settings-checkbox {
+      margin: 10px 0;
+    }
+    #submit-account {
+      width: 100%;
+      padding: 14px;
       background: linear-gradient(135deg, #2ecc71, #27ae60);
       color: white;
       border: none;
       border-radius: 12px;
       cursor: pointer;
+    }
+    #submit-account:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
   </style>
 </head>
@@ -186,16 +177,6 @@
 
 <button id="create-btn" class="btn">Create Account</button>
 
-<div id="chat-container">
-  <div id="messages">
-    <div class="message">🔒 Welcome to CRYPTOBROS. Only real cryptobros allowed.</div>
-  </div>
-  <div id="input-area">
-    <input type="text" id="message-input" placeholder="Write advice or question..." />
-    <button onclick="sendMessage()">Send</button>
-  </div>
-</div>
-
 <div class="footer">Produced by Mihelson © 2025</div>
 
 <div id="manifest-modal" class="modal">
@@ -212,6 +193,20 @@
       <button id="modal-promo-btn" class="btn btn-promo">Ввести промокод</button>
     </div>
   </div>
+</div>
+
+<div id="account-form" class="modal-content">
+  <h2>Create Your Account</h2>
+  <div style="text-align: center; margin: 20px 0;">
+    <img id="avatar-preview" src="https://aurasystem.space/cryptobros/default-avatar.png" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%; border: 2px solid #ff7700;">
+  </div>
+  <input type="file" id="avatar-upload" accept="image/*" onchange="previewAvatar(event)">
+  <textarea id="bio-input" placeholder="Write your bio..." rows="4"></textarea>
+  <div style="margin: 10px 0;">
+    <input type="checkbox" id="settings-checkbox">
+    <label for="settings-checkbox">Enable notifications</label>
+  </div>
+  <button id="submit-account" onclick="submitAccount()">Submit</button>
 </div>
 
 <script>
@@ -349,13 +344,6 @@
     const manifestLang = ['he', 'ru'].includes(lang) ? lang : 'en';
     document.getElementById('modal-title').textContent = manifestTexts[manifestLang].title;
     document.getElementById('modal-manifest').innerHTML = manifestTexts[manifestLang].lines.join('<br>');
-    
-    // Обновить чат, если открыт
-    if (document.getElementById('chat-container').style.display === 'flex') {
-      const messages = document.getElementById('messages');
-      messages.innerHTML = `<div class="message">${uiTexts[lang].welcome}</div>`;
-      document.getElementById('message-input').placeholder = uiTexts[lang].input;
-    }
   }
 
   document.getElementById('langLabel').addEventListener('click', () => {
@@ -381,7 +369,7 @@
       return;
     }
     localStorage.setItem('cryptobros_access', 'granted');
-    showChat();
+    showAccountForm();
   };
 
   document.getElementById('modal-promo-btn').onclick = () => {
@@ -390,38 +378,45 @@
       localStorage.setItem('cryptobros_access', 'granted');
       alert('✅ Промокод активирован! Добро пожаловать в CRYPTOBROS.');
       closeModal();
-      showChat();
+      showAccountForm();
     } else {
       alert('❌ Неверный промокод.');
     }
   };
 
-  function showChat() {
+  function showAccountForm() {
     document.getElementById('manifest-modal').style.display = 'none';
-    document.getElementById('chat-container').style.display = 'flex';
+    document.getElementById('account-form').style.display = 'block';
   }
 
   function closeModal() {
     document.getElementById('manifest-modal').style.display = 'none';
   }
 
-  function sendMessage() {
-    const input = document.getElementById('message-input');
-    const msg = input.value.trim();
-    if (!msg) return;
-    const messages = document.getElementById('messages');
-    const div = document.createElement('div');
-    div.className = 'message';
-    div.textContent = msg;
-    messages.appendChild(div);
-    input.value = '';
-    messages.scrollTop = messages.scrollHeight;
+  function previewAvatar(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('avatar-preview').src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
-  // Проверка доступа при загрузке
+  function submitAccount() {
+    const bio = document.getElementById('bio-input').value.trim();
+    if (!bio) {
+      alert('Please enter your bio');
+      return;
+    }
+    alert('✅ Account created! Welcome to CRYPTOBROS.');
+    document.getElementById('account-form').style.display = 'none';
+    // Здесь можно сохранить данные в localStorage
+  }
+
   window.onload = function() {
     if (localStorage.getItem('cryptobros_access') === 'granted') {
-      document.getElementById('chat-container').style.display = 'flex';
       document.getElementById('create-btn').style.display = 'none';
     }
   };
