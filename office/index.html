@@ -276,6 +276,7 @@
     }
   </style>
   <link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
@@ -288,7 +289,7 @@
   <button class="tool-btn btn-share" onclick="showShare()">📤 Share</button>
   <button class="tool-btn btn-send-txt" onclick="sendRaw()">📤 Send</button>
   <button class="tool-btn btn-send-enc" onclick="sendEncrypted()">🔐 Enc</button>
-  <button class="tool-btn btn-print" onclick="window.print()">🖨️ Print</button>
+  <button class="tool-btn btn-print" onclick="saveAsPDF()">🖨️ Save as PDF</button>
 </div>
 
 <div class="workspace">
@@ -713,6 +714,20 @@
 
   function sendRaw() { alert('📤 Sent'); }
   function sendEncrypted() { alert('🔐 Encrypted'); }
+
+  // === СОХРАНИТЬ В PDF ===
+  function saveAsPDF() {
+    const element = document.body;
+    const opt = {
+      margin:       10,
+      filename:     'aurasystem_document.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2 },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save();
+  }
 
   window.onload = () => {
     document.getElementById('editor').focus();
