@@ -215,81 +215,61 @@
       create: "Create Account", 
       agree: "I agree with the CRYPTOBROS Manifest", 
       pay: "Confirm & Pay 300 AUS", 
-      promo: "Enter promo code",
-      welcome: "Welcome to CRYPTOBROS. Only real cryptobros allowed.",
-      input: "Write advice or question..."
+      promo: "Enter promo code"
     },
     ru: { 
       create: "Создать аккаунт", 
       agree: "Я согласен с Манифестом CRYPTOBROS", 
       pay: "Подтвердить и оплатить 300 AUS", 
-      promo: "Ввести промокод",
-      welcome: "Добро пожаловать в CRYPTOBROS. Только настоящие криптаны.",
-      input: "Напишите совет или вопрос..."
+      promo: "Ввести промокод"
     },
     es: { 
       create: "Crear cuenta", 
       agree: "Acepto el Manifiesto de CRYPTOBROS", 
       pay: "Confirmar y pagar 300 AUS", 
-      promo: "Ingresar código promocional",
-      welcome: "Bienvenido a CRYPTOBROS. Solo criptobros reales.",
-      input: "Escribe un consejo o pregunta..."
+      promo: "Ingresar código promocional"
     },
     fr: { 
       create: "Créer un compte", 
       agree: "J'accepte le Manifeste CRYPTOBROS", 
       pay: "Confirmer et payer 300 AUS", 
-      promo: "Entrer le code promo",
-      welcome: "Bienvenue sur CRYPTOBROS. Seuls les vrais cryptobros.",
-      input: "Écrivez un conseil ou une question..."
+      promo: "Entrer le code promo"
     },
     zh: { 
       create: "创建账户", 
       agree: "我同意 CRYPTOBROS 宣言", 
-      pay: "确认并支付 300 AUS", 
-      promo: "输入促销代码",
-      welcome: "欢迎来到 CRYPTOBROS。仅限真正的加密兄弟。",
-      input: "写下建议或问题..."
+      pay: "确认并支付 0 AUS", 
+      promo: "输入促销代码"
     },
     ja: { 
       create: "アカウントを作成", 
       agree: "CRYPTOBROS 宣言に同意します", 
       pay: "確認して 300 AUS を支払う", 
-      promo: "プロモコードを入力",
-      welcome: "CRYPTOBROSへようこそ。本物のクリプトブロスのみ。",
-      input: "アドバイスや質問を入力..."
+      promo: "プロモコードを入力"
     },
     he: { 
       create: "יצירת חשבון", 
       agree: "אני מסכים למניפסטו של CRYPTOBROS", 
       pay: "אישור ותשלום 300 AUS", 
-      promo: "הזן קוד קופון",
-      welcome: "ברוך הבא ל-CRYPTOBROS. רק קרייפטוברוס אמיתיים.",
-      input: "רשום עצה או שאלה..."
+      promo: "הזן קוד קופון"
     },
     ar: { 
       create: "إنشاء حساب", 
       agree: "أوافق على بيان CRYPTOBROS", 
       pay: "تأكيد ودفع 300 AUS", 
-      promo: "أدخل رمز الترويج",
-      welcome: "مرحباً بك في CRYPTOBROS. فقط الإخوة الحقيقيون.",
-      input: "اكتب نصيحة أو سؤال..."
+      promo: "أدخل رمز الترويج"
     },
     de: { 
       create: "Konto erstellen", 
       agree: "Ich stimme dem CRYPTOBROS-Manifest zu", 
       pay: "Bestätigen und 300 AUS bezahlen", 
-      promo: "Geben Sie den Promo-Code ein",
-      welcome: "Willkommen bei CRYPTOBROS. Nur echte Cryptobros.",
-      input: "Schreiben Sie einen Rat oder eine Frage..."
+      promo: "Geben Sie den Promo-Code ein"
     },
     pt: { 
       create: "Criar conta", 
       agree: "Concordo com o Manifesto CRYPTOBROS", 
       pay: "Confirmar e pagar 300 AUS", 
-      promo: "Insira o código promocional",
-      welcome: "Bem-vindo ao CRYPTOBROS. Apenas cryptobros reais.",
-      input: "Escreva um conselho ou pergunta..."
+      promo: "Insira o código promocional"
     }
   };
 
@@ -412,7 +392,6 @@
     }
     alert('✅ Account created! Welcome to CRYPTOBROS.');
     document.getElementById('account-form').style.display = 'none';
-    // Здесь можно сохранить данные в localStorage
   }
 
   window.onload = function() {
@@ -421,12 +400,10 @@
     }
   };
 
-  // Закрытие модального окна по ESC
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeModal();
   });
 
-  // Закрытие выпадающего меню при клике вне
   document.addEventListener('click', function(e) {
     if (!e.target.closest('.lang-selector')) {
       document.getElementById('langDropdown').style.display = 'none';
