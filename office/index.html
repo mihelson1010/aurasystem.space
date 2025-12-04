@@ -61,7 +61,6 @@
       background:white;
     }
 
-    /* Панели в левом верхнем углу */
     .panel {
       position: fixed;
       top: 80px;
@@ -78,18 +77,13 @@
       display: none;
     }
 
-    /* jspreadsheet */
     #spreadsheet {
       width: 100%;
-      border-collapse: collapse;
+      height: 400px;
       background: white;
-      font-size: 14px;
+      margin-bottom: 10px;
     }
-    #spreadsheet td, #spreadsheet th {
-      padding: 6px 8px;
-      border: 1px solid #ccc;
-      text-align: left;
-    }
+
     #spreadsheet_toolbar {
       padding: 8px;
       background: #f5f5f5;
@@ -105,7 +99,7 @@
     }
     #spreadsheet_toolbar button:hover { background: #ddd; }
 
-    /* Калькулятор */
+    /* ... остальные стили (calc, currency, QR и т.д.) без изменений ... */
     .calc-header {
       height:32px;
       position:relative;
@@ -157,7 +151,6 @@
     .calc-btn.memory { background: #9b59b6; }
     .calc-btn.memory:hover { background: #af37c2; }
 
-    /* Валютный калькулятор */
     .currency-converter {
       max-width: 400px;
       margin: 0 auto;
@@ -243,7 +236,6 @@
       margin-top: 12px;
     }
 
-    /* QR и Share */
     .qr-output, .share-links {
       padding: 20px;
       background: #0d0d1a;
@@ -275,7 +267,14 @@
       color:#888;
     }
   </style>
-  <link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />
+
+  <!-- ✅ jspreadsheet CE CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jspreadsheet-ce@4.5.4/dist/jspreadsheet.css" />
+  <!-- ✅ jspreadsheet CE JS -->
+  <script src="https://cdn.jsdelivr.net/npm/jspreadsheet-ce@4.5.4/dist/jspreadsheet.js"></script>
+  <!-- ✅ JS для работы с Excel-совместимыми формулами -->
+  <script src="https://cdn.jsdelivr.net/npm/jsuites@4.11.5/dist/jsuites.js"></script>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
@@ -422,33 +421,30 @@
 <div class="footer">AURASYSTEM • Full control</div>
 
 <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.0/dist/qrious.min.js"></script>
-<script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>
+
 <script>
   let spreadsheet = null;
 
   function initExcel() {
     if (spreadsheet) return;
-    spreadsheet = jexcel(document.getElementById('spreadsheet'), {
+    const container = document.getElementById('spreadsheet');
+    // Очищаем контейнер
+    container.innerHTML = '';
+
+    // Создаём таблицу через jspreadsheet CE
+    spreadsheet = jspreadsheet(container, {
       data: loadTableData(),
-      rows: 30,
-      columns: [
-        { type: 'text', title:'A', width:'100' },
-        { type: 'text', title:'B', width:'100' },
-        { type: 'text', title:'C', width:'100' },
-        { type: 'text', title:'D', width:'100' },
-        { type: 'text', title:'E', width:'100' },
-        { type: 'text', title:'F', width:'100' },
-        { type: 'text', title:'G', width:'100' },
-        { type: 'text', title:'H', width:'100' }
-      ],
+      minDimensions: [8, 30],
+      columnDrag: true,
       allowInsertRow: true,
       allowInsertColumn: true,
       allowDeleteRow: true,
       allowDeleteColumn: true,
-      columnDrag: true,
       search: true,
       pagination: 100,
-      onchange: saveTableData
+      onchange: function() {
+        saveTableData();
+      }
     });
   }
 
@@ -468,9 +464,8 @@
 
   function clearSheet() {
     if (spreadsheet) {
-      const data = [];
-      for (let i = 0; i < 30; i++) data.push(Array(8).fill(''));
-      spreadsheet.setData(data);
+      const empty = Array(30).fill().map(() => Array(8).fill(''));
+      spreadsheet.setData(empty);
       saveTableData();
     }
   }
@@ -487,15 +482,22 @@
     }
   }
 
+  // === ЕДИНСТВЕННАЯ ФУНКЦИЯ showPanel ===
   function showPanel(id) {
     document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
     if (id === 'excel') {
       initExcel();
+    } else if (id === 'qr') {
+      generateQR();
+    } else if (id === 'share') {
+      showShareLinks();
     }
     document.getElementById(id).style.display = 'block';
   }
 
-  // === КАЛЬКУЛЯТОР ===
+  // === КАЛЬКУЛЯТОР, ВАЛЮТЫ, QR, SHARE — без изменений ===
+  // ... (оставлены как в оригинале, но дублирую только уникальные имена)
+
   let calcMemory = 0;
   let calcExpression = '';
 
@@ -658,7 +660,7 @@
     convertFrom();
   }
 
-  // === QR КОД ===
+  // === QR ===
   function generateQR() {
     const text = document.getElementById('editor').innerText.trim() || 'Document from Aura Office';
     const qrContainer = document.getElementById('qrcode');
@@ -671,8 +673,8 @@
     qrContainer.appendChild(qr.element);
   }
 
-  // === ПОДЕЛИТЬСЯ ===
-  function showShare() {
+  // === SHARE ===
+  function showShareLinks() {
     const url = 'https://aurasystem.space/office/';
     const text = 'Document from Aura Office';
     const buttons = `
@@ -684,27 +686,7 @@
     document.getElementById('share-buttons').innerHTML = buttons;
   }
 
-  // === OTHER ===
-  function showPanel(id) {
-    document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
-    if (id === 'excel') {
-      initExcel();
-    }
-    document.getElementById(id).style.display = 'block';
-  }
-
-  function showQR() {
-    const qr = document.getElementById('qr');
-    qr.style.display = 'block';
-    qr.scrollIntoView({ behavior: 'smooth' });
-  }
-
-  function showShare() {
-    const share = document.getElementById('share');
-    share.style.display = 'block';
-    share.scrollIntoView({ behavior: 'smooth' });
-  }
-
+  // === ОСТАЛЬНОЕ ===
   function inviteCollab() {
     const id = 'AURA-' + Math.random().toString(36).substr(2, 5).toUpperCase();
     localStorage.setItem('doc_' + id, document.getElementById('editor').innerText);
@@ -715,17 +697,15 @@
   function sendRaw() { alert('📤 Sent'); }
   function sendEncrypted() { alert('🔐 Encrypted'); }
 
-  // === СОХРАНИТЬ В PDF ===
   function saveAsPDF() {
-    const element = document.body;
+    const element = document.getElementById('editor');
     const opt = {
-      margin:       10,
-      filename:     'aurasystem_document.pdf',
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2 },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      margin: 10,
+      filename: 'aurasystem_document.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
-
     html2pdf().set(opt).from(element).save();
   }
 
