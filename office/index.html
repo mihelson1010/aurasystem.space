@@ -61,6 +61,7 @@
       background:white;
     }
 
+    /* Панели в левом верхнем углу */
     .panel {
       position: fixed;
       top: 80px;
@@ -77,6 +78,34 @@
       display: none;
     }
 
+    /* jspreadsheet */
+    #spreadsheet {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      font-size: 14px;
+    }
+    #spreadsheet td, #spreadsheet th {
+      padding: 6px 8px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    #spreadsheet_toolbar {
+      padding: 8px;
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+    }
+    #spreadsheet_toolbar button {
+      padding: 4px 10px;
+      margin: 0 4px;
+      border: 1px solid #999;
+      background: #eee;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    #spreadsheet_toolbar button:hover { background: #ddd; }
+
+    /* Калькулятор */
     .calc-header {
       height:32px;
       position:relative;
@@ -128,6 +157,7 @@
     .calc-btn.memory { background: #9b59b6; }
     .calc-btn.memory:hover { background: #af37c2; }
 
+    /* Валютный калькулятор */
     .currency-converter {
       max-width: 400px;
       margin: 0 auto;
@@ -200,24 +230,53 @@
       color: #ffaa00;
       border: 1px solid rgba(155, 89, 182, 0.3);
     }
+    .currency-rate {
+      font-size: 14px;
+      color: #aaa;
+      text-align: center;
+      margin: 8px 0;
+    }
+    .currency-info {
+      font-size: 13px;
+      color: #777;
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    /* QR и Share */
+    .qr-output, .share-links {
+      padding: 20px;
+      background: #0d0d1a;
+      border-radius: 16px;
+      text-align: center;
+      margin: 20px auto;
+      max-width: 400px;
+    }
+    #qrcode canvas {
+      margin: 10px auto;
+      display: block;
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    .share-links a {
+      display: inline-block;
+      margin: 8px;
+      font-size: 28px;
+      text-decoration: none;
+    }
+    .share-links a:hover { opacity: 0.8; }
 
     .footer {
       position:fixed;
       bottom:12px;
       right:16px;
-      font-size:0.85rem;
-      color:#4cff4c;
-      text-shadow: 0 0 8px rgba(76, 255, 76, 0.5);
-      opacity: 0.9;
-      animation: neonFlicker 3.5s infinite alternate;
-      pointer-events: none;
-    }
-    @keyframes neonFlicker {
-      0%, 100% { opacity: 0.9; text-shadow: 0 0 8px rgba(76, 255, 76, 0.5); }
-      50% { opacity: 0.6; text-shadow: 0 0 4px rgba(76, 255, 76, 0.3); }
+      font-size:0.8rem;
+      color:#888;
     }
   </style>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jexcel-ce@4.0.0/dist/jexcel.css" />
+  <link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
@@ -237,33 +296,35 @@
   <div id="editor" contenteditable="true" spellcheck="false">Start typing here...</div>
   
   <div id="calc" class="panel">
-    <div class="calc-header">CryptoAura</div>
-    <div class="calc-display" id="calc-display">0</div>
-    <div class="calc-buttons">
-      <button class="calc-btn memory" onclick="calcMR()">MR</button>
-      <button class="calc-btn memory" onclick="calcMC()">MC</button>
-      <button class="calc-btn gray" onclick="calcClear()">C</button>
-      <button class="calc-btn gray" onclick="calcClearEntry()">CE</button>
-      <button class="calc-btn gray" onclick="calcInput('7')">7</button>
-      <button class="calc-btn gray" onclick="calcInput('8')">8</button>
-      <button class="calc-btn gray" onclick="calcInput('9')">9</button>
-      <button class="calc-btn orange" onclick="calcInput('/')">/</button>
-      <button class="calc-btn gray" onclick="calcInput('4')">4</button>
-      <button class="calc-btn gray" onclick="calcInput('5')">5</button>
-      <button class="calc-btn gray" onclick="calcInput('6')">6</button>
-      <button class="calc-btn orange" onclick="calcInput('*')">*</button>
-      <button class="calc-btn gray" onclick="calcInput('1')">1</button>
-      <button class="calc-btn gray" onclick="calcInput('2')">2</button>
-      <button class="calc-btn gray" onclick="calcInput('3')">3</button>
-      <button class="calc-btn orange" onclick="calcInput('-')">-</button>
-      <button class="calc-btn gray" onclick="calcInput('0')">0</button>
-      <button class="calc-btn gray" onclick="calcInput('.')">.</button>
-      <button class="calc-btn green" onclick="calcInput('Math.sqrt(')">√</button>
-      <button class="calc-btn orange" onclick="calcInput('+')">+</button>
-      <button class="calc-btn memory" onclick="calcMPlus()">M+</button>
-      <button class="calc-btn gray" onclick="calcInput('%')">%</button>
-      <button class="calc-btn green" onclick="calcEquals()">=</button>
-      <button class="calc-btn" style="background:#e74c3c;" onclick="calcBackspace()">⌫</button>
+    <div class="calc-container">
+      <div class="calc-header">CryptoAura</div>
+      <div class="calc-display" id="calc-display">0</div>
+      <div class="calc-buttons">
+        <button class="calc-btn memory" onclick="calcMR()">MR</button>
+        <button class="calc-btn memory" onclick="calcMC()">MC</button>
+        <button class="calc-btn gray" onclick="calcClear()">C</button>
+        <button class="calc-btn gray" onclick="calcClearEntry()">CE</button>
+        <button class="calc-btn gray" onclick="calcInput('7')">7</button>
+        <button class="calc-btn gray" onclick="calcInput('8')">8</button>
+        <button class="calc-btn gray" onclick="calcInput('9')">9</button>
+        <button class="calc-btn orange" onclick="calcInput('/')">/</button>
+        <button class="calc-btn gray" onclick="calcInput('4')">4</button>
+        <button class="calc-btn gray" onclick="calcInput('5')">5</button>
+        <button class="calc-btn gray" onclick="calcInput('6')">6</button>
+        <button class="calc-btn orange" onclick="calcInput('*')">*</button>
+        <button class="calc-btn gray" onclick="calcInput('1')">1</button>
+        <button class="calc-btn gray" onclick="calcInput('2')">2</button>
+        <button class="calc-btn gray" onclick="calcInput('3')">3</button>
+        <button class="calc-btn orange" onclick="calcInput('-')">-</button>
+        <button class="calc-btn gray" onclick="calcInput('0')">0</button>
+        <button class="calc-btn gray" onclick="calcInput('.')">.</button>
+        <button class="calc-btn green" onclick="calcInput('Math.sqrt(')">√</button>
+        <button class="calc-btn orange" onclick="calcInput('+')">+</button>
+        <button class="calc-btn memory" onclick="calcMPlus()">M+</button>
+        <button class="calc-btn gray" onclick="calcInput('%')">%</button>
+        <button class="calc-btn green" onclick="calcEquals()">=</button>
+        <button class="calc-btn" style="background:#e74c3c;" onclick="calcBackspace()">⌫</button>
+      </div>
     </div>
   </div>
   
@@ -349,10 +410,11 @@
   </div>
   
   <div id="excel" class="panel">
-    <div id="spreadsheet-container"></div>
-    <div style="margin-top:10px;">
+    <div id="spreadsheet"></div>
+    <div id="spreadsheet_toolbar">
       <button onclick="addRow()">+ Row</button>
       <button onclick="clearSheet()">Clear</button>
+      <button onclick="exportCSV()">Export CSV</button>
     </div>
   </div>
 </div>
@@ -360,27 +422,44 @@
 <div class="footer">AURASYSTEM • Full control</div>
 
 <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.0/dist/qrious.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jexcel-ce@4.0.0/dist/jexcel.js"></script>
+<script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>
 <script>
-  // === JEXCEL ===
   let spreadsheet = null;
 
   function initExcel() {
     if (spreadsheet) return;
-    spreadsheet = jexcel(document.getElementById('spreadsheet-container'), {
-       [Array(8).fill('')],
+    spreadsheet = jexcel(document.getElementById('spreadsheet'), {
+      data: loadTableData(),
+      rows: 30,
       columns: [
-        { type: 'text', width: '100px', title: 'A' },
-        { type: 'text', width: '100px', title: 'B' },
-        { type: 'text', width: '100px', title: 'C' },
-        { type: 'text', width: '100px', title: 'D' },
-        { type: 'text', width: '100px', title: 'E' },
-        { type: 'text', width: '100px', title: 'F' },
-        { type: 'text', width: '100px', title: 'G' },
-        { type: 'text', width: '100px', title: 'H' }
+        { type: 'text', title:'A', width:'100' },
+        { type: 'text', title:'B', width:'100' },
+        { type: 'text', title:'C', width:'100' },
+        { type: 'text', title:'D', width:'100' },
+        { type: 'text', title:'E', width:'100' },
+        { type: 'text', title:'F', width:'100' },
+        { type: 'text', title:'G', width:'100' },
+        { type: 'text', title:'H', width:'100' }
       ],
-      minDimensions: [8, 30]
+      allowInsertRow: true,
+      allowInsertColumn: true,
+      allowDeleteRow: true,
+      allowDeleteColumn: true,
+      columnDrag: true,
+      search: true,
+      pagination: 100,
+      onchange: saveTableData
     });
+  }
+
+  function loadTableData() {
+    const saved = localStorage.getItem('aura_excel');
+    return saved ? JSON.parse(saved) : [['']];
+  }
+
+  function saveTableData() {
+    const data = spreadsheet.getData();
+    localStorage.setItem('aura_excel', JSON.stringify(data));
   }
 
   function addRow() {
@@ -389,8 +468,22 @@
 
   function clearSheet() {
     if (spreadsheet) {
-      const data = Array(30).fill().map(() => Array(8).fill(''));
+      const data = [];
+      for (let i = 0; i < 30; i++) data.push(Array(8).fill(''));
       spreadsheet.setData(data);
+      saveTableData();
+    }
+  }
+
+  function exportCSV() {
+    if (spreadsheet) {
+      const csv = spreadsheet.download();
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'aurasystem_spreadsheet.csv';
+      a.click();
     }
   }
 
@@ -402,7 +495,7 @@
     document.getElementById(id).style.display = 'block';
   }
 
-  // === КАЛЬКУЛЯТОРЫ + ВАЛЮТЫ (как в Knowledge Base) ===
+  // === КАЛЬКУЛЯТОР ===
   let calcMemory = 0;
   let calcExpression = '';
 
@@ -454,3 +547,193 @@
   }
 
   function calcMC() {
+    calcMemory = 0;
+  }
+
+  function updateCalcDisplay() {
+    const display = document.getElementById('calc-display');
+    if (calcExpression === '') {
+      display.textContent = '0';
+    } else if (calcExpression.length > 15) {
+      display.textContent = calcExpression.slice(0, 15) + '...';
+    } else {
+      display.textContent = calcExpression;
+    }
+  }
+
+  // === ВАЛЮТЫ ===
+  let rates = null;
+  const STATIC_RATES_USD = {
+    USD: 1, EUR: 0.93, RUB: 93.5, CNY: 7.25, GEL: 2.70, JPY: 155.0,
+    ILS: 3.70, SEK: 10.50, NOK: 10.80, DKK: 6.90, AUD: 1.52, ARS: 950.0,
+    BTC: 1/92410, ETH: 1/2870, SOL: 1/172, XRP: 1/0.58,
+    DOGE: 1/0.172, ADA: 1/0.45, USDT: 1/1.0001
+  };
+  let isConverting = false;
+
+  async function loadRates() {
+    if (rates) return;
+    try {
+      const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,ripple,dogecoin,cardano,tether&vs_currencies=usd,eur,rub,cny,gel,jpy,ils,sek,nok,dkk,aud,ars');
+      const data = await res.json();
+      rates = {
+        BTC: { usd: data.bitcoin.usd, eur: data.bitcoin.eur, rub: data.bitcoin.rub },
+        ETH: { usd: data.ethereum.usd, eur: data.ethereum.eur, rub: data.ethereum.rub },
+      };
+      document.getElementById('rate-info').textContent = '✅ Online rates';
+      convertFrom();
+    } catch (e) {
+      rates = null;
+      document.getElementById('rate-info').textContent = '⚠️ Offline (static rates)';
+      convertFrom();
+    }
+  }
+
+  function getUSDPrice(currency, amount = 1) {
+    if (currency === 'USD') return amount;
+    if (rates) {
+      const id = currency.toLowerCase();
+      if (rates[id]) {
+        return amount * rates[id].usd;
+      }
+    }
+    return amount / STATIC_RATES_USD[currency];
+  }
+
+  function convertFrom() {
+    if (isConverting) return;
+    isConverting = true;
+    const from = document.getElementById('fromCurrency').value;
+    const to = document.getElementById('toCurrency').value;
+    const fromAmount = parseFloat(document.getElementById('fromAmount').value) || 0;
+    
+    if (from === to) {
+      const v = fromAmount;
+      document.getElementById('toAmount').value = v;
+      document.getElementById('result').textContent = `${fromAmount} ${from} = ${v} ${to}`;
+      document.getElementById('rate').textContent = '';
+    } else {
+      const usd = getUSDPrice(from, fromAmount);
+      const toAmount = usd / getUSDPrice(to, 1);
+      document.getElementById('toAmount').value = toAmount.toFixed(6);
+      document.getElementById('result').textContent = `${fromAmount} ${from} = ${toAmount.toFixed(6)} ${to}`;
+      document.getElementById('rate').textContent = `1 ${from} = ${(toAmount / fromAmount).toFixed(6)} ${to}`;
+    }
+    isConverting = false;
+  }
+
+  function convertTo() {
+    if (isConverting) return;
+    isConverting = true;
+    const from = document.getElementById('fromCurrency').value;
+    const to = document.getElementById('toCurrency').value;
+    const toAmount = parseFloat(document.getElementById('toAmount').value) || 0;
+    
+    if (from === to) {
+      document.getElementById('fromAmount').value = toAmount;
+      document.getElementById('result').textContent = `${toAmount} ${to} = ${toAmount} ${from}`;
+      document.getElementById('rate').textContent = '';
+    } else {
+      const usd = getUSDPrice(to, toAmount);
+      const fromAmount = usd / getUSDPrice(from, 1);
+      document.getElementById('fromAmount').value = fromAmount.toFixed(6);
+      document.getElementById('result').textContent = `${fromAmount.toFixed(6)} ${from} = ${toAmount} ${to}`;
+      document.getElementById('rate').textContent = `1 ${to} = ${(fromAmount / toAmount).toFixed(6)} ${from}`;
+    }
+    isConverting = false;
+  }
+
+  function swapCurrencies() {
+    const fromSel = document.getElementById('fromCurrency');
+    const toSel = document.getElementById('toCurrency');
+    const fromVal = fromSel.value;
+    const fromAmt = document.getElementById('fromAmount').value;
+    
+    fromSel.value = toSel.value;
+    toSel.value = fromVal;
+    
+    document.getElementById('fromAmount').value = document.getElementById('toAmount').value;
+    document.getElementById('toAmount').value = fromAmt;
+    
+    convertFrom();
+  }
+
+  // === QR КОД ===
+  function generateQR() {
+    const text = document.getElementById('editor').innerText.trim() || 'Document from Aura Office';
+    const qrContainer = document.getElementById('qrcode');
+    qrContainer.innerHTML = '';
+    const qr = new QRious({
+      element: document.createElement('canvas'),
+      value: text,
+      size: 200
+    });
+    qrContainer.appendChild(qr.element);
+  }
+
+  // === ПОДЕЛИТЬСЯ ===
+  function showShare() {
+    const url = 'https://aurasystem.space/office/';
+    const text = 'Document from Aura Office';
+    const buttons = `
+      <a href="https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}" target="_blank" style="color:#000;">𝕏</a>
+      <a href="https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}" target="_blank" style="color:#0088cc;">Telegram</a>
+      <a href="https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}" target="_blank" style="color:#25d366;">WhatsApp</a>
+      <a href="mailto:?subject=${encodeURIComponent(text)}&body=${encodeURIComponent(url)}" style="color:#ff6b6b;">Email</a>
+    `;
+    document.getElementById('share-buttons').innerHTML = buttons;
+  }
+
+  // === OTHER ===
+  function showPanel(id) {
+    document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
+    if (id === 'excel') {
+      initExcel();
+    }
+    document.getElementById(id).style.display = 'block';
+  }
+
+  function showQR() {
+    const qr = document.getElementById('qr');
+    qr.style.display = 'block';
+    qr.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function showShare() {
+    const share = document.getElementById('share');
+    share.style.display = 'block';
+    share.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function inviteCollab() {
+    const id = 'AURA-' + Math.random().toString(36).substr(2, 5).toUpperCase();
+    localStorage.setItem('doc_' + id, document.getElementById('editor').innerText);
+    const url = 'https://aurasystem.space/office/?doc=' + id;
+    prompt('Send this link to a friend:', url);
+  }
+
+  function sendRaw() { alert('📤 Sent'); }
+  function sendEncrypted() { alert('🔐 Encrypted'); }
+
+  // === СОХРАНИТЬ В PDF ===
+  function saveAsPDF() {
+    const element = document.body;
+    const opt = {
+      margin:       10,
+      filename:     'aurasystem_document.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2 },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save();
+  }
+
+  window.onload = () => {
+    document.getElementById('editor').focus();
+    loadRates();
+  };
+</script>
+
+</body>
+</html>
