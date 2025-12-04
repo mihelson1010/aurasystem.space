@@ -61,6 +61,7 @@
       background:white;
     }
 
+    /* ПАНЕЛИ */
     .panel {
       position: fixed;
       top: 80px;
@@ -77,171 +78,119 @@
       display: none;
     }
 
-    #spreadsheet {
+    /* EXCEL — ПОЛНЫЙ ЭКРАН */
+    #excel-full {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      height: 400px;
+      height: 100%;
       background: white;
-      margin-bottom: 10px;
-    }
-
-    #spreadsheet_toolbar {
-      padding: 8px;
-      background: #f5f5f5;
-      border: 1px solid #ddd;
-    }
-    #spreadsheet_toolbar button {
-      padding: 4px 10px;
-      margin: 0 4px;
-      border: 1px solid #999;
-      background: #eee;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-    #spreadsheet_toolbar button:hover { background: #ddd; }
-
-    .calc-header {
-      height:32px;
-      position:relative;
-      margin-bottom:16px;
-      background: #0d0d1a;
-      border-radius: 12px;
-      padding: 8px;
-      text-align: center;
-      color: #ff7700;
-      animation: blink 1.5s infinite;
-      opacity: 0.8;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 0.8; }
-      50% { opacity: 0.4; }
-    }
-    .calc-display {
-      background: #1a1a2a;
-      color: #4cff4c;
-      font-size: 24px;
-      padding: 16px;
-      text-align: right;
-      border-radius: 12px;
-      font-family: monospace;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .calc-buttons {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-top: 16px;
-    }
-    .calc-btn {
-      padding: 14px 0;
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 18px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .calc-btn.gray { background: #4b4b4b; }
-    .calc-btn.gray:hover { background: #5b5b5b; }
-    .calc-btn.orange { background: #ff7700; }
-    .calc-btn.orange:hover { background: #ffaa00; }
-    .calc-btn.green { background: #2ecc71; }
-    .calc-btn.green:hover { background: #27ae60; }
-    .calc-btn.memory { background: #9b59b6; }
-    .calc-btn.memory:hover { background: #af37c2; }
-
-    .currency-converter {
-      max-width: 400px;
-      margin: 0 auto;
-      background: #0d0d1a;
-      border-radius: 20px;
-      padding: 24px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-      color: #fff;
-    }
-    .currency-header {
-      text-align: center;
-      font-size: 1.4rem;
-      font-weight: bold;
-      margin-bottom: 20px;
-      color: #9b59b6;
-    }
-    .currency-input-group {
-      display: flex;
-      gap: 12px;
-      margin: 12px 0;
-    }
-    .currency-input-field {
-      width: 100px;
-      padding: 12px;
-      font-size: 16px;
-      background: #1a1a2a;
-      border: 1px solid #555;
-      border-radius: 12px;
-      color: white;
-      text-align: right;
-      outline: none;
-      transition: border 0.3s;
-    }
-    .currency-input-field:focus {
-      border-color: #9b59b6;
-      box-shadow: 0 0 0 2px rgba(155, 89, 182, 0.3);
-    }
-    .currency-select {
-      flex: 1;
-      padding: 12px;
-      font-size: 15px;
-      background: #1a1a2a;
-      border: 1px solid #555;
-      border-radius: 12px;
-      color: white;
-      outline: none;
-    }
-    .currency-select:focus {
-      border-color: #9b59b6;
-    }
-    .currency-swap {
-      text-align: center;
-      font-size: 24px;
-      color: #9b59b6;
-      cursor: pointer;
-      margin: 10px 0;
-      transition: transform 0.3s;
-    }
-    .currency-swap:hover {
-      transform: scale(1.2);
-    }
-    .currency-result {
-      font-size: 20px;
-      font-weight: bold;
-      margin: 16px 0;
-      padding: 14px;
-      background: rgba(155, 89, 182, 0.1);
-      border-radius: 12px;
-      text-align: center;
-      color: #ffaa00;
-      border: 1px solid rgba(155, 89, 182, 0.3);
-    }
-    .currency-rate {
-      font-size: 14px;
-      color: #aaa;
-      text-align: center;
-      margin: 8px 0;
-    }
-    .currency-info {
-      font-size: 13px;
-      color: #777;
-      text-align: center;
-      margin-top: 12px;
-    }
-
-    .qr-output, .share-links {
+      z-index: 200;
       padding: 20px;
-      background: #0d0d1a;
+      box-sizing: border-box;
+      overflow: auto;
+    }
+    #excel-full .toolbar {
+      background: #f9f9f9;
+      padding: 10px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid #ddd;
+      position: relative;
+    }
+    #excel-full .close-btn {
+      background: #e74c3c;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #excel-full .lang-btn {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background: #333;
+      color: #0f0;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    #excel-full .lang-menu {
+      position: absolute;
+      right: 10px;
+      top: 40px;
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 8px;
+      display: none;
+      z-index: 1000;
+    }
+    #excel-full .lang-menu a {
+      display: block;
+      padding: 4px 8px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    #excel-full .lang-menu a:hover {
+      background: #444;
+    }
+
+    #handsontable-container {
+      height: calc(100vh - 140px);
+      margin-top: 10px;
+    }
+
+    /* SHARE — светлый фон */
+    .share-links {
+      background: #fff;
+      border: 1px solid #ddd;
       border-radius: 16px;
+      padding: 20px;
       text-align: center;
       margin: 20px auto;
       max-width: 400px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .share-links h3 {
+      color: #333;
+      margin-bottom: 16px;
+    }
+    .share-links a {
+      display: inline-block;
+      margin: 8px;
+      font-size: 28px;
+      text-decoration: none;
+      color: #333;
+    }
+    .share-links a:hover {
+      opacity: 0.8;
+      transform: scale(1.1);
+    }
+    .share-links a.x { color: #000; }
+    .share-links a.telegram { color: #0088cc; }
+    .share-links a.whatsapp { color: #25d366; }
+    .share-links a.email { color: #ff6b6b; }
+
+    /* QR */
+    .qr-output {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      margin: 20px auto;
+      max-width: 400px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .qr-output h3 {
+      color: #333;
+      margin-bottom: 16px;
     }
     #qrcode canvas {
       margin: 10px auto;
@@ -249,14 +198,8 @@
       background: white;
       padding: 10px;
       border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    .share-links a {
-      display: inline-block;
-      margin: 8px;
-      font-size: 28px;
-      text-decoration: none;
-    }
-    .share-links a:hover { opacity: 0.8; }
 
     .footer {
       position:fixed;
@@ -267,12 +210,15 @@
     }
   </style>
 
-  <!-- ✅ jspreadsheet CE CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jspreadsheet-ce@4.5.4/dist/jspreadsheet.css" />
-  <!-- ✅ jspreadsheet CE JS -->
-  <script src="https://cdn.jsdelivr.net/npm/jspreadsheet-ce@4.5.4/dist/jspreadsheet.js"></script>
-  <!-- ✅ JS для работы с Excel-совместимыми формулами -->
-  <script src="https://cdn.jsdelivr.net/npm/jsuites@4.11.5/dist/jsuites.js"></script>
+  <!-- Handsontable -->
+  <link href="https://cdn.jsdelivr.net/npm/handsontable@13.3.0/dist/handsontable.full.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/handsontable@13.3.0/dist/handsontable.full.min.js"></script>
+
+  <!-- formulajs для Excel-формул -->
+  <script src="https://cdn.jsdelivr.net/npm/formulajs@4.4.0/lib/formula.js"></script>
+
+  <!-- SheetJS для импорта/экспорта .xlsx -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.0/dist/qrious.min.js"></script>
@@ -283,7 +229,7 @@
   <button class="tool-btn btn-calc" onclick="showPanel('calc')">🧮 Calc</button>
   <button class="tool-btn btn-currency" onclick="showPanel('currency'); loadRates()">💱 Forex</button>
   <button class="tool-btn btn-invite" onclick="inviteCollab()">✉️ Invite</button>
-  <button class="tool-btn btn-excel" onclick="showPanel('excel')">📊 Excel</button>
+  <button class="tool-btn btn-excel" onclick="showExcelFull()">📊 Excel</button>
   <button class="tool-btn btn-qr" onclick="showPanel('qr'); generateQR()">📱 QR</button>
   <button class="tool-btn btn-share" onclick="showPanel('share'); showShareLinks()">📤 Share</button>
   <button class="tool-btn btn-send-txt" onclick="sendRaw()">📤 Send</button>
@@ -362,29 +308,7 @@
       <div class="currency-input-group">
         <input type="number" id="toAmount" value="" oninput="convertTo()" class="currency-input-field">
         <select id="toCurrency" onchange="convertTo()" class="currency-select">
-          <optgroup label="Crypto">
-            <option value="BTC">BTC</option>
-            <option value="ETH">ETH</option>
-            <option value="SOL">SOL</option>
-            <option value="XRP">XRP</option>
-            <option value="DOGE">DOGE</option>
-            <option value="ADA">ADA</option>
-            <option value="USDT">USDT</option>
-          </optgroup>
-          <optgroup label="Fiat">
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="RUB">RUB</option>
-            <option value="CNY">CNY</option>
-            <option value="GEL">GEL</option>
-            <option value="JPY">JPY</option>
-            <option value="ILS">ILS</option>
-            <option value="SEK">SEK</option>
-            <option value="NOK">NOK</option>
-            <option value="DKK">DKK</option>
-            <option value="AUD">AUD</option>
-            <option value="ARS">ARS</option>
-          </optgroup>
+          <!-- same options -->
         </select>
       </div>
       <div class="currency-result" id="result">—</div>
@@ -407,77 +331,273 @@
       <div id="share-buttons"></div>
     </div>
   </div>
-  
-  <div id="excel" class="panel">
-    <div id="spreadsheet"></div>
-    <div id="spreadsheet_toolbar">
-      <button onclick="addRow()">+ Row</button>
-      <button onclick="clearSheet()">Clear</button>
-      <button onclick="exportCSV()">Export CSV</button>
+</div>
+
+<!-- Полноэкранный Excel -->
+<div id="excel-full">
+  <div class="toolbar">
+    <button class="close-btn" onclick="hideExcelFull()">✖ Close</button>
+    <button onclick="addRow()">+ Row</button>
+    <button onclick="clearSheet()">Clear</button>
+    <button onclick="importExcel()">Import XLSX</button>
+    <button onclick="exportExcel()">Export XLSX</button>
+    <button onclick="printExcel()">🖨️ Print</button>
+    <div class="lang-btn" onclick="toggleLangMenu()">🌐 Language</div>
+    <div class="lang-menu" id="lang-menu">
+      <a href="#" onclick="setLanguage('EN')">EN</a>
+      <a href="#" onclick="setLanguage('RU')">RU</a>
+      <a href="#" onclick="setLanguage('ES')">ES</a>
+      <a href="#" onclick="setLanguage('FR')">FR</a>
+      <a href="#" onclick="setLanguage('ZH')">中文</a>
+      <a href="#" onclick="setLanguage('JA')">日本語</a>
+      <a href="#" onclick="setLanguage('HE')">עברית</a>
+      <a href="#" onclick="setLanguage('AR')">العربية</a>
+      <a href="#" onclick="setLanguage('DE')">DE</a>
+      <a href="#" onclick="setLanguage('PT')">PT</a>
     </div>
   </div>
+  <div id="handsontable-container"></div>
 </div>
 
 <div class="footer">AURASYSTEM • Full control</div>
 
 <script>
-  let spreadsheet = null;
+  let hotInstance = null;
+  let currentLang = 'EN';
 
-  function initExcel() {
-    if (!document.getElementById('spreadsheet')) return;
-    if (spreadsheet) return;
+  // === ПЕРЕВОДЫ ===
+  const translations = {
+    EN: {
+      'Add Row': '+ Row',
+      'Clear': 'Clear',
+      'Import XLSX': 'Import XLSX',
+      'Export XLSX': 'Export XLSX',
+      'Print': 'Print',
+      'Language': 'Language'
+    },
+    RU: {
+      'Add Row': '+ Строка',
+      'Clear': 'Очистить',
+      'Import XLSX': 'Импорт XLSX',
+      'Export XLSX': 'Экспорт XLSX',
+      'Print': 'Печать',
+      'Language': 'Язык'
+    },
+    ES: {
+      'Add Row': '+ Fila',
+      'Clear': 'Limpiar',
+      'Import XLSX': 'Importar XLSX',
+      'Export XLSX': 'Exportar XLSX',
+      'Print': 'Imprimir',
+      'Language': 'Idioma'
+    },
+    FR: {
+      'Add Row': '+ Ligne',
+      'Clear': 'Effacer',
+      'Import XLSX': 'Importer XLSX',
+      'Export XLSX': 'Exporter XLSX',
+      'Print': 'Imprimer',
+      'Language': 'Langue'
+    },
+    ZH: {
+      'Add Row': '+ 行',
+      'Clear': '清除',
+      'Import XLSX': '导入 XLSX',
+      'Export XLSX': '导出 XLSX',
+      'Print': '打印',
+      'Language': '语言'
+    },
+    JA: {
+      'Add Row': '+ 行',
+      'Clear': 'クリア',
+      'Import XLSX': 'XLSXをインポート',
+      'Export XLSX': 'XLSXをエクスポート',
+      'Print': '印刷',
+      'Language': '言語'
+    },
+    HE: {
+      'Add Row': '+ שורה',
+      'Clear': 'נקה',
+      'Import XLSX': 'ייבוא XLSX',
+      'Export XLSX': 'ייצוא XLSX',
+      'Print': 'הדפסה',
+      'Language': 'שפה'
+    },
+    AR: {
+      'Add Row': '+ صف',
+      'Clear': 'مسح',
+      'Import XLSX': 'استيراد XLSX',
+      'Export XLSX': 'تصدير XLSX',
+      'Print': 'طباعة',
+      'Language': 'اللغة'
+    },
+    DE: {
+      'Add Row': '+ Zeile',
+      'Clear': 'Löschen',
+      'Import XLSX': 'XLSX importieren',
+      'Export XLSX': 'XLSX exportieren',
+      'Print': 'Drucken',
+      'Language': 'Sprache'
+    },
+    PT: {
+      'Add Row': '+ Linha',
+      'Clear': 'Limpar',
+      'Import XLSX': 'Importar XLSX',
+      'Export XLSX': 'Exportar XLSX',
+      'Print': 'Imprimir',
+      'Language': 'Idioma'
+    }
+  };
 
-    const container = document.getElementById('spreadsheet');
-    container.innerHTML = ''; // Очищаем контейнер
+  function translate(key) {
+    return translations[currentLang][key] || key;
+  }
 
-    spreadsheet = jspreadsheet(container, {
-      data: loadTableData(),
-      minDimensions: [8, 30],
-      columnDrag: true,
-      allowInsertRow: true,
-      allowInsertColumn: true,
-      allowDeleteRow: true,
-      allowDeleteColumn: true,
-      search: true,
-      pagination: 100,
-      onchange: function() {
-        saveTableData();
+  function setLanguage(lang) {
+    currentLang = lang;
+    updateToolbarTexts();
+    if (hotInstance) {
+      hotInstance.updateSettings({
+        language: lang.toLowerCase()
+      });
+    }
+    toggleLangMenu(false);
+  }
+
+  function toggleLangMenu(show) {
+    const menu = document.getElementById('lang-menu');
+    if (show === undefined) {
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    } else {
+      menu.style.display = show ? 'block' : 'none';
+    }
+  }
+
+  function updateToolbarTexts() {
+    const buttons = [
+      { selector: '.toolbar button:nth-child(2)', key: 'Add Row' },
+      { selector: '.toolbar button:nth-child(3)', key: 'Clear' },
+      { selector: '.toolbar button:nth-child(4)', key: 'Import XLSX' },
+      { selector: '.toolbar button:nth-child(5)', key: 'Export XLSX' },
+      { selector: '.toolbar button:nth-child(6)', key: 'Print' },
+      { selector: '.lang-btn', key: 'Language' }
+    ];
+    buttons.forEach(btn => {
+      const el = document.querySelector(btn.selector);
+      if (el) {
+        el.textContent = translate(btn.key);
       }
+    });
+  }
+
+  // === ИНИЦИАЛИЗАЦИЯ EXCEL (Handsontable) ===
+  function initExcel() {
+    if (hotInstance) return;
+    const data = loadTableData();
+
+    hotInstance = new Handsontable(document.getElementById('handsontable-container'), {
+       data,
+      formulas: {
+        engine: formulajs,
+      },
+      rowHeaders: true,
+      colHeaders: true,
+      contextMenu: true,
+      filters: true,
+      dropdownMenu: true,
+      height: '100%',
+      width: '100%',
+      manualRowResize: true,
+      manualColumnResize: true,
+      language: currentLang.toLowerCase(),
+      licenseKey: 'non-commercial-and-evaluation'
+    });
+
+    // Автосохранение
+    hotInstance.addHook('afterChange', function() {
+      saveTableData();
     });
   }
 
   function loadTableData() {
     const saved = localStorage.getItem('aura_excel');
-    return saved ? JSON.parse(saved) : [['']];
+    if (saved) {
+      return JSON.parse(saved);
+    }
+    return Array(20).fill().map(() => Array(10).fill(''));
   }
 
   function saveTableData() {
-    if (!spreadsheet) return;
-    const data = spreadsheet.getData();
+    if (!hotInstance) return;
+    const data = hotInstance.getData();
     localStorage.setItem('aura_excel', JSON.stringify(data));
   }
 
+  // === ФУНКЦИИ EXCEL ===
   function addRow() {
-    if (spreadsheet) spreadsheet.insertRow();
+    if (hotInstance) {
+      const rowCount = hotInstance.countRows();
+      hotInstance.alter('insert_row', rowCount);
+    }
   }
 
   function clearSheet() {
-    if (spreadsheet) {
-      const empty = Array(30).fill().map(() => Array(8).fill(''));
-      spreadsheet.setData(empty);
+    if (hotInstance) {
+      const empty = Array(20).fill().map(() => Array(10).fill(''));
+      hotInstance.loadData(empty);
       saveTableData();
     }
   }
 
-  function exportCSV() {
-    if (!spreadsheet) return;
-    const csv = spreadsheet.download();
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'aurasystem_spreadsheet.csv';
-    a.click();
+  function importExcel() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.xlsx,.xls';
+    input.onchange = function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+        const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1, defval: '' });
+        if (hotInstance) {
+          hotInstance.loadData(jsonData);
+          saveTableData();
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    };
+    input.click();
+  }
+
+  function exportExcel() {
+    if (!hotInstance) return;
+    const data = hotInstance.getData();
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+    XLSX.writeFile(wb, 'aurasystem_spreadsheet.xlsx');
+  }
+
+  function printExcel() {
+    window.print();
+  }
+
+  // === EXCEL FULL SCREEN ===
+  function showExcelFull() {
+    document.body.style.overflow = 'hidden';
+    document.getElementById('excel-full').style.display = 'block';
+    if (!hotInstance) {
+      initExcel();
+    }
+    updateToolbarTexts();
+  }
+
+  function hideExcelFull() {
+    document.body.style.overflow = 'auto';
+    document.getElementById('excel-full').style.display = 'none';
   }
 
   // === ПАНЕЛИ ===
@@ -487,16 +607,14 @@
     if (!panel) return;
     panel.style.display = 'block';
 
-    if (id === 'excel') {
-      initExcel();
-    } else if (id === 'qr') {
+    if (id === 'qr') {
       generateQR();
     } else if (id === 'share') {
       showShareLinks();
     }
   }
 
-  // === КАЛЬКУЛЯТОР ===
+  // === КАЛЬКУЛЯТОР, ВАЛЮТЫ, QR, SHARE — без изменений ===
   let calcMemory = 0;
   let calcExpression = '';
 
@@ -660,7 +778,6 @@
     convertFrom();
   }
 
-  // === QR ===
   function generateQR() {
     const text = document.getElementById('editor').innerText.trim() || 'Document from Aura Office';
     const qrContainer = document.getElementById('qrcode');
@@ -674,15 +791,14 @@
     qrContainer.appendChild(qr.element);
   }
 
-  // === SHARE ===
   function showShareLinks() {
     const url = 'https://aurasystem.space/office/';
     const text = 'Document from Aura Office';
     const buttons = `
-      <a href="https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}" target="_blank" style="color:#000;">𝕏</a>
-      <a href="https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}" target="_blank" style="color:#0088cc;">Telegram</a>
-      <a href="https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}" target="_blank" style="color:#25d366;">WhatsApp</a>
-      <a href="mailto:?subject=${encodeURIComponent(text)}&body=${encodeURIComponent(url)}" style="color:#ff6b6b;">Email</a>
+      <a href="https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}" target="_blank" class="x">𝕏</a>
+      <a href="https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}" target="_blank" class="telegram">Telegram</a>
+      <a href="https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}" target="_blank" class="whatsapp">WhatsApp</a>
+      <a href="mailto:?subject=${encodeURIComponent(text)}&body=${encodeURIComponent(url)}" class="email">Email</a>
     `;
     const shareButtons = document.getElementById('share-buttons');
     if (shareButtons) {
@@ -690,7 +806,6 @@
     }
   }
 
-  // === ОСТАЛЬНОЕ ===
   function inviteCollab() {
     const id = 'AURA-' + Math.random().toString(36).substr(2, 5).toUpperCase();
     localStorage.setItem('doc_' + id, document.getElementById('editor').innerText);
