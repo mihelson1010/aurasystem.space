@@ -118,6 +118,14 @@
       border-radius: 16px;
       max-width: 800px;
     }
+    #avatar-preview {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 2px solid #ff7700;
+      margin: 0 auto;
+      display: block;
+    }
     #avatar-upload {
       width: 100%;
       margin: 10px 0;
@@ -190,19 +198,17 @@
     </div>
     <div style="display: flex; gap: 16px; margin-top: 20px;">
       <button id="modal-pay-btn" class="btn">Confirm & Pay 300 AUS</button>
-      <button id="modal-promo-btn" class="btn btn-promo">Ввести промокод</button>
+      <button id="modal-promo-btn" class="btn btn-promo" onclick="enterPromo()">Ввести промокод</button>
     </div>
   </div>
 </div>
 
 <div id="account-form" class="modal-content">
   <h2>Create Your Account</h2>
-  <div style="text-align: center; margin: 20px 0;">
-    <img id="avatar-preview" src="https://aurasystem.space/cryptobros/default-avatar.png" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%; border: 2px solid #ff7700;">
-  </div>
+  <img id="avatar-preview" src="https://aurasystem.space/cryptobros/default-avatar.png" alt="Avatar">
   <input type="file" id="avatar-upload" accept="image/*" onchange="previewAvatar(event)">
   <textarea id="bio-input" placeholder="Write your bio..." rows="4"></textarea>
-  <div style="margin: 10px 0;">
+  <div>
     <input type="checkbox" id="settings-checkbox">
     <label for="settings-checkbox">Enable notifications</label>
   </div>
@@ -211,66 +217,16 @@
 
 <script>
   const uiTexts = {
-    en: { 
-      create: "Create Account", 
-      agree: "I agree with the CRYPTOBROS Manifest", 
-      pay: "Confirm & Pay 300 AUS", 
-      promo: "Enter promo code"
-    },
-    ru: { 
-      create: "Создать аккаунт", 
-      agree: "Я согласен с Манифестом CRYPTOBROS", 
-      pay: "Подтвердить и оплатить 300 AUS", 
-      promo: "Ввести промокод"
-    },
-    es: { 
-      create: "Crear cuenta", 
-      agree: "Acepto el Manifiesto de CRYPTOBROS", 
-      pay: "Confirmar y pagar 300 AUS", 
-      promo: "Ingresar código promocional"
-    },
-    fr: { 
-      create: "Créer un compte", 
-      agree: "J'accepte le Manifeste CRYPTOBROS", 
-      pay: "Confirmer et payer 300 AUS", 
-      promo: "Entrer le code promo"
-    },
-    zh: { 
-      create: "创建账户", 
-      agree: "我同意 CRYPTOBROS 宣言", 
-      pay: "确认并支付 0 AUS", 
-      promo: "输入促销代码"
-    },
-    ja: { 
-      create: "アカウントを作成", 
-      agree: "CRYPTOBROS 宣言に同意します", 
-      pay: "確認して 300 AUS を支払う", 
-      promo: "プロモコードを入力"
-    },
-    he: { 
-      create: "יצירת חשבון", 
-      agree: "אני מסכים למניפסטו של CRYPTOBROS", 
-      pay: "אישור ותשלום 300 AUS", 
-      promo: "הזן קוד קופון"
-    },
-    ar: { 
-      create: "إنشاء حساب", 
-      agree: "أوافق على بيان CRYPTOBROS", 
-      pay: "تأكيد ودفع 300 AUS", 
-      promo: "أدخل رمز الترويج"
-    },
-    de: { 
-      create: "Konto erstellen", 
-      agree: "Ich stimme dem CRYPTOBROS-Manifest zu", 
-      pay: "Bestätigen und 300 AUS bezahlen", 
-      promo: "Geben Sie den Promo-Code ein"
-    },
-    pt: { 
-      create: "Criar conta", 
-      agree: "Concordo com o Manifesto CRYPTOBROS", 
-      pay: "Confirmar e pagar 300 AUS", 
-      promo: "Insira o código promocional"
-    }
+    en: { create: "Create Account", agree: "I agree with the CRYPTOBROS Manifest", pay: "Confirm & Pay 300 AUS", promo: "Enter promo code" },
+    ru: { create: "Создать аккаунт", agree: "Я согласен с Манифестом CRYPTOBROS", pay: "Подтвердить и оплатить 300 AUS", promo: "Ввести промокод" },
+    es: { create: "Crear cuenta", agree: "Acepto el Manifiesto de CRYPTOBROS", pay: "Confirmar y pagar 300 AUS", promo: "Ingresar código promocional" },
+    fr: { create: "Créer un compte", agree: "J'accepte le Manifeste CRYPTOBROS", pay: "Confirmer et payer 300 AUS", promo: "Entrer le code promo" },
+    zh: { create: "创建账户", agree: "我同意 CRYPTOBROS 宣言", pay: "确认并支付 300 AUS", promo: "输入促销代码" },
+    ja: { create: "アカウントを作成", agree: "CRYPTOBROS 宣言に同意します", pay: "確認して 300 AUS を支払う", promo: "プロモコードを入力" },
+    he: { create: "יצירת חשבון", agree: "אני מסכים למניפסטו של CRYPTOBROS", pay: "אישור ותשלום 300 AUS", promo: "הזן קוד קופון" },
+    ar: { create: "إنشاء حساب", agree: "أوافق على بيان CRYPTOBROS", pay: "تأكيد ودفع 300 AUS", promo: "أدخل رمز الترويج" },
+    de: { create: "Konto erstellen", agree: "Ich stimme dem CRYPTOBROS-Manifest zu", pay: "Bestätigen und 300 AUS bezahlen", promo: "Geben Sie den Promo-Code ein" },
+    pt: { create: "Criar conta", agree: "Concordo com o Manifesto CRYPTOBROS", pay: "Confirmar e pagar 300 AUS", promo: "Insira o código promocional" }
   };
 
   const manifestTexts = {
@@ -317,24 +273,20 @@
     document.getElementById('modal-consent-label').textContent = uiTexts[lang].agree;
     document.getElementById('modal-pay-btn').textContent = uiTexts[lang].pay;
     document.getElementById('modal-promo-btn').textContent = uiTexts[lang].promo;
-    document.getElementById('langLabel').textContent = 
-      lang === 'he' ? 'עברית' : (lang === 'ru' ? 'RU' : 'EN');
-    
-    // Обновить манифест
+    document.getElementById('langLabel').textContent = lang === 'he' ? 'עברית' : (lang === 'ru' ? 'RU' : 'EN');
     const manifestLang = ['he', 'ru'].includes(lang) ? lang : 'en';
     document.getElementById('modal-title').textContent = manifestTexts[manifestLang].title;
     document.getElementById('modal-manifest').innerHTML = manifestTexts[manifestLang].lines.join('<br>');
   }
 
   document.getElementById('langLabel').addEventListener('click', () => {
-    const dropdown = document.getElementById('langDropdown');
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    document.getElementById('langDropdown').style.display = 
+      document.getElementById('langDropdown').style.display === 'block' ? 'none' : 'block';
   });
 
   document.querySelectorAll('.lang-item').forEach(item => {
     item.addEventListener('click', () => {
-      const lang = item.getAttribute('data-lang');
-      updateUI(lang);
+      updateUI(item.getAttribute('data-lang'));
       document.getElementById('langDropdown').style.display = 'none';
     });
   });
@@ -352,7 +304,7 @@
     showAccountForm();
   };
 
-  document.getElementById('modal-promo-btn').onclick = () => {
+  function enterPromo() {
     const promo = prompt(uiTexts[currentLang].promo + ':');
     if (promo === 'AURAFIRE7') {
       localStorage.setItem('cryptobros_access', 'granted');
@@ -362,7 +314,7 @@
     } else {
       alert('❌ Неверный промокод.');
     }
-  };
+  }
 
   function showAccountForm() {
     document.getElementById('manifest-modal').style.display = 'none';
@@ -390,19 +342,22 @@
       alert('Please enter your bio');
       return;
     }
+    const avatar = document.getElementById('avatar-preview').src;
+    const notifications = document.getElementById('settings-checkbox').checked;
+    localStorage.setItem('cryptobros_profile', JSON.stringify({ bio, avatar, notifications }));
     alert('✅ Account created! Welcome to CRYPTOBROS.');
     document.getElementById('account-form').style.display = 'none';
   }
 
   window.onload = function() {
     if (localStorage.getItem('cryptobros_access') === 'granted') {
-      document.getElementById('create-btn').style.display = 'none';
+      if (localStorage.getItem('cryptobros_profile')) {
+        // Already has profile
+      } else {
+        showAccountForm();
+      }
     }
   };
-
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeModal();
-  });
 
   document.addEventListener('click', function(e) {
     if (!e.target.closest('.lang-selector')) {
