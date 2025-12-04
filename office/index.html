@@ -61,7 +61,6 @@
       background:white;
     }
 
-    /* ПАНЕЛИ */
     .panel {
       position: fixed;
       top: 80px;
@@ -78,7 +77,6 @@
       display: none;
     }
 
-    /* EXCEL — ПОЛНЫЙ ЭКРАН */
     #excel-full {
       display: none;
       position: fixed;
@@ -144,9 +142,9 @@
     #handsontable-container {
       height: calc(100vh - 140px);
       margin-top: 10px;
+      border: 1px solid #ddd;
     }
 
-    /* SHARE — светлый фон */
     .share-links {
       background: #fff;
       border: 1px solid #ddd;
@@ -177,7 +175,6 @@
     .share-links a.whatsapp { color: #25d366; }
     .share-links a.email { color: #ff6b6b; }
 
-    /* QR */
     .qr-output {
       background: #fff;
       border: 1px solid #ddd;
@@ -210,16 +207,15 @@
     }
   </style>
 
-  <!-- Handsontable -->
-  <link href="https://cdn.jsdelivr.net/npm/handsontable@13.3.0/dist/handsontable.full.min.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/handsontable@13.3.0/dist/handsontable.full.min.js"></script>
+  <!-- Handsontable — исправленные CDN через unpkg -->
+  <link href="https://unpkg.com/handsontable@13.3.0/dist/handsontable.full.min.css" rel="stylesheet" />
+  <script src="https://unpkg.com/handsontable@13.3.0/dist/handsontable.full.min.js"></script>
 
-  <!-- formulajs для Excel-формул -->
-  <script src="https://cdn.jsdelivr.net/npm/formulajs@4.4.0/lib/formula.js"></script>
+  <!-- formulajs — последняя доступная версия 4.3.1 -->
+  <script src="https://unpkg.com/formulajs@4.3.1/lib/formula.js"></script>
 
-  <!-- SheetJS для импорта/экспорта .xlsx -->
+  <!-- SheetJS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.0/dist/qrious.min.js"></script>
 </head>
@@ -308,7 +304,29 @@
       <div class="currency-input-group">
         <input type="number" id="toAmount" value="" oninput="convertTo()" class="currency-input-field">
         <select id="toCurrency" onchange="convertTo()" class="currency-select">
-          <!-- same options -->
+          <optgroup label="Crypto">
+            <option value="BTC">BTC</option>
+            <option value="ETH">ETH</option>
+            <option value="SOL">SOL</option>
+            <option value="XRP">XRP</option>
+            <option value="DOGE">DOGE</option>
+            <option value="ADA">ADA</option>
+            <option value="USDT">USDT</option>
+          </optgroup>
+          <optgroup label="Fiat">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="RUB">RUB</option>
+            <option value="CNY">CNY</option>
+            <option value="GEL">GEL</option>
+            <option value="JPY">JPY</option>
+            <option value="ILS">ILS</option>
+            <option value="SEK">SEK</option>
+            <option value="NOK">NOK</option>
+            <option value="DKK">DKK</option>
+            <option value="AUD">AUD</option>
+            <option value="ARS">ARS</option>
+          </optgroup>
         </select>
       </div>
       <div class="currency-result" id="result">—</div>
@@ -333,7 +351,6 @@
   </div>
 </div>
 
-<!-- Полноэкранный Excel -->
 <div id="excel-full">
   <div class="toolbar">
     <button class="close-btn" onclick="hideExcelFull()">✖ Close</button>
@@ -365,141 +382,55 @@
   let hotInstance = null;
   let currentLang = 'EN';
 
-  // === ПЕРЕВОДЫ ===
   const translations = {
-    EN: {
-      'Add Row': '+ Row',
-      'Clear': 'Clear',
-      'Import XLSX': 'Import XLSX',
-      'Export XLSX': 'Export XLSX',
-      'Print': 'Print',
-      'Language': 'Language'
-    },
-    RU: {
-      'Add Row': '+ Строка',
-      'Clear': 'Очистить',
-      'Import XLSX': 'Импорт XLSX',
-      'Export XLSX': 'Экспорт XLSX',
-      'Print': 'Печать',
-      'Language': 'Язык'
-    },
-    ES: {
-      'Add Row': '+ Fila',
-      'Clear': 'Limpiar',
-      'Import XLSX': 'Importar XLSX',
-      'Export XLSX': 'Exportar XLSX',
-      'Print': 'Imprimir',
-      'Language': 'Idioma'
-    },
-    FR: {
-      'Add Row': '+ Ligne',
-      'Clear': 'Effacer',
-      'Import XLSX': 'Importer XLSX',
-      'Export XLSX': 'Exporter XLSX',
-      'Print': 'Imprimer',
-      'Language': 'Langue'
-    },
-    ZH: {
-      'Add Row': '+ 行',
-      'Clear': '清除',
-      'Import XLSX': '导入 XLSX',
-      'Export XLSX': '导出 XLSX',
-      'Print': '打印',
-      'Language': '语言'
-    },
-    JA: {
-      'Add Row': '+ 行',
-      'Clear': 'クリア',
-      'Import XLSX': 'XLSXをインポート',
-      'Export XLSX': 'XLSXをエクスポート',
-      'Print': '印刷',
-      'Language': '言語'
-    },
-    HE: {
-      'Add Row': '+ שורה',
-      'Clear': 'נקה',
-      'Import XLSX': 'ייבוא XLSX',
-      'Export XLSX': 'ייצוא XLSX',
-      'Print': 'הדפסה',
-      'Language': 'שפה'
-    },
-    AR: {
-      'Add Row': '+ صف',
-      'Clear': 'مسح',
-      'Import XLSX': 'استيراد XLSX',
-      'Export XLSX': 'تصدير XLSX',
-      'Print': 'طباعة',
-      'Language': 'اللغة'
-    },
-    DE: {
-      'Add Row': '+ Zeile',
-      'Clear': 'Löschen',
-      'Import XLSX': 'XLSX importieren',
-      'Export XLSX': 'XLSX exportieren',
-      'Print': 'Drucken',
-      'Language': 'Sprache'
-    },
-    PT: {
-      'Add Row': '+ Linha',
-      'Clear': 'Limpar',
-      'Import XLSX': 'Importar XLSX',
-      'Export XLSX': 'Exportar XLSX',
-      'Print': 'Imprimir',
-      'Language': 'Idioma'
-    }
+    EN: {'Add Row': '+ Row','Clear': 'Clear','Import XLSX': 'Import XLSX','Export XLSX': 'Export XLSX','Print': 'Print','Language': 'Language'},
+    RU: {'Add Row': '+ Строка','Clear': 'Очистить','Import XLSX': 'Импорт XLSX','Export XLSX': 'Экспорт XLSX','Print': 'Печать','Language': 'Язык'},
+    ES: {'Add Row': '+ Fila','Clear': 'Limpiar','Import XLSX': 'Importar XLSX','Export XLSX': 'Exportar XLSX','Print': 'Imprimir','Language': 'Idioma'},
+    FR: {'Add Row': '+ Ligne','Clear': 'Effacer','Import XLSX': 'Importer XLSX','Export XLSX': 'Exporter XLSX','Print': 'Imprimer','Language': 'Langue'},
+    ZH: {'Add Row': '+ 行','Clear': '清除','Import XLSX': '导入 XLSX','Export XLSX': '导出 XLSX','Print': '打印','Language': '语言'},
+    JA: {'Add Row': '+ 行','Clear': 'クリア','Import XLSX': 'XLSXをインポート','Export XLSX': 'XLSXをエクスポート','Print': '印刷','Language': '言語'},
+    HE: {'Add Row': '+ שורה','Clear': 'נקה','Import XLSX': 'ייבוא XLSX','Export XLSX': 'ייצוא XLSX','Print': 'הדפסה','Language': 'שפה'},
+    AR: {'Add Row': '+ صف','Clear': 'مسح','Import XLSX': 'استيراد XLSX','Export XLSX': 'تصدير XLSX','Print': 'طباعة','Language': 'اللغة'},
+    DE: {'Add Row': '+ Zeile','Clear': 'Löschen','Import XLSX': 'XLSX importieren','Export XLSX': 'XLSX exportieren','Print': 'Drucken','Language': 'Sprache'},
+    PT: {'Add Row': '+ Linha','Clear': 'Limpar','Import XLSX': 'Importar XLSX','Export XLSX': 'Exportar XLSX','Print': 'Imprimir','Language': 'Idioma'}
   };
 
-  function translate(key) {
-    return translations[currentLang][key] || key;
+  function translate(key) { return translations[currentLang][key] || key; }
+  function toggleLangMenu(show) {
+    const menu = document.getElementById('lang-menu');
+    menu.style.display = (show === undefined) ? (menu.style.display === 'block' ? 'none' : 'block') : (show ? 'block' : 'none');
   }
-
   function setLanguage(lang) {
     currentLang = lang;
     updateToolbarTexts();
-    if (hotInstance) {
-      hotInstance.updateSettings({
-        language: lang.toLowerCase()
-      });
-    }
+    if (hotInstance) hotInstance.updateSettings({ language: lang.toLowerCase() });
     toggleLangMenu(false);
   }
-
-  function toggleLangMenu(show) {
-    const menu = document.getElementById('lang-menu');
-    if (show === undefined) {
-      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-    } else {
-      menu.style.display = show ? 'block' : 'none';
-    }
-  }
-
   function updateToolbarTexts() {
-    const buttons = [
-      { selector: '.toolbar button:nth-child(2)', key: 'Add Row' },
-      { selector: '.toolbar button:nth-child(3)', key: 'Clear' },
-      { selector: '.toolbar button:nth-child(4)', key: 'Import XLSX' },
-      { selector: '.toolbar button:nth-child(5)', key: 'Export XLSX' },
-      { selector: '.toolbar button:nth-child(6)', key: 'Print' },
-      { selector: '.lang-btn', key: 'Language' }
+    const btns = [
+      { sel: '.toolbar button:nth-child(2)', k: 'Add Row' },
+      { sel: '.toolbar button:nth-child(3)', k: 'Clear' },
+      { sel: '.toolbar button:nth-child(4)', k: 'Import XLSX' },
+      { sel: '.toolbar button:nth-child(5)', k: 'Export XLSX' },
+      { sel: '.toolbar button:nth-child(6)', k: 'Print' },
+      { sel: '.lang-btn', k: 'Language' }
     ];
-    buttons.forEach(btn => {
-      const el = document.querySelector(btn.selector);
-      if (el) {
-        el.textContent = translate(btn.key);
-      }
+    btns.forEach(b => {
+      const el = document.querySelector(b.sel);
+      if (el) el.textContent = translate(b.k);
     });
   }
 
-  // === ИНИЦИАЛИЗАЦИЯ EXCEL (Handsontable) ===
   function initExcel() {
     if (hotInstance) return;
-    const data = loadTableData();
+    const container = document.getElementById('handsontable-container');
+    if (!container) return;
 
-    hotInstance = new Handsontable(document.getElementById('handsontable-container'), {
-       data,
-      formulas: {
-        engine: formulajs,
-      },
+    const data = localStorage.getItem('aura_excel') ? JSON.parse(localStorage.getItem('aura_excel')) : Array(20).fill().map(() => Array(10).fill(''));
+
+    hotInstance = new Handsontable(container, {
+      data,
+      formulas: { engine: formulajs },
       rowHeaders: true,
       colHeaders: true,
       contextMenu: true,
@@ -509,69 +440,40 @@
       width: '100%',
       manualRowResize: true,
       manualColumnResize: true,
-      language: currentLang.toLowerCase(),
       licenseKey: 'non-commercial-and-evaluation'
     });
 
-    // Автосохранение
-    hotInstance.addHook('afterChange', function() {
-      saveTableData();
+    hotInstance.addHook('afterChange', () => {
+      if (hotInstance) localStorage.setItem('aura_excel', JSON.stringify(hotInstance.getData()));
     });
   }
 
-  function loadTableData() {
-    const saved = localStorage.getItem('aura_excel');
-    if (saved) {
-      return JSON.parse(saved);
-    }
-    return Array(20).fill().map(() => Array(10).fill(''));
-  }
-
-  function saveTableData() {
-    if (!hotInstance) return;
-    const data = hotInstance.getData();
-    localStorage.setItem('aura_excel', JSON.stringify(data));
-  }
-
-  // === ФУНКЦИИ EXCEL ===
-  function addRow() {
-    if (hotInstance) {
-      const rowCount = hotInstance.countRows();
-      hotInstance.alter('insert_row', rowCount);
-    }
-  }
-
+  function addRow() { if (hotInstance) hotInstance.alter('insert_row', hotInstance.countRows()); }
   function clearSheet() {
     if (hotInstance) {
       const empty = Array(20).fill().map(() => Array(10).fill(''));
       hotInstance.loadData(empty);
-      saveTableData();
     }
   }
-
   function importExcel() {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.xlsx,.xls';
-    input.onchange = function(e) {
+    input.onchange = e => {
       const file = e.target.files[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = e => {
         const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-        const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1, defval: '' });
-        if (hotInstance) {
-          hotInstance.loadData(jsonData);
-          saveTableData();
-        }
+        const wb = XLSX.read(data, { type: 'array' });
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const json = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+        if (hotInstance) hotInstance.loadData(json);
       };
       reader.readAsArrayBuffer(file);
     };
     input.click();
   }
-
   function exportExcel() {
     if (!hotInstance) return;
     const data = hotInstance.getData();
@@ -580,126 +482,58 @@
     XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
     XLSX.writeFile(wb, 'aurasystem_spreadsheet.xlsx');
   }
+  function printExcel() { window.print(); }
 
-  function printExcel() {
-    window.print();
-  }
-
-  // === EXCEL FULL SCREEN ===
   function showExcelFull() {
     document.body.style.overflow = 'hidden';
     document.getElementById('excel-full').style.display = 'block';
-    if (!hotInstance) {
-      initExcel();
-    }
+    if (!hotInstance) initExcel();
     updateToolbarTexts();
   }
-
   function hideExcelFull() {
     document.body.style.overflow = 'auto';
     document.getElementById('excel-full').style.display = 'none';
   }
 
-  // === ПАНЕЛИ ===
   function showPanel(id) {
     document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
     const panel = document.getElementById(id);
-    if (!panel) return;
-    panel.style.display = 'block';
-
-    if (id === 'qr') {
-      generateQR();
-    } else if (id === 'share') {
-      showShareLinks();
-    }
+    if (panel) panel.style.display = 'block';
+    if (id === 'qr') generateQR();
+    else if (id === 'share') showShareLinks();
   }
 
-  // === КАЛЬКУЛЯТОР, ВАЛЮТЫ, QR, SHARE — без изменений ===
-  let calcMemory = 0;
-  let calcExpression = '';
-
-  function calcInput(value) {
-    if (value === 'Math.sqrt(') {
-      calcExpression += 'Math.sqrt(';
-    } else {
-      calcExpression += value;
-    }
-    updateCalcDisplay();
-  }
-
+  // Calc
+  let calcMemory = 0, calcExpression = '';
+  function calcInput(v) { calcExpression += (v === 'Math.sqrt(') ? 'Math.sqrt(' : v; updateCalcDisplay(); }
   function calcEquals() {
-    try {
-      let expr = calcExpression.replace(/(\d+)%/g, '($1/100)');
-      let result = eval(expr);
-      calcExpression = String(result);
-    } catch (e) {
-      calcExpression = 'Error';
-    }
+    try { let r = eval(calcExpression.replace(/(\d+)%/g, '($1/100)')); calcExpression = String(r); } catch (e) { calcExpression = 'Error'; }
     updateCalcDisplay();
   }
-
-  function calcClear() {
-    calcExpression = '';
-    updateCalcDisplay();
-  }
-
-  function calcClearEntry() {
-    if (calcExpression.length > 0) {
-      calcExpression = calcExpression.slice(0, -1);
-    }
-    updateCalcDisplay();
-  }
-
-  function calcBackspace() {
-    calcClearEntry();
-  }
-
-  function calcMPlus() {
-    try {
-      calcMemory += parseFloat(eval(calcExpression || '0'));
-    } catch (e) {}
-  }
-
-  function calcMR() {
-    calcExpression = String(calcMemory);
-    updateCalcDisplay();
-  }
-
-  function calcMC() {
-    calcMemory = 0;
-  }
-
+  function calcClear() { calcExpression = ''; updateCalcDisplay(); }
+  function calcClearEntry() { if (calcExpression) calcExpression = calcExpression.slice(0, -1); updateCalcDisplay(); }
+  function calcBackspace() { calcClearEntry(); }
+  function calcMPlus() { try { calcMemory += parseFloat(eval(calcExpression || '0')); } catch(e) {} }
+  function calcMR() { calcExpression = String(calcMemory); updateCalcDisplay(); }
+  function calcMC() { calcMemory = 0; }
   function updateCalcDisplay() {
-    const display = document.getElementById('calc-display');
-    if (!display) return;
-    if (calcExpression === '') {
-      display.textContent = '0';
-    } else if (calcExpression.length > 15) {
-      display.textContent = calcExpression.slice(0, 15) + '...';
-    } else {
-      display.textContent = calcExpression;
-    }
+    const d = document.getElementById('calc-display');
+    if (!d) return;
+    d.textContent = calcExpression === '' ? '0' : (calcExpression.length > 15 ? calcExpression.slice(0,15)+'...' : calcExpression);
   }
 
-  // === ВАЛЮТЫ ===
-  let rates = null;
+  // Forex
+  let rates = null, isConverting = false;
   const STATIC_RATES_USD = {
-    USD: 1, EUR: 0.93, RUB: 93.5, CNY: 7.25, GEL: 2.70, JPY: 155.0,
-    ILS: 3.70, SEK: 10.50, NOK: 10.80, DKK: 6.90, AUD: 1.52, ARS: 950.0,
-    BTC: 1/92410, ETH: 1/2870, SOL: 1/172, XRP: 1/0.58,
-    DOGE: 1/0.172, ADA: 1/0.45, USDT: 1/1.0001
+    USD:1,EUR:0.93,RUB:93.5,CNY:7.25,GEL:2.70,JPY:155.0,ILS:3.70,SEK:10.50,NOK:10.80,DKK:6.90,AUD:1.52,ARS:950.0,
+    BTC:1/92410,ETH:1/2870,SOL:1/172,XRP:1/0.58,DOGE:1/0.172,ADA:1/0.45,USDT:1/1.0001
   };
-  let isConverting = false;
-
   async function loadRates() {
     if (rates) return;
     try {
       const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,ripple,dogecoin,cardano,tether&vs_currencies=usd,eur,rub,cny,gel,jpy,ils,sek,nok,dkk,aud,ars');
       const data = await res.json();
-      rates = {
-        BTC: { usd: data.bitcoin.usd, eur: data.bitcoin.eur, rub: data.bitcoin.rub },
-        ETH: { usd: data.ethereum.usd, eur: data.ethereum.eur, rub: data.ethereum.rub },
-      };
+      rates = { BTC: { usd:data.bitcoin.usd, eur:data.bitcoin.eur, rub:data.bitcoin.rub }, ETH: { usd:data.ethereum.usd, eur:data.ethereum.eur, rub:data.ethereum.rub } };
       document.getElementById('rate-info').textContent = '✅ Online rates';
       convertFrom();
     } catch (e) {
@@ -708,25 +542,17 @@
       convertFrom();
     }
   }
-
-  function getUSDPrice(currency, amount = 1) {
-    if (currency === 'USD') return amount;
-    if (rates) {
-      const id = currency.toLowerCase();
-      if (rates[id]) {
-        return amount * rates[id].usd;
-      }
-    }
-    return amount / STATIC_RATES_USD[currency];
+  function getUSDPrice(c, a=1) {
+    if (c==='USD') return a;
+    if (rates) { const id = c.toLowerCase(); if (rates[id]) return a * rates[id].usd; }
+    return a / STATIC_RATES_USD[c];
   }
-
   function convertFrom() {
     if (isConverting) return;
     isConverting = true;
     const from = document.getElementById('fromCurrency').value;
     const to = document.getElementById('toCurrency').value;
     const fromAmount = parseFloat(document.getElementById('fromAmount').value) || 0;
-    
     if (from === to) {
       const v = fromAmount;
       document.getElementById('toAmount').value = v;
@@ -741,14 +567,12 @@
     }
     isConverting = false;
   }
-
   function convertTo() {
     if (isConverting) return;
     isConverting = true;
     const from = document.getElementById('fromCurrency').value;
     const to = document.getElementById('toCurrency').value;
     const toAmount = parseFloat(document.getElementById('toAmount').value) || 0;
-    
     if (from === to) {
       document.getElementById('fromAmount').value = toAmount;
       document.getElementById('result').textContent = `${toAmount} ${to} = ${toAmount} ${from}`;
@@ -762,35 +586,29 @@
     }
     isConverting = false;
   }
-
   function swapCurrencies() {
-    const fromSel = document.getElementById('fromCurrency');
-    const toSel = document.getElementById('toCurrency');
-    const fromVal = fromSel.value;
-    const fromAmt = document.getElementById('fromAmount').value;
-    
-    fromSel.value = toSel.value;
-    toSel.value = fromVal;
-    
+    const f = document.getElementById('fromCurrency');
+    const t = document.getElementById('toCurrency');
+    const fVal = f.value;
+    const fAmt = document.getElementById('fromAmount').value;
+    f.value = t.value;
+    t.value = fVal;
     document.getElementById('fromAmount').value = document.getElementById('toAmount').value;
-    document.getElementById('toAmount').value = fromAmt;
-    
+    document.getElementById('toAmount').value = fAmt;
     convertFrom();
   }
 
+  // QR
   function generateQR() {
     const text = document.getElementById('editor').innerText.trim() || 'Document from Aura Office';
     const qrContainer = document.getElementById('qrcode');
     if (!qrContainer) return;
     qrContainer.innerHTML = '';
-    const qr = new QRious({
-      element: document.createElement('canvas'),
-      value: text,
-      size: 200
-    });
+    const qr = new QRious({ element: document.createElement('canvas'), value: text, size: 200 });
     qrContainer.appendChild(qr.element);
   }
 
+  // Share
   function showShareLinks() {
     const url = 'https://aurasystem.space/office/';
     const text = 'Document from Aura Office';
@@ -800,33 +618,24 @@
       <a href="https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}" target="_blank" class="whatsapp">WhatsApp</a>
       <a href="mailto:?subject=${encodeURIComponent(text)}&body=${encodeURIComponent(url)}" class="email">Email</a>
     `;
-    const shareButtons = document.getElementById('share-buttons');
-    if (shareButtons) {
-      shareButtons.innerHTML = buttons;
-    }
+    const sb = document.getElementById('share-buttons');
+    if (sb) sb.innerHTML = buttons;
   }
 
+  // Other
   function inviteCollab() {
     const id = 'AURA-' + Math.random().toString(36).substr(2, 5).toUpperCase();
     localStorage.setItem('doc_' + id, document.getElementById('editor').innerText);
     const url = 'https://aurasystem.space/office/?doc=' + id;
     prompt('Send this link to a friend:', url);
   }
-
   function sendRaw() { alert('📤 Sent'); }
   function sendEncrypted() { alert('🔐 Encrypted'); }
-
   function saveAsPDF() {
-    const element = document.getElementById('editor');
-    if (!element) return;
-    const opt = {
-      margin: 10,
-      filename: 'aurasystem_document.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-    html2pdf().set(opt).from(element).save();
+    const el = document.getElementById('editor');
+    if (!el) return;
+    const opt = { margin:10, filename:'aurasystem_document.pdf', image:{type:'jpeg',quality:0.98}, html2canvas:{scale:2}, jsPDF:{unit:'mm',format:'a4',orientation:'portrait'} };
+    html2pdf().set(opt).from(el).save();
   }
 
   window.onload = () => {
