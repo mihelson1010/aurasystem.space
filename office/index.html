@@ -99,7 +99,6 @@
     }
     #spreadsheet_toolbar button:hover { background: #ddd; }
 
-    /* ... остальные стили (calc, currency, QR и т.д.) без изменений ... */
     .calc-header {
       height:32px;
       position:relative;
@@ -276,6 +275,7 @@
   <script src="https://cdn.jsdelivr.net/npm/jsuites@4.11.5/dist/jsuites.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.0/dist/qrious.min.js"></script>
 </head>
 <body>
 
@@ -284,8 +284,8 @@
   <button class="tool-btn btn-currency" onclick="showPanel('currency'); loadRates()">💱 Forex</button>
   <button class="tool-btn btn-invite" onclick="inviteCollab()">✉️ Invite</button>
   <button class="tool-btn btn-excel" onclick="showPanel('excel')">📊 Excel</button>
-  <button class="tool-btn btn-qr" onclick="showQR()">📱 QR</button>
-  <button class="tool-btn btn-share" onclick="showShare()">📤 Share</button>
+  <button class="tool-btn btn-qr" onclick="showPanel('qr'); generateQR()">📱 QR</button>
+  <button class="tool-btn btn-share" onclick="showPanel('share'); showShareLinks()">📤 Share</button>
   <button class="tool-btn btn-send-txt" onclick="sendRaw()">📤 Send</button>
   <button class="tool-btn btn-send-enc" onclick="sendEncrypted()">🔐 Enc</button>
   <button class="tool-btn btn-print" onclick="saveAsPDF()">🖨️ Save as PDF</button>
@@ -420,18 +420,16 @@
 
 <div class="footer">AURASYSTEM • Full control</div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrious@4.0.0/dist/qrious.min.js"></script>
-
 <script>
   let spreadsheet = null;
 
   function initExcel() {
+    if (!document.getElementById('spreadsheet')) return;
     if (spreadsheet) return;
-    const container = document.getElementById('spreadsheet');
-    // Очищаем контейнер
-    container.innerHTML = '';
 
-    // Создаём таблицу через jspreadsheet CE
+    const container = document.getElementById('spreadsheet');
+    container.innerHTML = ''; // Очищаем контейнер
+
     spreadsheet = jspreadsheet(container, {
       data: loadTableData(),
       minDimensions: [8, 30],
@@ -454,6 +452,7 @@
   }
 
   function saveTableData() {
+    if (!spreadsheet) return;
     const data = spreadsheet.getData();
     localStorage.setItem('aura_excel', JSON.stringify(data));
   }
@@ -471,20 +470,23 @@
   }
 
   function exportCSV() {
-    if (spreadsheet) {
-      const csv = spreadsheet.download();
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'aurasystem_spreadsheet.csv';
-      a.click();
-    }
+    if (!spreadsheet) return;
+    const csv = spreadsheet.download();
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'aurasystem_spreadsheet.csv';
+    a.click();
   }
 
-  // === ЕДИНСТВЕННАЯ ФУНКЦИЯ showPanel ===
+  // === ПАНЕЛИ ===
   function showPanel(id) {
     document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
+    const panel = document.getElementById(id);
+    if (!panel) return;
+    panel.style.display = 'block';
+
     if (id === 'excel') {
       initExcel();
     } else if (id === 'qr') {
@@ -492,12 +494,9 @@
     } else if (id === 'share') {
       showShareLinks();
     }
-    document.getElementById(id).style.display = 'block';
   }
 
-  // === КАЛЬКУЛЯТОР, ВАЛЮТЫ, QR, SHARE — без изменений ===
-  // ... (оставлены как в оригинале, но дублирую только уникальные имена)
-
+  // === КАЛЬКУЛЯТОР ===
   let calcMemory = 0;
   let calcExpression = '';
 
@@ -554,6 +553,7 @@
 
   function updateCalcDisplay() {
     const display = document.getElementById('calc-display');
+    if (!display) return;
     if (calcExpression === '') {
       display.textContent = '0';
     } else if (calcExpression.length > 15) {
@@ -664,6 +664,7 @@
   function generateQR() {
     const text = document.getElementById('editor').innerText.trim() || 'Document from Aura Office';
     const qrContainer = document.getElementById('qrcode');
+    if (!qrContainer) return;
     qrContainer.innerHTML = '';
     const qr = new QRious({
       element: document.createElement('canvas'),
@@ -683,7 +684,10 @@
       <a href="https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}" target="_blank" style="color:#25d366;">WhatsApp</a>
       <a href="mailto:?subject=${encodeURIComponent(text)}&body=${encodeURIComponent(url)}" style="color:#ff6b6b;">Email</a>
     `;
-    document.getElementById('share-buttons').innerHTML = buttons;
+    const shareButtons = document.getElementById('share-buttons');
+    if (shareButtons) {
+      shareButtons.innerHTML = buttons;
+    }
   }
 
   // === ОСТАЛЬНОЕ ===
@@ -699,6 +703,7 @@
 
   function saveAsPDF() {
     const element = document.getElementById('editor');
+    if (!element) return;
     const opt = {
       margin: 10,
       filename: 'aurasystem_document.pdf',
