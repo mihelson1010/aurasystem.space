@@ -5,24 +5,194 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Aura Office</title>
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}body{background:#fff;font-family:Inter,sans-serif;min-height:100vh;display:flex;flex-direction:column}.toolbar{display:flex;justify-content:center;padding:14px;background:#f9f9f9;border-bottom:1px solid #eee;gap:8px;flex-wrap:wrap}.tool-btn{padding:10px 16px;border-radius:20px;font-weight:bold;color:#fff;border:none;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.1)}.tool-btn:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,.15)}.btn-calc{background:linear-gradient(135deg,#3498db,#2980b6)}.btn-currency{background:linear-gradient(135deg,#ff7700,#ffaa00)}.btn-invite{background:linear-gradient(135deg,#9b59b6,#8e44ad)}.btn-qr{background:linear-gradient(135deg,#2ecc71,#27ae60)}.btn-share{background:linear-gradient(135deg,#e74c3c,#c0392b)}.btn-send-txt{background:linear-gradient(135deg,#1abc9c,#16a085)}.btn-send-enc{background:linear-gradient(135deg,#27ae60,#2ecc71)}.btn-print{background:linear-gradient(135deg,#8e44ad,#9b59b6)}.workspace{flex:1;padding:20px;overflow:auto}#editor{width:100%;min-height:100vh;padding:20px;font-size:16px;line-height:1.6;outline:none;caret-color:#000;background:#fff}.panel{position:fixed;top:80px;left:20px;width:360px;max-height:80vh;overflow-y:auto;background:#0d0d1a;border-radius:16px;padding:20px;box-shadow:0 12px 30px rgba(0,0,0,.4);color:#fff;z-index:100;display:none}.share-links{background:#fff;border:1px solid #ddd;border-radius:16px;padding:20px;text-align:center;margin:20px auto;max-width:400px;box-shadow:0 4px 10px rgba(0,0,0,.1)}.share-links h3{color:#333;margin-bottom:16px}.share-links a{display:inline-block;margin:8px;font-size:28px;text-decoration:none;color:#333}.share-links a:hover{opacity:.8;transform:scale(1.1)}.share-links a.x{color:#000}.share-links a.telegram{color:#0088cc}.share-links a.whatsapp{color:#25d366}.share-links a.email{color:#ff6b6b}.qr-output{background:#fff;border:1px solid #ddd;border-radius:16px;padding:20px;text-align:center;margin:20px auto;max-width:400px;box-shadow:0 4px 10px rgba(0,0,0,.1)}.qr-output h3{color:#333;margin-bottom:16px}#qrcode canvas{margin:10px auto;display:block;background:#fff;padding:10px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.1)}.footer{position:fixed;bottom:12px;right:16px;font-size:.8rem;color:#888}@keyframes blink{0%,100%{opacity:.8}50%{opacity:.4}}
-  </style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #fff;
+      font-family: Inter, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .toolbar {
+      display: flex;
+      justify-content: center;
+      padding: 14px;
+      background: #f9f9f9;
+      border-bottom: 1px solid #eee;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .tool-btn {
+      padding: 10px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      color: white;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .tool-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    }
+    .btn-calc { background: linear-gradient(135deg, #3498db, #2980b6); }
+    .btn-currency { background: linear-gradient(135deg, #ff7700, #ffaa00); }
 
-  <!-- Для QR и PDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.0/dist/qrious.min.js"></script>
+    .workspace {
+      flex: 1;
+      padding: 20px;
+      overflow: auto;
+    }
+    #editor {
+      width: 100%;
+      min-height: 100vh;
+      padding: 20px;
+      font-size: 16px;
+      line-height: 1.6;
+      outline: none;
+      caret-color: #000;
+      background: white;
+    }
+
+    .panel {
+      position: fixed;
+      top: 80px;
+      left: 20px;
+      width: 360px;
+      max-height: 80vh;
+      overflow-y: auto;
+      background: #0d0d1a;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+      color: #fff;
+      z-index: 100;
+      display: none;
+    }
+
+    .calc-header {
+      height: 32px;
+      position: relative;
+      margin-bottom: 16px;
+      background: #0d0d1a;
+      border-radius: 12px;
+      padding: 8px;
+      text-align: center;
+      color: #ff7700;
+      opacity: 0.8;
+    }
+    .calc-display {
+      background: #1a1a2a;
+      color: #4cff4c;
+      font-size: 24px;
+      padding: 16px;
+      text-align: right;
+      border-radius: 12px;
+      font-family: monospace;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .calc-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .calc-btn {
+      padding: 14px 0;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .calc-btn.gray { background: #4b4b4b; }
+    .calc-btn.gray:hover { background: #5b5b5b; }
+    .calc-btn.orange { background: #ff7700; }
+    .calc-btn.orange:hover { background: #ffaa00; }
+    .calc-btn.green { background: #2ecc71; }
+    .calc-btn.green:hover { background: #27ae60; }
+    .calc-btn.memory { background: #9b59b6; }
+    .calc-btn.memory:hover { background: #af37c2; }
+
+    .currency-converter {
+      max-width: 400px;
+      margin: 0 auto;
+      background: #0d0d1a;
+      border-radius: 20px;
+      padding: 24px;
+      color: #fff;
+    }
+    .currency-header {
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #9b59b6;
+    }
+    .currency-input-group {
+      display: flex;
+      gap: 12px;
+      margin: 12px 0;
+    }
+    .currency-input-field {
+      width: 100px;
+      padding: 12px;
+      font-size: 16px;
+      background: #1a1a2a;
+      border: 1px solid #555;
+      border-radius: 12px;
+      color: white;
+      text-align: right;
+      outline: none;
+    }
+    .currency-select {
+      flex: 1;
+      padding: 12px;
+      background: #1a1a2a;
+      border: 1px solid #555;
+      border-radius: 12px;
+      color: white;
+      outline: none;
+    }
+    .currency-swap {
+      text-align: center;
+      font-size: 24px;
+      color: #9b59b6;
+      cursor: pointer;
+      margin: 10px 0;
+    }
+    .currency-result {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 16px 0;
+      padding: 14px;
+      background: rgba(155, 89, 182, 0.1);
+      border-radius: 12px;
+      text-align: center;
+      color: #ffaa00;
+      border: 1px solid rgba(155, 89, 182, 0.3);
+    }
+    .currency-rate {
+      font-size: 14px;
+      color: #aaa;
+      text-align: center;
+      margin: 8px 0;
+    }
+    .currency-info {
+      font-size: 13px;
+      color: #777;
+      text-align: center;
+      margin-top: 12px;
+    }
+  </style>
 </head>
 <body>
 
 <div class="toolbar">
   <button class="tool-btn btn-calc" onclick="showPanel('calc')">🧮 Calc</button>
   <button class="tool-btn btn-currency" onclick="showPanel('currency'); loadRates()">💱 Forex</button>
-  <button class="tool-btn btn-invite" onclick="inviteCollab()">✉️ Invite</button>
-  <button class="tool-btn btn-qr" onclick="showPanel('qr'); generateQR()">📱 QR</button>
-  <button class="tool-btn btn-share" onclick="showPanel('share'); showShareLinks()">📤 Share</button>
-  <button class="tool-btn btn-send-txt" onclick="sendRaw()">📤 Send</button>
-  <button class="tool-btn btn-send-enc" onclick="sendEncrypted()">🔐 Enc</button>
-  <button class="tool-btn btn-print" onclick="saveAsPDF()">🖨️ Save as PDF</button>
 </div>
 
 <div class="workspace">
@@ -67,16 +237,58 @@
       <div class="currency-input-group">
         <input type="number" id="fromAmount" value="1" oninput="convertFrom()" class="currency-input-field">
         <select id="fromCurrency" onchange="convertFrom()" class="currency-select">
-          <optgroup label="Crypto"><option value="BTC">BTC</option><option value="ETH">ETH</option><option value="SOL">SOL</option><option value="XRP">XRP</option><option value="DOGE">DOGE</option><option value="ADA">ADA</option><option value="USDT">USDT</option></optgroup>
-          <optgroup label="Fiat"><option value="USD">USD</option><option value="EUR">EUR</option><option value="RUB">RUB</option><option value="CNY">CNY</option><option value="GEL">GEL</option><option value="JPY">JPY</option><option value="ILS">ILS</option><option value="SEK">SEK</option><option value="NOK">NOK</option><option value="DKK">DKK</option><option value="AUD">AUD</option><option value="ARS">ARS</option></optgroup>
+          <optgroup label="Crypto">
+            <option value="BTC">BTC</option>
+            <option value="ETH">ETH</option>
+            <option value="SOL">SOL</option>
+            <option value="XRP">XRP</option>
+            <option value="DOGE">DOGE</option>
+            <option value="ADA">ADA</option>
+            <option value="USDT">USDT</option>
+          </optgroup>
+          <optgroup label="Fiat">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="RUB">RUB</option>
+            <option value="CNY">CNY</option>
+            <option value="GEL">GEL</option>
+            <option value="JPY">JPY</option>
+            <option value="ILS">ILS</option>
+            <option value="SEK">SEK</option>
+            <option value="NOK">NOK</option>
+            <option value="DKK">DKK</option>
+            <option value="AUD">AUD</option>
+            <option value="ARS">ARS</option>
+          </optgroup>
         </select>
       </div>
       <div class="currency-swap" onclick="swapCurrencies()">↔</div>
       <div class="currency-input-group">
         <input type="number" id="toAmount" value="" oninput="convertTo()" class="currency-input-field">
         <select id="toCurrency" onchange="convertTo()" class="currency-select">
-          <optgroup label="Crypto"><option value="BTC">BTC</option><option value="ETH">ETH</option><option value="SOL">SOL</option><option value="XRP">XRP</option><option value="DOGE">DOGE</option><option value="ADA">ADA</option><option value="USDT">USDT</option></optgroup>
-          <optgroup label="Fiat"><option value="USD">USD</option><option value="EUR">EUR</option><option value="RUB">RUB</option><option value="CNY">CNY</option><option value="GEL">GEL</option><option value="JPY">JPY</option><option value="ILS">ILS</option><option value="SEK">SEK</option><option value="NOK">NOK</option><option value="DKK">DKK</option><option value="AUD">AUD</option><option value="ARS">ARS</option></optgroup>
+          <optgroup label="Crypto">
+            <option value="BTC">BTC</option>
+            <option value="ETH">ETH</option>
+            <option value="SOL">SOL</option>
+            <option value="XRP">XRP</option>
+            <option value="DOGE">DOGE</option>
+            <option value="ADA">ADA</option>
+            <option value="USDT">USDT</option>
+          </optgroup>
+          <optgroup label="Fiat">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="RUB">RUB</option>
+            <option value="CNY">CNY</option>
+            <option value="GEL">GEL</option>
+            <option value="JPY">JPY</option>
+            <option value="ILS">ILS</option>
+            <option value="SEK">SEK</option>
+            <option value="NOK">NOK</option>
+            <option value="DKK">DKK</option>
+            <option value="AUD">AUD</option>
+            <option value="ARS">ARS</option>
+          </optgroup>
         </select>
       </div>
       <div class="currency-result" id="result">—</div>
@@ -84,26 +296,10 @@
       <div class="currency-info" id="rate-info">Loading rates...</div>
     </div>
   </div>
-  
-  <div id="qr" class="panel">
-    <div class="qr-output">
-      <h3>📱 QR Code</h3>
-      <div id="qrcode"></div>
-      <p>Scan to share your document</p>
-    </div>
-  </div>
-  
-  <div id="share" class="panel">
-    <div class="share-links" id="share-links">
-      <h3>📤 Share</h3>
-      <div id="share-buttons"></div>
-    </div>
-  </div>
 </div>
 
-<div class="footer">AURASYSTEM • Full control</div>
-
 <script>
+// === КАЛЬКУЛЯТОР ===
 let calcMemory = 0;
 let calcExpression = '';
 
@@ -267,74 +463,19 @@ function swapCurrencies() {
   convertFrom();
 }
 
-// === QR ===
-function generateQR() {
-  const text = document.getElementById('editor').innerText.trim() || 'Document from Aura Office';
-  const qrContainer = document.getElementById('qrcode');
-  if (!qrContainer) return;
-  qrContainer.innerHTML = '';
-  const qr = new QRious({
-    element: document.createElement('canvas'),
-    value: text,
-    size: 200
-  });
-  qrContainer.appendChild(qr.element);
-}
-
-// === SHARE ===
-function showShareLinks() {
-  const url = 'https://aurasystem.space/office/';
-  const text = 'Document from Aura Office';
-  const buttons = `
-    <a href="https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}" target="_blank" style="color:#000;">𝕏</a>
-    <a href="https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}" target="_blank" style="color:#0088cc;">Telegram</a>
-    <a href="https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}" target="_blank" style="color:#25d366;">WhatsApp</a>
-    <a href="mailto:?subject=${encodeURIComponent(text)}&body=${encodeURIComponent(url)}" style="color:#ff6b6b;">Email</a>
-  `;
-  document.getElementById('share-buttons').innerHTML = buttons;
-}
-
-// === ОСТАЛЬНОЕ ===
+// === ПАНЕЛИ ===
 function showPanel(id) {
   document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
   const panel = document.getElementById(id);
-  if (!panel) return;
-  panel.style.display = 'block';
-
-  if (id === 'qr') {
-    generateQR();
-  } else if (id === 'share') {
-    showShareLinks();
-  }
+  if (panel) panel.style.display = 'block';
 }
 
-function inviteCollab() {
-  const id = 'AURA-' + Math.random().toString(36).substr(2, 5).toUpperCase();
-  localStorage.setItem('doc_' + id, document.getElementById('editor').innerText);
-  const url = 'https://aurasystem.space/office/?doc=' + id;
-  prompt('Send this link to a friend:', url);
-}
-
-function sendRaw() { alert('📤 Sent'); }
-function sendEncrypted() { alert('🔐 Encrypted'); }
-
-function saveAsPDF() {
-  const element = document.getElementById('editor');
-  if (!element) return;
-  const opt = {
-    margin: 10,
-    filename: 'aurasystem_document.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  };
-  html2pdf().set(opt).from(element).save();
-}
-
+// === ЗАПУСК ===
 window.onload = () => {
   document.getElementById('editor').focus();
   loadRates();
 };
 </script>
+
 </body>
 </html>
