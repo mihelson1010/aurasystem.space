@@ -5,53 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Aura Office</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      background: #fff;
-      font-family: Inter, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      background:white;
+      font-family:Inter, sans-serif;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
     }
     .toolbar {
-      display: flex;
-      justify-content: center;
-      padding: 14px;
-      background: #f9f9f9;
-      border-bottom: 1px solid #eee;
-      gap: 8px;
-      flex-wrap: wrap;
+      display:flex;
+      justify-content:center;
+      padding:14px;
+      background:#f9f9f9;
+      border-bottom:1px solid #eee;
+      gap:8px;
+      flex-wrap:wrap;
     }
     .tool-btn {
-      padding: 10px 16px;
-      border-radius: 20px;
-      font-weight: bold;
-      color: white;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding:10px 16px;
+      border-radius:20px;
+      font-weight:bold;
+      color:white;
+      border:none;
+      cursor:pointer;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
     }
     .tool-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+      transform:translateY(-2px);
+      box-shadow:0 6px 14px rgba(0,0,0,0.15);
     }
-    .btn-calc { background: linear-gradient(135deg, #3498db, #2980b6); }
-    .btn-currency { background: linear-gradient(135deg, #ff7700, #ffaa00); }
+    .btn-calc      { background:linear-gradient(135deg, #3498db, #2980b6); }
+    .btn-currency  { background:linear-gradient(135deg, #ff7700, #ffaa00); }
+    .btn-invite    { background:linear-gradient(135deg, #9b59b6, #8e44ad); }
+    .btn-qr        { background:linear-gradient(135deg, #2ecc71, #27ae60); }
+    .btn-share     { background:linear-gradient(135deg, #e74c3c, #c0392b); }
+    .btn-send-txt  { background:linear-gradient(135deg, #1abc9c, #16a085); }
+    .btn-send-enc  { background:linear-gradient(135deg, #27ae60, #2ecc71); }
+    .btn-print     { background:linear-gradient(135deg, #8e44ad, #9b59b6); }
 
     .workspace {
-      flex: 1;
-      padding: 20px;
-      overflow: auto;
+      flex:1;
+      padding:20px;
+      overflow:auto;
     }
     #editor {
-      width: 100%;
-      min-height: 100vh;
-      padding: 20px;
-      font-size: 16px;
-      line-height: 1.6;
-      outline: none;
-      caret-color: #000;
-      background: white;
+      width:100%;
+      min-height:100vh;
+      padding:20px;
+      font-size:16px;
+      line-height:1.6;
+      outline:none;
+      caret-color:#000;
+      background:white;
     }
 
     .panel {
@@ -71,15 +77,20 @@
     }
 
     .calc-header {
-      height: 32px;
-      position: relative;
-      margin-bottom: 16px;
+      height:32px;
+      position:relative;
+      margin-bottom:16px;
       background: #0d0d1a;
       border-radius: 12px;
       padding: 8px;
       text-align: center;
       color: #ff7700;
+      animation: blink 1.5s infinite;
       opacity: 0.8;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 0.4; }
     }
     .calc-display {
       background: #1a1a2a;
@@ -122,6 +133,7 @@
       background: #0d0d1a;
       border-radius: 20px;
       padding: 24px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
       color: #fff;
     }
     .currency-header {
@@ -146,15 +158,24 @@
       color: white;
       text-align: right;
       outline: none;
+      transition: border 0.3s;
+    }
+    .currency-input-field:focus {
+      border-color: #9b59b6;
+      box-shadow: 0 0 0 2px rgba(155, 89, 182, 0.3);
     }
     .currency-select {
       flex: 1;
       padding: 12px;
+      font-size: 15px;
       background: #1a1a2a;
       border: 1px solid #555;
       border-radius: 12px;
       color: white;
       outline: none;
+    }
+    .currency-select:focus {
+      border-color: #9b59b6;
     }
     .currency-swap {
       text-align: center;
@@ -162,6 +183,10 @@
       color: #9b59b6;
       cursor: pointer;
       margin: 10px 0;
+      transition: transform 0.3s;
+    }
+    .currency-swap:hover {
+      transform: scale(1.2);
     }
     .currency-result {
       font-size: 20px;
@@ -186,13 +211,53 @@
       text-align: center;
       margin-top: 12px;
     }
+
+    .qr-output, .share-links {
+      padding: 20px;
+      background: #0d0d1a;
+      border-radius: 16px;
+      text-align: center;
+      margin: 20px auto;
+      max-width: 400px;
+    }
+    #qrcode canvas {
+      margin: 10px auto;
+      display: block;
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    .share-links a {
+      display: inline-block;
+      margin: 8px;
+      font-size: 28px;
+      text-decoration: none;
+    }
+    .share-links a:hover { opacity: 0.8; }
+
+    .footer {
+      position:fixed;
+      bottom:12px;
+      right:16px;
+      font-size:0.8rem;
+      color:#888;
+    }
   </style>
+  <!-- Убраны jexcel.css и jexcel.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
 <div class="toolbar">
   <button class="tool-btn btn-calc" onclick="showPanel('calc')">🧮 Calc</button>
   <button class="tool-btn btn-currency" onclick="showPanel('currency'); loadRates()">💱 Forex</button>
+  <button class="tool-btn btn-invite" onclick="inviteCollab()">✉️ Invite</button>
+  <!-- Убрана кнопка Excel -->
+  <button class="tool-btn btn-qr" onclick="showQR()">📱 QR</button>
+  <button class="tool-btn btn-share" onclick="showShare()">📤 Share</button>
+  <button class="tool-btn btn-send-txt" onclick="sendRaw()">📤 Send</button>
+  <button class="tool-btn btn-send-enc" onclick="sendEncrypted()">🔐 Enc</button>
+  <button class="tool-btn btn-print" onclick="saveAsPDF()">🖨️ Save as PDF</button>
 </div>
 
 <div class="workspace">
@@ -296,185 +361,263 @@
       <div class="currency-info" id="rate-info">Loading rates...</div>
     </div>
   </div>
+  
+  <div id="qr" class="panel">
+    <div class="qr-output">
+      <h3>📱 QR Code</h3>
+      <div id="qrcode"></div>
+      <p>Scan to share your document</p>
+    </div>
+  </div>
+  
+  <div id="share" class="panel">
+    <div class="share-links" id="share-links">
+      <h3>📤 Share</h3>
+      <div id="share-buttons"></div>
+    </div>
+  </div>
 </div>
 
+<div class="footer">AURASYSTEM • Full control</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrious@4.0.0/dist/qrious.min.js"></script>
 <script>
-// === КАЛЬКУЛЯТОР ===
-let calcMemory = 0;
-let calcExpression = '';
+  // === КАЛЬКУЛЯТОР ===
+  let calcMemory = 0;
+  let calcExpression = '';
 
-function calcInput(value) {
-  if (value === 'Math.sqrt(') {
-    calcExpression += 'Math.sqrt(';
-  } else {
-    calcExpression += value;
+  function calcInput(value) {
+    if (value === 'Math.sqrt(') {
+      calcExpression += 'Math.sqrt(';
+    } else {
+      calcExpression += value;
+    }
+    updateCalcDisplay();
   }
-  updateCalcDisplay();
-}
 
-function calcEquals() {
-  try {
-    let expr = calcExpression.replace(/(\d+)%/g, '($1/100)');
-    let result = eval(expr);
-    calcExpression = String(result);
-  } catch (e) {
-    calcExpression = 'Error';
+  function calcEquals() {
+    try {
+      let expr = calcExpression.replace(/(\d+)%/g, '($1/100)');
+      let result = eval(expr);
+      calcExpression = String(result);
+    } catch (e) {
+      calcExpression = 'Error';
+    }
+    updateCalcDisplay();
   }
-  updateCalcDisplay();
-}
 
-function calcClear() {
-  calcExpression = '';
-  updateCalcDisplay();
-}
-
-function calcClearEntry() {
-  if (calcExpression.length > 0) {
-    calcExpression = calcExpression.slice(0, -1);
+  function calcClear() {
+    calcExpression = '';
+    updateCalcDisplay();
   }
-  updateCalcDisplay();
-}
 
-function calcBackspace() {
-  calcClearEntry();
-}
-
-function calcMPlus() {
-  try {
-    calcMemory += parseFloat(eval(calcExpression || '0'));
-  } catch (e) {}
-}
-
-function calcMR() {
-  calcExpression = String(calcMemory);
-  updateCalcDisplay();
-}
-
-function calcMC() {
-  calcMemory = 0;
-}
-
-function updateCalcDisplay() {
-  const display = document.getElementById('calc-display');
-  if (!display) return;
-  if (calcExpression === '') {
-    display.textContent = '0';
-  } else if (calcExpression.length > 15) {
-    display.textContent = calcExpression.slice(0, 15) + '...';
-  } else {
-    display.textContent = calcExpression;
+  function calcClearEntry() {
+    if (calcExpression.length > 0) {
+      calcExpression = calcExpression.slice(0, -1);
+    }
+    updateCalcDisplay();
   }
-}
 
-// === ВАЛЮТЫ ===
-let rates = null;
-const STATIC_RATES_USD = {
-  USD: 1, EUR: 0.93, RUB: 93.5, CNY: 7.25, GEL: 2.70, JPY: 155.0,
-  ILS: 3.70, SEK: 10.50, NOK: 10.80, DKK: 6.90, AUD: 1.52, ARS: 950.0,
-  BTC: 1/92410, ETH: 1/2870, SOL: 1/172, XRP: 1/0.58,
-  DOGE: 1/0.172, ADA: 1/0.45, USDT: 1/1.0001
-};
-let isConverting = false;
-
-async function loadRates() {
-  if (rates) return;
-  try {
-    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,ripple,dogecoin,cardano,tether&vs_currencies=usd,eur,rub,cny,gel,jpy,ils,sek,nok,dkk,aud,ars');
-    const data = await res.json();
-    rates = {
-      BTC: { usd: data.bitcoin.usd, eur: data.bitcoin.eur, rub: data.bitcoin.rub },
-      ETH: { usd: data.ethereum.usd, eur: data.ethereum.eur, rub: data.ethereum.rub },
-    };
-    document.getElementById('rate-info').textContent = '✅ Online rates';
-    convertFrom();
-  } catch (e) {
-    rates = null;
-    document.getElementById('rate-info').textContent = '⚠️ Offline (static rates)';
-    convertFrom();
+  function calcBackspace() {
+    calcClearEntry();
   }
-}
 
-function getUSDPrice(currency, amount = 1) {
-  if (currency === 'USD') return amount;
-  if (rates) {
-    const id = currency.toLowerCase();
-    if (rates[id]) {
-      return amount * rates[id].usd;
+  function calcMPlus() {
+    try {
+      calcMemory += parseFloat(eval(calcExpression || '0'));
+    } catch (e) {}
+  }
+
+  function calcMR() {
+    calcExpression = String(calcMemory);
+    updateCalcDisplay();
+  }
+
+  function calcMC() {
+    calcMemory = 0;
+  }
+
+  function updateCalcDisplay() {
+    const display = document.getElementById('calc-display');
+    if (calcExpression === '') {
+      display.textContent = '0';
+    } else if (calcExpression.length > 15) {
+      display.textContent = calcExpression.slice(0, 15) + '...';
+    } else {
+      display.textContent = calcExpression;
     }
   }
-  return amount / STATIC_RATES_USD[currency];
-}
 
-function convertFrom() {
-  if (isConverting) return;
-  isConverting = true;
-  const from = document.getElementById('fromCurrency').value;
-  const to = document.getElementById('toCurrency').value;
-  const fromAmount = parseFloat(document.getElementById('fromAmount').value) || 0;
-  
-  if (from === to) {
-    const v = fromAmount;
-    document.getElementById('toAmount').value = v;
-    document.getElementById('result').textContent = `${fromAmount} ${from} = ${v} ${to}`;
-    document.getElementById('rate').textContent = '';
-  } else {
-    const usd = getUSDPrice(from, fromAmount);
-    const toAmount = usd / getUSDPrice(to, 1);
-    document.getElementById('toAmount').value = toAmount.toFixed(6);
-    document.getElementById('result').textContent = `${fromAmount} ${from} = ${toAmount.toFixed(6)} ${to}`;
-    document.getElementById('rate').textContent = `1 ${from} = ${(toAmount / fromAmount).toFixed(6)} ${to}`;
+  // === ВАЛЮТЫ ===
+  let rates = null;
+  const STATIC_RATES_USD = {
+    USD: 1, EUR: 0.93, RUB: 93.5, CNY: 7.25, GEL: 2.70, JPY: 155.0,
+    ILS: 3.70, SEK: 10.50, NOK: 10.80, DKK: 6.90, AUD: 1.52, ARS: 950.0,
+    BTC: 1/92410, ETH: 1/2870, SOL: 1/172, XRP: 1/0.58,
+    DOGE: 1/0.172, ADA: 1/0.45, USDT: 1/1.0001
+  };
+  let isConverting = false;
+
+  async function loadRates() {
+    if (rates) return;
+    try {
+      const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,ripple,dogecoin,cardano,tether&vs_currencies=usd,eur,rub,cny,gel,jpy,ils,sek,nok,dkk,aud,ars');
+      const data = await res.json();
+      rates = {
+        BTC: { usd: data.bitcoin.usd, eur: data.bitcoin.eur, rub: data.bitcoin.rub },
+        ETH: { usd: data.ethereum.usd, eur: data.ethereum.eur, rub: data.ethereum.rub },
+      };
+      document.getElementById('rate-info').textContent = '✅ Online rates';
+      convertFrom();
+    } catch (e) {
+      rates = null;
+      document.getElementById('rate-info').textContent = '⚠️ Offline (static rates)';
+      convertFrom();
+    }
   }
-  isConverting = false;
-}
 
-function convertTo() {
-  if (isConverting) return;
-  isConverting = true;
-  const from = document.getElementById('fromCurrency').value;
-  const to = document.getElementById('toCurrency').value;
-  const toAmount = parseFloat(document.getElementById('toAmount').value) || 0;
-  
-  if (from === to) {
-    document.getElementById('fromAmount').value = toAmount;
-    document.getElementById('result').textContent = `${toAmount} ${to} = ${toAmount} ${from}`;
-    document.getElementById('rate').textContent = '';
-  } else {
-    const usd = getUSDPrice(to, toAmount);
-    const fromAmount = usd / getUSDPrice(from, 1);
-    document.getElementById('fromAmount').value = fromAmount.toFixed(6);
-    document.getElementById('result').textContent = `${fromAmount.toFixed(6)} ${from} = ${toAmount} ${to}`;
-    document.getElementById('rate').textContent = `1 ${to} = ${(fromAmount / toAmount).toFixed(6)} ${from}`;
+  function getUSDPrice(currency, amount = 1) {
+    if (currency === 'USD') return amount;
+    if (rates) {
+      const id = currency.toLowerCase();
+      if (rates[id]) {
+        return amount * rates[id].usd;
+      }
+    }
+    return amount / STATIC_RATES_USD[currency];
   }
-  isConverting = false;
-}
 
-function swapCurrencies() {
-  const fromSel = document.getElementById('fromCurrency');
-  const toSel = document.getElementById('toCurrency');
-  const fromVal = fromSel.value;
-  const fromAmt = document.getElementById('fromAmount').value;
-  
-  fromSel.value = toSel.value;
-  toSel.value = fromVal;
-  
-  document.getElementById('fromAmount').value = document.getElementById('toAmount').value;
-  document.getElementById('toAmount').value = fromAmt;
-  
-  convertFrom();
-}
+  function convertFrom() {
+    if (isConverting) return;
+    isConverting = true;
+    const from = document.getElementById('fromCurrency').value;
+    const to = document.getElementById('toCurrency').value;
+    const fromAmount = parseFloat(document.getElementById('fromAmount').value) || 0;
+    
+    if (from === to) {
+      const v = fromAmount;
+      document.getElementById('toAmount').value = v;
+      document.getElementById('result').textContent = `${fromAmount} ${from} = ${v} ${to}`;
+      document.getElementById('rate').textContent = '';
+    } else {
+      const usd = getUSDPrice(from, fromAmount);
+      const toAmount = usd / getUSDPrice(to, 1);
+      document.getElementById('toAmount').value = toAmount.toFixed(6);
+      document.getElementById('result').textContent = `${fromAmount} ${from} = ${toAmount.toFixed(6)} ${to}`;
+      document.getElementById('rate').textContent = `1 ${from} = ${(toAmount / fromAmount).toFixed(6)} ${to}`;
+    }
+    isConverting = false;
+  }
 
-// === ПАНЕЛИ ===
-function showPanel(id) {
-  document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
-  const panel = document.getElementById(id);
-  if (panel) panel.style.display = 'block';
-}
+  function convertTo() {
+    if (isConverting) return;
+    isConverting = true;
+    const from = document.getElementById('fromCurrency').value;
+    const to = document.getElementById('toCurrency').value;
+    const toAmount = parseFloat(document.getElementById('toAmount').value) || 0;
+    
+    if (from === to) {
+      document.getElementById('fromAmount').value = toAmount;
+      document.getElementById('result').textContent = `${toAmount} ${to} = ${toAmount} ${from}`;
+      document.getElementById('rate').textContent = '';
+    } else {
+      const usd = getUSDPrice(to, toAmount);
+      const fromAmount = usd / getUSDPrice(from, 1);
+      document.getElementById('fromAmount').value = fromAmount.toFixed(6);
+      document.getElementById('result').textContent = `${fromAmount.toFixed(6)} ${from} = ${toAmount} ${to}`;
+      document.getElementById('rate').textContent = `1 ${to} = ${(fromAmount / toAmount).toFixed(6)} ${from}`;
+    }
+    isConverting = false;
+  }
 
-// === ЗАПУСК ===
-window.onload = () => {
-  document.getElementById('editor').focus();
-  loadRates();
-};
+  function swapCurrencies() {
+    const fromSel = document.getElementById('fromCurrency');
+    const toSel = document.getElementById('toCurrency');
+    const fromVal = fromSel.value;
+    const fromAmt = document.getElementById('fromAmount').value;
+    
+    fromSel.value = toSel.value;
+    toSel.value = fromVal;
+    
+    document.getElementById('fromAmount').value = document.getElementById('toAmount').value;
+    document.getElementById('toAmount').value = fromAmt;
+    
+    convertFrom();
+  }
+
+  // === QR КОД ===
+  function generateQR() {
+    const text = document.getElementById('editor').innerText.trim() || 'Document from Aura Office';
+    const qrContainer = document.getElementById('qrcode');
+    qrContainer.innerHTML = '';
+    const qr = new QRious({
+      element: document.createElement('canvas'),
+      value: text,
+      size: 200
+    });
+    qrContainer.appendChild(qr.element);
+  }
+
+  // === ПОДЕЛИТЬСЯ ===
+  function showShare() {
+    const url = 'https://aurasystem.space/office/';
+    const text = 'Document from Aura Office';
+    const buttons = `
+      <a href="https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}" target="_blank" style="color:#000;">𝕏</a>
+      <a href="https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}" target="_blank" style="color:#0088cc;">Telegram</a>
+      <a href="https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}" target="_blank" style="color:#25d366;">WhatsApp</a>
+      <a href="mailto:?subject=${encodeURIComponent(text)}&body=${encodeURIComponent(url)}" style="color:#ff6b6b;">Email</a>
+    `;
+    document.getElementById('share-buttons').innerHTML = buttons;
+  }
+
+  // === OTHER ===
+  function showQR() {
+    const qr = document.getElementById('qr');
+    qr.style.display = 'block';
+    qr.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function showShare() {
+    const share = document.getElementById('share');
+    share.style.display = 'block';
+    share.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function inviteCollab() {
+    const id = 'AURA-' + Math.random().toString(36).substr(2, 5).toUpperCase();
+    localStorage.setItem('doc_' + id, document.getElementById('editor').innerText);
+    const url = 'https://aurasystem.space/office/?doc=' + id;
+    prompt('Send this link to a friend:', url);
+  }
+
+  function sendRaw() { alert('📤 Sent'); }
+  function sendEncrypted() { alert('🔐 Encrypted'); }
+
+  // === СОХРАНИТЬ В PDF ===
+  function saveAsPDF() {
+    const element = document.body;
+    const opt = {
+      margin:       10,
+      filename:     'aurasystem_document.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2 },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save();
+  }
+
+  // === ОТОБРАЖЕНИЕ ПАНЕЛЕЙ ===
+  function showPanel(id) {
+    document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
+    document.getElementById(id).style.display = 'block';
+  }
+
+  window.onload = () => {
+    document.getElementById('editor').focus();
+    loadRates();
+  };
 </script>
 
 </body>
