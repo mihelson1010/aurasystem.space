@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" id="html-root">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,323 +7,323 @@
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      background: linear-gradient(135deg, #1a1a2e, #2c2c3a, #3a2a4a);
+      background: linear-gradient(135deg, #0d0d1a, #1a1a2e, #251a3a);
       color: #fff;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       padding: 20px;
+      overflow-x: hidden;
     }
-    .logo-container {
-      width: 100%;
-      max-width: 450px;
-      margin: 20px auto;
+    .container { max-width: 800px; margin: 0 auto; }
+    .page { display: none; animation: fadeIn 0.4s ease; }
+    .page.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* Header */
+    .header {
       text-align: center;
+      margin: 30px 0;
     }
-    .logo-img {
-      width: 100%;
-      height: auto;
-      max-width: 450px;
-      border-radius: 16px;
-      box-shadow: 0 8px 30px rgba(255, 255, 255, 0.1);
-    }
-    h1 {
+    .header h1 {
       font-size: 3.2rem;
-      font-weight: bold;
-      color: #ff7700;
-      margin: 10px 0 20px;
-      letter-spacing: 2px;
+      background: linear-gradient(45deg, #ff7700, #ffaa00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
     }
-    .lang-selector {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-    }
-    .lang-label {
-      font-size: 0.9rem;
-      color: #4cff4c;
-      text-shadow: 0 0 4px rgba(76, 255, 76, 0.5);
-      animation: neonFlicker 3s infinite alternate;
-      margin-bottom: 4px;
-      cursor: pointer;
-    }
-    .lang-dropdown {
-      display: none;
-      background: #0d0d1a;
-      border: 1px solid #444;
-      border-radius: 6px;
-      margin-top: 4px;
-    }
-    .lang-item {
-      padding: 6px 12px;
-      color: white;
-      cursor: pointer;
-    }
-    .lang-item:hover {
-      background: #222;
-    }
-    #create-btn {
-      display: block;
-      margin: 80px auto 0;
-    }
+
+    /* Button */
     .btn {
       padding: 14px 32px;
-      border-radius: 25px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: white;
-      background: linear-gradient(135deg, #ff7700, #ffaa00);
       border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: bold;
       cursor: pointer;
+      transition: all 0.3s;
     }
-    .btn-promo {
-      background: linear-gradient(135deg, #4a90e2, #50b4ff);
-      color: white;
-    }
-    .btn-promo:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
-    .footer {
-      position: fixed;
-      bottom: 12px;
-      right: 16px;
-      font-size: 0.85rem;
-      color: #4cff4c;
-      text-shadow: 0 0 8px rgba(76, 255, 76, 0.5);
-      opacity: 0.9;
-      animation: neonFlicker 3.5s infinite alternate;
-      pointer-events: none;
-    }
-    @keyframes neonFlicker {
-      0%, 100% { opacity: 0.9; text-shadow: 0 0 8px rgba(76, 255, 76, 0.5); }
-      50% { opacity: 0.6; text-shadow: 0 0 4px rgba(76, 255, 76, 0.3); }
+    .btn-primary { background: linear-gradient(135deg, #ff7700, #ffaa00); color: #000; }
+    .btn-secondary { background: linear-gradient(135deg, #8e44ad, #9b59b6); color: white; }
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255, 119, 0, 0.4);
     }
 
-    .modal { display: none; position: fixed; z-index:100; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.8); }
-    .modal-content { background:#0d0d1a; margin:100px auto; padding:30px; border-radius:16px; max-width:800px; }
-    .close { float:right; cursor:pointer; font-size:1.4rem; }
-    .manifest-text { background:rgba(0,0,0,0.4); padding:20px; border-radius:12px; margin:20px 0; line-height:1.6; }
-    .consent { display:flex; align-items:center; gap:12px; margin:20px 0; }
-
-    /* CryptoBros Interface */
-    #chat-container {
-      display: none;
-      flex-direction: column;
-      width: 100%;
-      max-width: 800px;
-      margin-top: 20px;
+    /* Manifest */
+    .manifest-box {
+      background: rgba(20, 20, 40, 0.7);
+      border: 1px solid #444;
+      border-radius: 20px;
+      padding: 30px;
+      margin: 30px 0;
+      line-height: 1.6;
     }
-    .input-box {
+    .manifest-box p {
+      margin: 12px 0;
+      font-size: 1.05rem;
+    }
+
+    /* Profile Setup */
+    .form-group {
+      margin: 25px 0;
+    }
+    .form-label {
+      display: block;
+      margin-bottom: 10px;
+      color: #aaa;
+      font-size: 1.05rem;
+    }
+    .form-input {
       width: 100%;
       padding: 14px;
-      font-size: 1.1rem;
-      background: #222;
-      border: 1px solid #444;
+      background: rgba(30, 30, 50, 0.8);
+      border: 1px solid #555;
       border-radius: 12px;
       color: white;
-      text-align: center;
-      margin-bottom: 20px;
+      font-size: 1.1rem;
     }
-    .analyze-btn {
-      padding: 12px 28px;
-      background: linear-gradient(135deg, #8e44ad, #9b59b6);
+    #avatar-preview {
+      width: 120px;
+      height: 120px;
+      border: 2px dashed #666;
+      border-radius: 50%;
+      margin: 15px auto;
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
     }
-    .dialog-box {
-      background: #0d0d1a;
+    #avatar-preview:hover { border-color: #ffaa00; }
+    #avatar-preview img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+    #avatar-preview span { color: #666; font-size: 2.5rem; }
+
+    /* Feed */
+    .post {
+      background: rgba(20, 20, 40, 0.6);
+      border-radius: 16px;
       padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      text-align: left;
-      font-family: monospace;
-      font-size: 1rem;
-      line-height: 1.5;
+      margin: 20px 0;
+      border-left: 4px solid #ff7700;
     }
-    .verdict-box {
-      background: #1a1a2a;
-      padding: 18px;
-      border-radius: 12px;
-      margin-top: 10px;
-      border-left: 4px solid #ffaa00;
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
     }
-    .hidden { display: none; }
+    .post-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #555;
+    }
+    .post-name { font-weight: bold; color: #ffaa00; }
+    .post-content { line-height: 1.5; }
+
+    /* Profile Page */
+    .profile-header {
+      text-align: center;
+      margin: 30px 0;
+    }
+    .profile-avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      border: 3px solid #ff7700;
+    }
+    #question-input {
+      margin-top: 20px;
+      display: none;
+    }
+    #question-textarea {
+      width: 100%;
+      padding: 14px;
+      background: rgba(30, 30, 50, 0.8);
+      border: 1px solid #555;
+      border-radius: 12px;
+      color: white;
+      font-size: 1.1rem;
+      height: 100px;
+      resize: vertical;
+    }
   </style>
 </head>
 <body>
 
-<div class="lang-selector" id="langSelector">
-  <div class="lang-label" id="langLabel">Language</div>
-  <div class="lang-dropdown" id="langDropdown">
-    <div class="lang-item" data-lang="en">EN</div>
-    <div class="lang-item" data-lang="ru">RU</div>
-    <div class="lang-item" data-lang="es">ES</div>
-    <div class="lang-item" data-lang="fr">FR</div>
-    <div class="lang-item" data-lang="zh">中文</div>
-    <div class="lang-item" data-lang="ja">日本語</div>
-    <div class="lang-item" data-lang="he">עברית</div>
-    <div class="lang-item" data-lang="ar">العربية</div>
-    <div class="lang-item" data-lang="de">DE</div>
-    <div class="lang-item" data-lang="pt">PT</div>
-  </div>
-</div>
+<div class="container">
 
-<div class="logo-container">
-  <img src="https://aurasystem.space/cryptobros/logo.png" alt="CRYPTOBROS" class="logo-img">
-</div>
-
-<h1>CRYPTOBROS</h1>
-
-<button id="create-btn" class="btn">Create Account</button>
-
-<div id="chat-container">
-  <input type="text" class="input-box" id="token-input" placeholder="$AURA">
-  <button class="btn analyze-btn" onclick="analyzeToken()">Analyze Token</button>
-  <div id="dialog" class="hidden">
-    <div class="dialog-box" id="auditor"></div>
-    <div class="dialog-box" id="risk"></div>
-    <div class="dialog-box" id="analyst"></div>
-    <div class="verdict-box" id="verdict"></div>
-  </div>
-</div>
-
-<div class="footer">Produced by Mihelson © 2025</div>
-
-<div id="manifest-modal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <h2 id="modal-title">CRYPTOBROS MANIFESTO</h2>
-    <div class="manifest-text" id="modal-manifest"></div>
-    <div class="consent">
-      <input type="checkbox" id="modal-consent">
-      <label for="modal-consent" id="modal-consent-label">I agree with the CRYPTOBROS Manifest</label>
+  <!-- 1. Главная -->
+  <div id="page-home" class="page active">
+    <div class="header">
+      <h1>CRYPTOBROS</h1>
     </div>
-    <div style="display: flex; gap: 16px; margin-top: 20px;">
-      <button id="modal-pay-btn" class="btn">Confirm & Pay 300 AUS</button>
-      <button id="modal-promo-btn" class="btn btn-promo" onclick="enterPromo()">Enter promo code</button>
+    <button class="btn btn-primary" onclick="navigateTo('manifest')">Create Account</button>
+  </div>
+
+  <!-- 2. Манифест -->
+  <div id="page-manifest" class="page">
+    <div class="header">
+      <h1>CRYPTOBROS</h1>
+    </div>
+    <div class="manifest-box">
+      <p>Bros in. Noise out.</p>
+      <p>No servers. Zero KYC. Only wallet.</p>
+      <p>We do not advise buying! We advise not buying!</p>
+      <p>Pay with $AuraSpace to prove you’re real.</p>
+      <p>Privacy-native. End-to-end encrypted.</p>
+      <p>Full control. No tracking. Ever.</p>
+    </div>
+    <button class="btn btn-primary" onclick="processPayment()">Confirm & Pay 300 AUS</button>
+  </div>
+
+  <!-- 3. Профиль -->
+  <div id="page-profile" class="page">
+    <div class="header">
+      <h1>Set up your identity</h1>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Display name</label>
+      <input type="text" id="username" class="form-input" placeholder="e.g. CryptoWolf">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Avatar</label>
+      <div id="avatar-preview" onclick="document.getElementById('avatar-upload').click()">
+        <span>+</span>
+      </div>
+      <input type="file" id="avatar-upload" accept="image/jpeg,image/png" style="display:none;">
+    </div>
+    <button class="btn btn-secondary" onclick="saveProfile()">Continue to Feed</button>
+  </div>
+
+  <!-- 4. Лента -->
+  <div id="page-feed" class="page">
+    <div class="header">
+      <h1>Feed</h1>
+    </div>
+    <div class="post">
+      <div class="post-header">
+        <div class="post-avatar" id="feed-avatar-1"></div>
+        <div class="post-name" id="feed-name-1">Anonymous</div>
+      </div>
+      <div class="post-content">$AURA just surged 20%! On-chain: whales accumulating.</div>
+    </div>
+    <div class="post">
+      <div class="post-header">
+        <div class="post-avatar" id="feed-avatar-2"></div>
+        <div class="post-name" id="feed-name-2">Anonymous</div>
+      </div>
+      <div class="post-content">Grok vs Qwen2 debate on $XYZ dropped — check it out!</div>
+    </div>
+    <button class="btn btn-secondary" onclick="navigateTo('my-profile')">My Profile</button>
+  </div>
+
+  <!-- 5. Мой профиль -->
+  <div id="page-my-profile" class="page">
+    <div class="profile-header">
+      <div class="profile-avatar" id="my-avatar"></div>
+      <h2 id="my-name">Loading...</h2>
+    </div>
+    <button class="btn btn-primary" id="ask-btn">Ask a Question</button>
+    <div id="question-input">
+      <textarea id="question-textarea" placeholder="Type your question to the community..."></textarea>
+      <button class="btn btn-secondary" onclick="submitQuestion()">Submit</button>
     </div>
   </div>
+
 </div>
 
 <script>
-  // === 10 ЯЗЫКОВ ДЛЯ ИНТЕРФЕЙСА ===
-  const uiTexts = {
-    en: { create: "Create Account", agree: "I agree with the CRYPTOBROS Manifest", pay: "Confirm & Pay 300 AUS", promo: "Enter promo code" },
-    ru: { create: "Создать аккаунт", agree: "Я согласен с Манифестом CRYPTOBROS", pay: "Подтвердить и оплатить 300 AUS", promo: "Ввести промокод" },
-    es: { create: "Crear cuenta", agree: "Acepto el Manifiesto de CRYPTOBROS", pay: "Confirmar y pagar 300 AUS", promo: "Ingresar código promocional" },
-    fr: { create: "Créer un compte", agree: "J'accepte le Manifeste CRYPTOBROS", pay: "Confirmer et payer 300 AUS", promo: "Entrer le code promo" },
-    zh: { create: "创建账户", agree: "我同意 CRYPTOBROS 宣言", pay: "确认并支付 300 AUS", promo: "输入促销代码" },
-    ja: { create: "アカウントを作成", agree: "CRYPTOBROS 宣言に同意します", pay: "確認して 300 AUS を支払う", promo: "プロモコードを入力" },
-    he: { create: "יצירת חשבון", agree: "אני מסכים למניפסטו של CRYPTOBROS", pay: "אישור ותשלום 300 AUS", promo: "הזן קוד קופון" },
-    ar: { create: "إنشاء حساب", agree: "أوافق على بيان CRYPTOBROS", pay: "تأكيد ودفع 300 AUS", promo: "أدخل رمز الترويج" },
-    de: { create: "Konto erstellen", agree: "Ich stimme dem CRYPTOBROS-Manifest zu", pay: "Bestätigen und 300 AUS bezahlen", promo: "Geben Sie den Promo-Code ein" },
-    pt: { create: "Criar conta", agree: "Concordo com o Manifesto CRYPTOBROS", pay: "Confirmar e pagar 300 AUS", promo: "Insira o código promocional" }
-  };
-
-  const manifestTexts = {
-    en: { title: "CRYPTOBROS MANIFESTO", lines: ["Bros in. Noise out.","No servers. Zero KYC. Only wallet.","We do not advise buying! We advise not buying!","Pay with $AuraSpace to prove you’re real.","Privacy-native. End-to-end encrypted.","Full control. No tracking. Ever."] },
-    he: { title: "מניפסטו של CRYPTOBROS", lines: ["בראס פנימה. רעש החוצה.","אין שרתים. אפס KYC. רק ארנק.","אנחנו לא מייעצים לקנות! אנחנו מייעצים לא לקנות!","שילמו ב-$AuraSpace כדי להוכיח שאתם אמיתיים.","פרטי מטבעו. מוצפן מקצה לקצה.","שליטה מלאה. אפס מעקב. לעולם לא."] },
-    ru: { title: "МАНИФЕСТ CRYPTOBROS", lines: ["Братья — внутрь. Шум — наружу.","Нет серверов. Ноль KYC. Только кошелёк.","Мы не советуем покупать! Мы советуем не покупать!","Заплатите $AuraSpace, чтобы доказать, что вы настоящий.","Приватность — по умолчанию. Сквозное шифрование.","Полный контроль. Никакого трекинга. Никогда."] }
-  };
-
-  let currentLang = 'en';
-
-  function updateManifest(lang) {
-    const manifestLang = ['he', 'ru'].includes(lang) ? lang : 'en';
-    document.getElementById('modal-title').textContent = manifestTexts[manifestLang].title;
-    document.getElementById('modal-manifest').innerHTML = manifestTexts[manifestLang].lines.join('<br>');
-    document.getElementById('modal-consent-label').textContent = uiTexts[currentLang].agree;
-  }
-
-  function enterPromo() {
-    const promo = prompt('Enter promo code:');
-    if (promo === 'AURAFIRE7') {
-      localStorage.setItem('cryptobros_access', 'granted');
-      localStorage.setItem('access_type', 'promo');
-      alert('Promo activated! Welcome to CRYPTOBROS.');
-      closeModal();
-      showChat();
-    } else {
-      alert('Invalid promo code.');
+  // === НАВИГАЦИЯ ===
+  function navigateTo(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(`page-${page}`).classList.add('active');
+    
+    if (page === 'my-profile') {
+      loadProfile();
+    } else if (page === 'feed') {
+      loadFeedAvatars();
     }
   }
 
-  document.getElementById('create-btn').onclick = () => {
-    document.getElementById('manifest-modal').style.display = 'block';
-    updateManifest(currentLang);
-  };
-
-  document.getElementById('modal-pay-btn').onclick = () => {
-    if (!document.getElementById('modal-consent').checked) {
-      alert('Please agree to the Manifest');
-      return;
-    }
+  // === ОПЛАТА ===
+  function processPayment() {
     alert(`Send 300 AUS to:\n5R8wHTuWuhxGE6qUHbPh4RZatKBAvxJKpmLAdA2GbzPL`);
     localStorage.setItem('cryptobros_access', 'granted');
-    localStorage.setItem('access_type', 'paid');
-    closeModal();
-    showChat();
+    navigateTo('profile');
+  }
+
+  // === АВАТАР ===
+  document.getElementById('avatar-upload').onchange = function(e) {
+    const file = e.target.files[0];
+    if (!file || !file.type.match('image.*')) return;
+    if (file.size > 2 * 1024 * 1024) {
+      alert('Max 2 MB');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      const img = event.target.result;
+      localStorage.setItem('cryptobros_avatar', img);
+      document.getElementById('avatar-preview').innerHTML = `<img src="${img}">`;
+    };
+    reader.readAsDataURL(file);
   };
 
-  function showChat() {
-    document.getElementById('chat-container').style.display = 'flex';
-    document.getElementById('create-btn').style.display = 'none';
+  // === СОХРАНЕНИЕ ПРОФИЛЯ ===
+  function saveProfile() {
+    const name = document.getElementById('username').value.trim() || 'Anonymous';
+    localStorage.setItem('cryptobros_name', name);
+    localStorage.setItem('cryptobros_profile_complete', 'true');
+    navigateTo('feed');
   }
 
-  function closeModal() {
-    document.getElementById('manifest-modal').style.display = 'none';
+  // === ЗАГРУЗКА ПРОФИЛЯ ===
+  function loadProfile() {
+    const name = localStorage.getItem('cryptobros_name') || 'Anonymous';
+    const avatar = localStorage.getItem('cryptobros_avatar') || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23555"/><circle cx="50" cy="40" r="15" fill="%23777"/><path d="M30,70 Q50,85 70,70" stroke="%23777" stroke-width="5" fill="none"/></svg>';
+    
+    document.getElementById('my-name').textContent = name;
+    document.getElementById('my-avatar').style.backgroundImage = `url(${avatar})`;
+    document.getElementById('my-avatar').style.backgroundSize = 'cover';
+    
+    document.getElementById('ask-btn').onclick = () => {
+      document.getElementById('question-input').style.display = 'block';
+    };
   }
 
-  // === АНАЛИЗ ТОКЕНА (заглушка для MVP) ===
-  function analyzeToken() {
-    const token = document.getElementById('token-input').value.trim();
-    if (!token) return alert('Enter token, e.g. $AURA');
-
-    const auditor = "Auditor (Qwen2): 25% in vesting, mint revoked. LP locked.";
-    const risk = "Risk Manager (Grok): 85% hype, 40% in one wallet, vol 180%.";
-    const analyst = "Analyst (Phi-3): On-chain +300%, whale bought 4% yesterday.";
-
-    document.getElementById('auditor').textContent = `[Auditor]: ${auditor}`;
-    document.getElementById('risk').textContent = `[Risk]: ${risk}`;
-    document.getElementById('analyst').textContent = `[Analyst]: ${analyst}`;
-
-    const verdict = `
-      FINAL VERDICT: medium risk.
-      + vesting safe, on-chain growth
-      − 40% in whale, low liquidity
-      → max 2% of portfolio if you watch the whale.
-    `;
-    document.getElementById('verdict').textContent = verdict;
-    document.getElementById('dialog').classList.remove('hidden');
+  // === ЛЕНТА: аватары из localStorage ===
+  function loadFeedAvatars() {
+    const avatar = localStorage.getItem('cryptobros_avatar') || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23555"/><circle cx="50" cy="40" r="15" fill="%23777"/><path d="M30,70 Q50,85 70,70" stroke="%23777" stroke-width="5" fill="none"/></svg>';
+    const name = localStorage.getItem('cryptobros_name') || 'Anonymous';
+    
+    document.getElementById('feed-avatar-1').style.backgroundImage = `url(${avatar})`;
+    document.getElementById('feed-avatar-1').style.backgroundSize = 'cover';
+    document.getElementById('feed-name-1').textContent = name;
+    
+    // Второй пост — аноним
+    document.getElementById('feed-name-2').textContent = 'Anonymous';
   }
 
-  // Языковой переключатель
-  document.getElementById('langLabel').addEventListener('click', () => {
-    const dropdown = document.getElementById('langDropdown');
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-  });
+  // === ОТПРАВКА ВОПРОСА ===
+  function submitQuestion() {
+    const text = document.getElementById('question-textarea').value.trim();
+    if (!text) return alert('Enter your question');
+    alert('Question submitted to the tribe!');
+    document.getElementById('question-textarea').value = '';
+    document.getElementById('question-input').style.display = 'none';
+  }
 
-  document.querySelectorAll('.lang-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const lang = item.getAttribute('data-lang');
-      currentLang = lang;
-      document.getElementById('langLabel').textContent = lang === 'he' ? 'עברית' : (lang === 'ru' ? 'RU' : 'EN');
-      document.getElementById('langDropdown').style.display = 'none';
-      document.getElementById('create-btn').textContent = uiTexts[lang].create;
-      if (document.getElementById('modal-consent-label')) {
-        document.getElementById('modal-consent-label').textContent = uiTexts[lang].agree;
-      }
-    });
-  });
-
-  // === ЗАГРУЗКА СТРАНИЦЫ ===
+  // === ИНИЦИАЛИЗАЦИЯ ===
   window.onload = function() {
-    if (localStorage.getItem('cryptobros_access') === 'granted') {
-      showChat();
+    if (localStorage.getItem('cryptobros_access') !== 'granted') {
+      navigateTo('home');
+    } else if (localStorage.getItem('cryptobros_profile_complete') !== 'true') {
+      navigateTo('profile');
+    } else {
+      navigateTo('feed');
     }
   };
 </script>
