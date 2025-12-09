@@ -7,7 +7,7 @@
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      background: linear-gradient(135deg, #0d0d1a, #1a1a2e, #251a3a);
+      background: linear-gradient(135deg, #0a0a1a, #0f0f2a, #150e3a);
       color: #fff;
       font-family: 'Segoe UI', Arial, sans-serif;
       min-height: 100vh;
@@ -23,6 +23,7 @@
     .header {
       text-align: center;
       margin: 30px 0;
+      position: relative;
     }
     .header h1 {
       font-size: 3.2rem;
@@ -30,6 +31,20 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       letter-spacing: 1px;
+    }
+    .back-btn {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
     }
 
     /* Button */
@@ -57,10 +72,12 @@
       padding: 30px;
       margin: 30px 0;
       line-height: 1.6;
+      box-shadow: 0 0 20px rgba(255, 119, 0, 0.1);
     }
     .manifest-box p {
       margin: 12px 0;
       font-size: 1.05rem;
+      color: #ddd;
     }
 
     /* Profile Setup */
@@ -106,6 +123,7 @@
       padding: 20px;
       margin: 20px 0;
       border-left: 4px solid #ff7700;
+      box-shadow: 0 0 15px rgba(255, 119, 0, 0.05);
     }
     .post-header {
       display: flex;
@@ -133,6 +151,7 @@
       border-radius: 50%;
       margin: 0 auto 20px;
       border: 3px solid #ff7700;
+      box-shadow: 0 0 20px rgba(255, 119, 0, 0.3);
     }
     #question-input {
       margin-top: 20px;
@@ -166,6 +185,7 @@
   <!-- 2. Манифест -->
   <div id="page-manifest" class="page">
     <div class="header">
+      <div class="back-btn" onclick="navigateTo('home')">&larr;</div>
       <h1>CRYPTOBROS</h1>
     </div>
     <div class="manifest-box">
@@ -182,6 +202,7 @@
   <!-- 3. Профиль -->
   <div id="page-profile" class="page">
     <div class="header">
+      <div class="back-btn" onclick="navigateTo('manifest')">&larr;</div>
       <h1>Set up your identity</h1>
     </div>
     <div class="form-group">
@@ -201,6 +222,7 @@
   <!-- 4. Лента -->
   <div id="page-feed" class="page">
     <div class="header">
+      <div class="back-btn" onclick="navigateTo('profile')">&larr;</div>
       <h1>Feed</h1>
     </div>
     <div class="post">
@@ -222,10 +244,12 @@
 
   <!-- 5. Мой профиль -->
   <div id="page-my-profile" class="page">
-    <div class="profile-header">
-      <div class="profile-avatar" id="my-avatar"></div>
-      <h2 id="my-name">Loading...</h2>
+    <div class="header">
+      <div class="back-btn" onclick="navigateTo('feed')">&larr;</div>
+      <h1>My Profile</h1>
     </div>
+    <div class="profile-avatar" id="my-avatar"></div>
+    <h2 id="my-name">Loading...</h2>
     <button class="btn btn-primary" id="ask-btn">Ask a Question</button>
     <div id="question-input">
       <textarea id="question-textarea" placeholder="Type your question to the community..."></textarea>
