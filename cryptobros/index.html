@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" id="html-root">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CRYPTOBROS</title>
+  <title>CRYPTOBROS — MANIFESTO</title>
   <style>
     :root {
       --light-bg: #f8f9fa;
-      --light-card: #ffffff;
       --text-dark: #1a1a1a;
       --neon: #00f3ff;
       --pink: #ff2a6d;
@@ -23,107 +22,28 @@
       background: var(--light-bg);
       color: var(--text-dark);
       min-height: 100vh;
-    }
-
-    .header {
-      position: sticky;
-      top: 0;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 12px 20px;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      backdrop-filter: blur(10px);
-      z-index: 10;
-      border-bottom: 1px solid var(--neon);
-    }
-
-    .logo {
-      font-size: 1.8rem;
-      background: linear-gradient(90deg, var(--neon), var(--pink));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    .header-right { display: flex; gap: 12px; align-items: center; }
-    .lang-label { font-size: 1.4rem; cursor: pointer; }
-    .lang-dropdown {
-      display: none;
-      position: absolute;
-      top: 50px;
-      right: 20px;
-      background: white;
-      border: 1px solid var(--neon);
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      z-index: 100;
-    }
-    .lang-item {
-      padding: 8px 16px;
-      cursor: pointer;
-    }
-    .lang-item:hover { background: rgba(0, 243, 255, 0.1); }
-
-    .page { display: none; padding: 0; }
-    .active { display: block !important; }
-
-    /* Главная страница */
-    .hero {
-      text-align: center;
-      padding: 100px 20px 60px;
-      background: linear-gradient(135deg, #fff2cc, #ffe680);
       position: relative;
     }
-    .hero::before {
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      padding: 40px;
+      background: white;
+      border: 2px solid var(--neon);
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 243, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Фоновый водяной знак */
+    .container::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcGF0dGVyblVuaXRzPSJ1c2VyU2NhbGUiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iNSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==') repeat;
-      opacity: 0.1;
-    }
-    .hero-logo {
-      width: 300px;
-      height: auto;
-      margin: 0 auto 30px;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
-    }
-    .hero h1 {
-      font-size: 3.8rem;
-      margin: 20px 0;
-      background: linear-gradient(90deg, var(--neon), var(--pink));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .hero p {
-      color: #555;
-      font-size: 1.2rem;
-      max-width: 700px;
-      margin: 0 auto 30px;
-    }
-    .btn {
-      padding: 14px 32px;
-      border-radius: 50px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: black;
-      background: var(--neon);
-      border: none;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(0, 243, 255, 0.5); }
-
-    /* Общие стили для всех страниц */
-    .page::before {
-      content: '';
-      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
@@ -133,118 +53,123 @@
       z-index: -1;
     }
 
-    /* Профиль */
-    .cover {
-      height: 300px;
-      background: linear-gradient(135deg, #f0f4ff, #ffeef0);
-      position: relative;
-      border-bottom: 1px solid var(--neon);
-    }
-    .profile-header {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .profile-avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: var(--pink);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 2.2rem;
-      font-weight: bold;
-      border: 4px solid white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-    .profile-name { font-size: 2.2rem; font-weight: bold; color: var(--neon); }
-    .profile-desc { color: #666; }
-
-    .profile-buttons {
-      padding: 20px;
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
+    h2 {
+      text-align: center;
+      color: var(--neon);
+      font-size: 2rem;
+      margin-bottom: 30px;
+      text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
     }
 
-    .post-box {
-      background: var(--light-card);
-      padding: 20px;
-      margin: 0 20px 20px;
+    .manifest-list {
+      list-style: none;
+      padding: 0;
+      margin: 30px 0;
+    }
+
+    .manifest-list li {
+      margin: 10px 0;
+      padding: 12px 20px;
+      border-left: 4px solid var(--pink);
+      background: rgba(255, 255, 255, 0.7);
       border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: all 0.2s;
     }
-    .post-input {
-      width: 100%;
-      height: 100px;
-      padding: 12px;
-      background: #fafafa;
+
+    .manifest-list li:hover {
+      background: rgba(255, 255, 255, 1);
+      transform: translateX(5px);
+    }
+
+    .consent {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+      padding: 15px;
+      background: rgba(0, 243, 255, 0.1);
+      border-radius: 12px;
+    }
+
+    .consent input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--neon);
+    }
+
+    .consent label {
       color: var(--text-dark);
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      margin-bottom: 10px;
+      font-size: 1rem;
     }
 
-    .post {
-      background: var(--light-card);
-      border: 1px solid #eee;
-      border-radius: 12px;
-      padding: 16px;
-      margin: 16px 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-    }
-    .post-header {
+    .action-buttons {
       display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-    .post-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: var(--pink);
-      display: flex;
-      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
       justify-content: center;
-      color: white;
-      font-weight: bold;
-    }
-    .post-username { font-weight: bold; color: var(--neon); }
-
-    .sections {
-      display: flex;
-      gap: 20px;
-      padding: 0 20px 20px;
       flex-wrap: wrap;
     }
-    .section {
-      background: var(--light-card);
-      padding: 16px;
-      border-radius: 12px;
-      min-width: 220px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-    }
-    .section h4 { color: var(--neon); margin-bottom: 12px; }
-    .avatars { display: flex; gap: 10px; flex-wrap: wrap; }
-    .avatar {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 1rem;
       font-weight: bold;
+      color: black;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(0, 243, 255, 0.2);
     }
 
-    /* Footer */
+    .btn-confirm {
+      background: linear-gradient(90deg, var(--neon), var(--pink));
+      color: black;
+    }
+
+    .btn-confirm:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0, 243, 255, 0.4);
+    }
+
+    .btn-back {
+      background: var(--pink);
+      color: black;
+    }
+
+    .btn-back:hover {
+      background: #ff1a55;
+      transform: scale(1.05);
+    }
+
+    .btn-promo {
+      background: linear-gradient(90deg, var(--accent), var(--yellow));
+      color: black;
+    }
+
+    .btn-promo:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+    }
+
+    .promo-input {
+      width: 100%;
+      padding: 12px;
+      background: rgba(0, 243, 255, 0.1);
+      color: var(--text-dark);
+      border: 1px solid var(--neon);
+      border-radius: 12px;
+      font-size: 1rem;
+      margin-top: 10px;
+      transition: all 0.2s;
+    }
+
+    .promo-input:focus {
+      outline: none;
+      border-color: var(--pink);
+      box-shadow: 0 0 10px rgba(255, 42, 109, 0.3);
+    }
+
     .footer {
       position: fixed;
       bottom: 0;
@@ -268,168 +193,42 @@
 </head>
 <body>
 
-<div class="header">
-  <div class="logo" onclick="goTo('home')">CRYPTOBROS</div>
-  <div class="header-right">
-    <div class="lang-selector">
-      <div class="lang-label" id="langLabel">🌐</div>
-      <div class="lang-dropdown" id="langDropdown">
-        <div class="lang-item" data-lang="en">EN</div>
-        <div class="lang-item" data-lang="ru">RU</div>
-        <div class="lang-item" data-lang="es">ES</div>
-        <div class="lang-item" data-lang="fr">FR</div>
-        <div class="lang-item" data-lang="zh">中文</div>
-        <div class="lang-item" data-lang="ja">日本語</div>
-        <div class="lang-item" data-lang="he">עברית</div>
-        <div class="lang-item" data-lang="ar">العربية</div>
-        <div class="lang-item" data-lang="de">DE</div>
-        <div class="lang-item" data-lang="pt">PT</div>
-      </div>
-    </div>
+<div class="container">
+  <h2>MANIFESTO</h2>
+  <ul class="manifest-list">
+    <li>Bros in. Noise out.</li>
+    <li>No servers. Zero KYC. Only wallet.</li>
+    <li>We do not advise buying! We advise not buying!</li>
+    <li>Pay 300 AUS to prove you’re real.</li>
+    <li>Privacy-native. End-to-end encrypted.</li>
+    <li>Full control. No tracking. Ever.</li>
+  </ul>
+
+  <div class="consent">
+    <input type="checkbox" id="manifest-consent">
+    <label for="manifest-consent">I agree with the CRYPTOBROS Manifest</label>
   </div>
+
+  <div class="action-buttons">
+    <button class="btn btn-confirm" id="confirm-btn" disabled>Confirm & Pay 300 AUS</button>
+    <button class="btn btn-back" onclick="goTo('home')">Back</button>
+    <button class="btn btn-promo" id="promo-btn" disabled>Enter Promo Code</button>
+  </div>
+
+  <input type="text" id="promo-code" placeholder="AURAFIRE7" class="promo-input" style="display:none;">
 </div>
 
-<!-- Главная -->
-<div id="home" class="page active">
-  <div class="hero">
-    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImdyYWQxIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmYwMCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmZmYwMCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjUwIiByPSIyMCIgZmlsbD0iI2ZmZmYwMCIvPjxjaXJjbGUgY3g9IjE1MCIgY3k9IjUwIiByPSIyMCIgZmlsbD0iI2ZmZmYwMCIvPjxjaXJjbGUgY3g9IjIwMCIgY3k9IjUwIiByPSIyMCIgZmlsbD0iI2ZmZmYwMCIvPjx0ZXh0IHg9IjEwMCIgeT0iOTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzAwMDAwMCI+Q1JZUFRPQlJPUzwvdGV4dD48dGV4dCB4PSIxMDAiIHk9IjEwNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMDAwMDAwIj5CUk9TIElOLiBOT0lTRSBPVVQuPC90ZXh0Pjwvc3ZnPg==" alt="CRYPTOBROS" class="hero-logo">
-    <h1>AI TRIBUNAL. ZERO KYC.</h1>
-    <p>The first social network where three AIs — Grok, Qwen2, and Phi-3 — debate every token in real time before speaking the truth.</p>
-    <button class="btn" onclick="goTo('manifest')">Get Access</button>
-  </div>
-</div>
-
-<!-- Манифест -->
-<div id="manifest" class="page">
-  <div style="max-width:800px; margin:60px auto; padding:30px; background:white; border:2px solid var(--neon); border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.05);">
-    <h2 style="text-align:center; color:var(--neon); margin-bottom:20px;">MANIFESTO</h2>
-    <ul style="list-style:none; padding:0; margin:20px 0;">
-      <li style="margin:10px 0; padding-left:20px; border-left:3px solid var(--pink); color:#333;">Bros in. Noise out.</li>
-      <li style="margin:10px 0; padding-left:20px; border-left:3px solid var(--pink); color:#333;">No servers. Zero KYC. Only wallet.</li>
-      <li style="margin:10px 0; padding-left:20px; border-left:3px solid var(--pink); color:#333;">We do not advise buying! We advise not buying!</li>
-      <li style="margin:10px 0; padding-left:20px; border-left:3px solid var(--pink); color:#333;">Pay 300 AUS to prove you’re real.</li>
-      <li style="margin:10px 0; padding-left:20px; border-left:3px solid var(--pink); color:#333;">Privacy-native. End-to-end encrypted.</li>
-      <li style="margin:10px 0; padding-left:20px; border-left:3px solid var(--pink); color:#333;">Full control. No tracking. Ever.</li>
-    </ul>
-    <div style="margin:20px 0; display:flex; align-items:center; gap:12px;">
-      <input type="checkbox" id="manifest-consent">
-      <label for="manifest-consent">I agree with the CRYPTOBROS Manifest</label>
-    </div>
-    <div style="display:flex; gap:10px; flex-wrap:wrap;">
-      <button id="confirm-btn" disabled>Confirm & Pay 300 AUS</button>
-      <button class="btn" style="background:var(--pink);" onclick="goTo('home')">Back</button>
-      <button id="promo-btn" disabled>Enter Promo Code</button>
-    </div>
-    <input type="text" id="promo-code" placeholder="AURAFIRE7" style="display:none; width:100%; margin-top:10px; padding:12px; background:#fafafa; color:#333; border:1px solid var(--neon); border-radius:8px;">
-  </div>
-</div>
-
-<!-- Профиль -->
-<div id="profile" class="page">
-  <div class="cover">
-    <div class="profile-header">
-      <div class="profile-avatar" id="profile-avatar">A</div>
-      <div>
-        <div class="profile-name" id="profile-name">Anonymous</div>
-        <div class="profile-desc">CryptoBros user since 2025</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="profile-buttons">
-    <button class="btn" onclick="editProfile()">Edit Profile</button>
-    <button class="btn" onclick="showAskModal()">Ask The Mihelson Triad</button>
-  </div>
-
-  <div class="post-box">
-    <textarea class="post-input" id="post-input" placeholder="What's on your mind?"></textarea>
-    <button class="btn" onclick="createPost()">Post</button>
-  </div>
-
-  <div id="user-posts-container"></div>
-
-  <div class="sections">
-    <div class="section">
-      <h4>Friends</h4>
-      <div class="avatars">
-        <div class="avatar">J</div>
-        <div class="avatar" style="background:var(--neon); color:black;">S</div>
-        <div class="avatar" style="background:var(--yellow); color:black;">A</div>
-      </div>
-    </div>
-    <div class="section">
-      <h4>Subscriptions</h4>
-      <div style="display:flex; flex-wrap:wrap; gap:8px;">
-        <div style="padding:6px 12px; background:#f5f5f5; border-radius:8px; font-size:0.9rem;">The Mihelson Triad</div>
-        <div style="padding:6px 12px; background:#f5f5f5; border-radius:8px; font-size:0.9rem;">Grok AI</div>
-      </div>
-    </div>
-    <div class="section">
-      <h4>Gifts</h4>
-      <div class="avatars">
-        <div class="avatar" style="background:var(--pink);">🎁</div>
-        <div class="avatar" style="background:var(--accent);">🎖️</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Footer -->
 <div class="footer">Produced by Mihelson © 2025</div>
 
 <script>
   const WALLET_ADDRESS = '5R8wHTuWuhxGE6qUHbPh4RZatKBAvxJKpmLAdA2GbzPL';
 
-  function sanitize(str) {
-    if (!str) return '';
-    return String(str).replace(/[&<>"']/g, '');
-  }
-
   function goTo(pageId) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(pageId)?.classList.add('active');
     window.location.hash = pageId;
-    localStorage.setItem('lastPage', pageId);
+    // Здесь можно добавить переход, если нужно
   }
 
-  window.addEventListener('popstate', () => {
-    const hash = window.location.hash.replace('#', '') || 'home';
-    goTo(hash);
-  });
-
-  // Инициализация — КЛЮЧЕВОЙ БЛОК
-  window.addEventListener('load', () => {
-    const access = localStorage.getItem('cryptobros_access');
-    const hash = window.location.hash.replace('#', '');
-
-    if (access === 'granted') {
-      // Авторизованный — может быть на любой странице
-      goTo(hash || 'profile');
-    } else {
-      // Гость — ВСЕГДА на главной
-      goTo('home');
-    }
-
-    updateProfileUI();
-    renderUserPosts();
-  });
-
-  let currentLang = 'en';
-
-  document.getElementById('langLabel').addEventListener('click', () => {
-    const d = document.getElementById('langDropdown');
-    d.style.display = d.style.display === 'block' ? 'none' : 'block';
-  });
-
-  document.querySelectorAll('.lang-item').forEach(item => {
-    item.addEventListener('click', () => {
-      currentLang = item.dataset.lang;
-      document.getElementById('langDropdown').style.display = 'none';
-    });
-  });
-
-  // Манифест
-  document.getElementById('manifest-consent')?.addEventListener('change', function() {
+  document.getElementById('manifest-consent').addEventListener('change', function() {
     const c = document.getElementById('confirm-btn');
     const p = document.getElementById('promo-btn');
     const i = document.getElementById('promo-code');
@@ -444,14 +243,14 @@
     }
   });
 
-  document.getElementById('confirm-btn')?.addEventListener('click', () => {
+  document.getElementById('confirm-btn').addEventListener('click', () => {
     if (!document.getElementById('manifest-consent').checked) return;
     alert(`Send 300 AUS to:\n${WALLET_ADDRESS}`);
     localStorage.setItem('cryptobros_access', 'granted');
     goTo('profile');
   });
 
-  document.getElementById('promo-btn')?.addEventListener('click', () => {
+  document.getElementById('promo-btn').addEventListener('click', () => {
     if (!document.getElementById('manifest-consent').checked) return;
     const code = document.getElementById('promo-code').value.trim();
     if (code === 'AURAFIRE7') {
@@ -462,91 +261,6 @@
       alert('Invalid promo code.');
     }
   });
-
-  // Профиль
-  function editProfile() {
-    const name = prompt('Display name:', localStorage.getItem('cryptobros_name') || '');
-    const avatar = prompt('Avatar letter:', localStorage.getItem('cryptobros_avatar') || '');
-    if (name && avatar) {
-      localStorage.setItem('cryptobros_name', sanitize(name));
-      localStorage.setItem('cryptobros_avatar', sanitize(avatar).slice(0,1).toUpperCase());
-      updateProfileUI();
-    }
-  }
-
-  function updateProfileUI() {
-    document.getElementById('profile-name').textContent = sanitize(localStorage.getItem('cryptobros_name') || 'Anonymous');
-    document.getElementById('profile-avatar').textContent = sanitize(localStorage.getItem('cryptobros_avatar') || 'A').slice(0,1).toUpperCase();
-  }
-
-  function createPost() {
-    const text = sanitize(document.getElementById('post-input').value.trim());
-    if (!text) return alert('Write something!');
-    const posts = JSON.parse(localStorage.getItem('cryptobros_posts') || '[]');
-    posts.push({ id: Date.now(), text, timestamp: new Date().toLocaleString() });
-    localStorage.setItem('cryptobros_posts', JSON.stringify(posts));
-    renderUserPosts();
-    document.getElementById('post-input').value = '';
-  }
-
-  function renderUserPosts() {
-    const container = document.getElementById('user-posts-container');
-    const posts = JSON.parse(localStorage.getItem('cryptobros_posts') || '[]');
-    container.innerHTML = '';
-    posts.reverse().forEach(p => {
-      const post = document.createElement('div');
-      post.className = 'post';
-      const header = document.createElement('div');
-      header.className = 'post-header';
-      const avatar = document.createElement('div');
-      avatar.className = 'post-avatar';
-      avatar.textContent = sanitize(localStorage.getItem('cryptobros_avatar') || 'A');
-      const username = document.createElement('div');
-      username.className = 'post-username';
-      username.textContent = sanitize(localStorage.getItem('cryptobros_name') || 'Anonymous');
-      const content = document.createElement('div');
-      content.textContent = p.text;
-      header.appendChild(avatar);
-      header.appendChild(username);
-      post.appendChild(header);
-      post.appendChild(content);
-      container.appendChild(post);
-    });
-  }
-
-  function showAskModal() {
-    const modal = document.createElement('div');
-    modal.id = 'ask-modal';
-    modal.innerHTML = `
-      <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:100; display:flex; align-items:center; justify-content:center;">
-        <div style="background:white; padding:24px; border-radius:16px; border:1px solid var(--neon); max-width:600px; width:90%;">
-          <h3 style="color:var(--neon); margin-bottom:16px;">Ask The Mihelson Triad</h3>
-          <textarea id="modal-input" placeholder="e.g. Is $PEPE safe to buy?" style="width:100%; height:100px; padding:12px; background:#fafafa; color:#333; border:1px solid var(--neon); border-radius:8px;"></textarea>
-          <div style="margin-top:16px; display:flex; gap:10px;">
-            <button class="btn" onclick="submitModalQuestion()">Send</button>
-            <button class="btn" style="background:#555; color:white;" onclick="closeModal()">Cancel</button>
-          </div>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(modal);
-  }
-
-  function submitModalQuestion() {
-    const q = sanitize(document.getElementById('modal-input').value.trim());
-    if (!q) return alert('Enter a question');
-    alert(`✅ Sent to The Mihelson Triad!\nThey will debate: "${q}"`);
-    closeModal();
-    const posts = JSON.parse(localStorage.getItem('cryptobros_posts') || '[]');
-    posts.push({ id: Date.now(), text: `❓ ${q}`, timestamp: new Date().toLocaleString() });
-    localStorage.setItem('cryptobros_posts', JSON.stringify(posts));
-    renderUserPosts();
-  }
-
-  function closeModal() {
-    const modal = document.getElementById('ask-modal');
-    if (modal) modal.remove();
-  }
 </script>
 
 </body>
