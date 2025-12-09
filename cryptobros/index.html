@@ -7,13 +7,12 @@
   <style>
     :root {
       --light-bg: #f8f9fa;
-      --light-card: #ffffff; /* ✅ Исправлено */
+      --light-card: #ffffff;
       --text-dark: #1a1a1a;
       --neon: #00f3ff;
       --pink: #ff2a6d;
       --accent: #4a90e2;
       --yellow: #ffcc00;
-      --border: #e0e0e0;
     }
 
     body {
@@ -61,7 +60,6 @@
       color: var(--neon);
       cursor: pointer;
       border: 1px solid var(--neon);
-      /* ✅ a11y */
       user-select: none;
     }
     .lang-dropdown {
@@ -154,10 +152,6 @@
       background: rgba(255, 255, 255, 0.7);
       border-radius: 12px;
       transition: all 0.2s;
-    }
-    .manifest-list li:hover {
-      background: rgba(255, 255, 255, 1);
-      transform: translateX(5px);
     }
     .consent {
       display: flex;
@@ -268,7 +262,6 @@
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      background: var(--pink);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -277,16 +270,13 @@
       font-weight: bold;
       border: 4px solid white;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      background-size: cover !important;
+      background-position: center !important;
     }
     .profile-name { font-size: 2.2rem; font-weight: bold; color: var(--neon); }
     .profile-desc { color: #666; }
 
-    .profile-buttons {
-      padding: 20px;
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+    .profile-buttons { padding: 20px; display: flex; gap: 12px; flex-wrap: wrap; }
 
     .post-box {
       background: var(--light-card);
@@ -324,15 +314,16 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: var(--pink);
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
       font-weight: bold;
+      background-size: cover;
+      background-position: center;
     }
     .post-username { font-weight: bold; color: var(--neon); }
-    .post-timestamp { color: #888; font-size: 0.8rem; margin-left: auto; } /* ✅ Время поста */
+    .post-timestamp { color: #888; font-size: 0.8rem; margin-left: auto; }
 
     .sections {
       display: flex;
@@ -388,7 +379,6 @@
 <div class="header">
   <div class="logo" onclick="goTo('home')">CRYPTOBROS</div>
   <div class="header-right">
-    <!-- ✅ a11y: не эмодзи, а EN + атрибуты -->
     <div class="lang-label" id="langLabel" aria-label="Select language" tabindex="0" role="button">EN</div>
     <div class="lang-dropdown" id="langDropdown">
       <div class="lang-item" data-lang="en">EN</div>
@@ -408,7 +398,6 @@
 <!-- Главная -->
 <div id="home" class="page active">
   <div class="hero">
-    <!-- ✅ alt у логотипа -->
     <img src="/cryptobros/logo-bros.svg" alt="CRYPTOBROS" class="hero-logo">
     <h1>AI TRIBUNAL. ZERO KYC.</h1>
     <p>The first social network where three AIs — Grok, Qwen2, and Phi-3 — debate every token in real time before speaking the truth.</p>
@@ -433,7 +422,6 @@
       <label for="manifest-consent">I agree with the CRYPTOBROS Manifest</label>
     </div>
     <div class="action-buttons">
-      <!-- ✅ Классы у кнопок -->
       <button id="confirm-btn" class="btn-confirm" disabled>Confirm & Pay 300 AUS</button>
       <button class="btn-back" onclick="goTo('home')">Back</button>
       <button id="promo-btn" class="btn-promo" disabled>Enter Promo Code</button>
@@ -455,8 +443,18 @@
   </div>
 
   <div class="profile-buttons">
-    <button class="btn" onclick="editProfile()">Edit Profile</button>
-    <button class="btn" onclick="showAskModal()">Ask The Mihelson Triad</button>
+    <label class="btn" style="cursor:pointer;">
+      <input type="file" id="avatar-upload" accept="image/*" style="display:none;" onchange="uploadAvatar(this)">
+      Change Avatar
+    </label>
+    <button class="btn" onclick="editName()">Change Name</button>
+    <button class="btn" onclick="showAskModal()">Ask The Michelson Triad</button>
+  </div>
+
+  <div style="text-align:center; margin:20px;">
+    <button class="btn" onclick="setPassphrase()" id="passphrase-btn">Set Passphrase</button>
+    <button class="btn" onclick="logout()" style="background:#ff4444; margin-left:10px;">Logout</button>
+    <p id="passphrase-status" style="color:#666; font-size:0.9rem; margin-top:8px;"></p>
   </div>
 
   <div class="post-box">
@@ -465,31 +463,6 @@
   </div>
 
   <div id="user-posts-container"></div>
-
-  <div class="sections">
-    <div class="section">
-      <h4>Friends</h4>
-      <div class="avatars">
-        <div class="avatar">J</div>
-        <div class="avatar" style="background:var(--neon); color:black;">S</div>
-        <div class="avatar" style="background:var(--yellow); color:black;">A</div>
-      </div>
-    </div>
-    <div class="section">
-      <h4>Subscriptions</h4>
-      <div style="display:flex; flex-wrap:wrap; gap:8px;">
-        <div style="padding:6px 12px; background:#f5f5f5; border-radius:8px; font-size:0.9rem;">The Mihelson Triad</div>
-        <div style="padding:6px 12px; background:#f5f5f5; border-radius:8px; font-size:0.9rem;">Grok AI</div>
-      </div>
-    </div>
-    <div class="section">
-      <h4>Gifts</h4>
-      <div class="avatars">
-        <div class="avatar" style="background:var(--pink);">🎁</div>
-        <div class="avatar" style="background:var(--accent);">🎖️</div>
-      </div>
-    </div>
-  </div>
 </div>
 
 <div class="footer">Produced by Mihelson © 2025</div>
@@ -514,7 +487,7 @@
     goTo(hash);
   });
 
-  // ✅ a11y: клавиатура для выбора языка
+  // a11y: клавиатура для языка
   document.getElementById('langLabel').addEventListener('keydown', e => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -523,16 +496,50 @@
     }
   });
 
+  // === ФИНАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ: ГОСТЬ → ГЛАВНАЯ ===
   window.addEventListener('load', () => {
+    // Проверка passphrase при старте
+    const passHash = localStorage.getItem('cryptobros_pass_hash');
+    if (passHash) {
+      const pass = prompt('Enter passphrase to unlock:');
+      if (!pass || btoa(pass) !== passHash) {
+        alert('Access denied');
+        localStorage.clear();
+        location.reload();
+        return;
+      }
+    }
+
     const access = localStorage.getItem('cryptobros_access');
     const hash = window.location.hash.replace('#', '');
-    if (access === 'granted') {
-      goTo(hash || 'profile');
+
+    // Если есть хеш — идём туда
+    if (hash) {
+      if (access === 'granted' || ['home', 'manifest'].includes(hash)) {
+        goTo(hash);
+      } else {
+        goTo('home');
+      }
     } else {
+      // НЕТ хеша → ВСЕГДА главная
       goTo('home');
     }
+
     updateProfileUI();
     renderUserPosts();
+  });
+
+  // Языки
+  document.getElementById('langLabel').addEventListener('click', () => {
+    const d = document.getElementById('langDropdown');
+    d.style.display = d.style.display === 'block' ? 'none' : 'block';
+  });
+  document.querySelectorAll('.lang-item').forEach(item => {
+    item.addEventListener('click', () => {
+      currentLang = item.dataset.lang;
+      document.getElementById('langLabel').textContent = item.dataset.lang.toUpperCase();
+      document.getElementById('langDropdown').style.display = 'none';
+    });
   });
 
   // Манифест
@@ -570,22 +577,48 @@
     }
   });
 
-  // Профиль
-  function editProfile() {
+  // === АВАТАР ===
+  function uploadAvatar(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const imgData = e.target.result;
+      localStorage.setItem('cryptobros_avatar_img', imgData);
+      updateProfileUI();
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // === ИМЯ ===
+  function editName() {
     const name = prompt('Display name:', localStorage.getItem('cryptobros_name') || '');
-    const avatar = prompt('Avatar letter:', localStorage.getItem('cryptobros_avatar') || '');
-    if (name && avatar) {
+    if (name) {
       localStorage.setItem('cryptobros_name', sanitize(name));
-      localStorage.setItem('cryptobros_avatar', sanitize(avatar).slice(0,1).toUpperCase());
       updateProfileUI();
     }
   }
 
+  // === ПРОФИЛЬ UI ===
   function updateProfileUI() {
-    document.getElementById('profile-name').textContent = sanitize(localStorage.getItem('cryptobros_name') || 'Anonymous');
-    document.getElementById('profile-avatar').textContent = sanitize(localStorage.getItem('cryptobros_avatar') || 'A').slice(0,1).toUpperCase();
+    const name = sanitize(localStorage.getItem('cryptobros_name') || 'Anonymous');
+    const avatarImg = localStorage.getItem('cryptobros_avatar_img');
+
+    document.getElementById('profile-name').textContent = name;
+
+    const avatarEl = document.getElementById('profile-avatar');
+    if (avatarImg) {
+      avatarEl.style.backgroundImage = `url(${avatarImg})`;
+      avatarEl.style.background = 'none';
+      avatarEl.textContent = '';
+    } else {
+      avatarEl.style.backgroundImage = 'none';
+      avatarEl.style.background = 'var(--pink)';
+      avatarEl.textContent = name[0].toUpperCase();
+    }
   }
 
+  // === ПОСТЫ ===
   function createPost() {
     const text = sanitize(document.getElementById('post-input').value.trim());
     if (!text) return alert('Write something!');
@@ -607,7 +640,15 @@
       header.className = 'post-header';
       const avatar = document.createElement('div');
       avatar.className = 'post-avatar';
-      avatar.textContent = sanitize(localStorage.getItem('cryptobros_avatar') || 'A');
+      const avatarImg = localStorage.getItem('cryptobros_avatar_img');
+      if (avatarImg) {
+        avatar.style.backgroundImage = `url(${avatarImg})`;
+        avatar.style.background = 'none';
+        avatar.textContent = '';
+      } else {
+        avatar.style.background = 'var(--pink)';
+        avatar.textContent = (localStorage.getItem('cryptobros_name') || 'A')[0].toUpperCase();
+      }
       const username = document.createElement('div');
       username.className = 'post-username';
       username.textContent = sanitize(localStorage.getItem('cryptobros_name') || 'Anonymous');
@@ -618,14 +659,14 @@
       content.textContent = p.text;
       header.appendChild(avatar);
       header.appendChild(username);
-      header.appendChild(time); // ✅ Время добавлено
+      header.appendChild(time);
       post.appendChild(header);
       post.appendChild(content);
       container.appendChild(post);
     });
   }
 
-  // ✅ Модалка: закрытие по клику вне
+  // === МОДАЛКА ===
   let currentModal = null;
   function showAskModal() {
     if (currentModal) return;
@@ -634,7 +675,7 @@
     modal.innerHTML = `
       <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:100; display:flex; align-items:center; justify-content:center;">
         <div style="background:white; padding:24px; border-radius:16px; border:1px solid var(--neon); max-width:600px; width:90%;">
-          <h3 style="color:var(--neon); margin-bottom:16px;">Ask The Mihelson Triad</h3>
+          <h3 style="color:var(--neon); margin-bottom:16px;">Ask The Michelson Triad</h3>
           <textarea id="modal-input" placeholder="e.g. Is $PEPE safe to buy?" style="width:100%; height:100px; padding:12px; background:#fafafa; color:#333; border:1px solid var(--neon); border-radius:8px;"></textarea>
           <div style="margin-top:16px; display:flex; gap:10px;">
             <button class="btn" onclick="submitModalQuestion()">Send</button>
@@ -653,18 +694,48 @@
   function submitModalQuestion() {
     const q = sanitize(document.getElementById('modal-input').value.trim());
     if (!q) return alert('Enter a question');
-    alert(`✅ Sent to The Mihelson Triad!\nThey will debate: "${q}"`);
+    alert(`The Michelson Triad is debating:\n"${q}"`);
     closeModal();
-    const posts = JSON.parse(localStorage.getItem('cryptobros_posts') || '[]');
-    posts.push({ id: Date.now(), text: `❓ ${q}`, timestamp: new Date().toLocaleString() });
-    localStorage.setItem('cryptobros_posts', JSON.stringify(posts));
-    renderUserPosts();
+
+    // Имитация вердикта
+    setTimeout(() => {
+      const posts = JSON.parse(localStorage.getItem('cryptobros_posts') || '[]');
+      posts.push({
+        id: Date.now(),
+        text: `The Michelson Triad verdict on "${q}":\n\nGrok: Bullish\nQwen2: Risky mint\nPhi-3: LP locked`,
+        timestamp: new Date().toLocaleString()
+      });
+      localStorage.setItem('cryptobros_posts', JSON.stringify(posts));
+      renderUserPosts();
+    }, 2000);
   }
 
   function closeModal() {
     if (currentModal) {
       currentModal.remove();
       currentModal = null;
+    }
+  }
+
+  // === ПАРОЛЬ ===
+  function setPassphrase() {
+    const current = prompt('Current passphrase (leave empty if none):');
+    const storedHash = localStorage.getItem('cryptobros_pass_hash');
+    if (storedHash && current && btoa(current) !== storedHash) {
+      return alert('Wrong current passphrase!');
+    }
+    const newPass = prompt('New passphrase (6+ chars):');
+    if (!newPass || newPass.length < 6) return alert('Too short!');
+    localStorage.setItem('cryptobros_pass_hash', btoa(newPass));
+    document.getElementById('passphrase-status').textContent = 'Passphrase set';
+    setTimeout(() => document.getElementById('passphrase-status').textContent = '', 3000);
+  }
+
+  // === ВЫХОД ===
+  function logout() {
+    if (confirm('Clear all data and logout?')) {
+      localStorage.clear();
+      location.reload();
     }
   }
 </script>
