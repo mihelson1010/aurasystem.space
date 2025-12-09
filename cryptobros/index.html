@@ -74,6 +74,24 @@
     .hero {
       text-align: center;
       padding: 100px 20px 60px;
+      background: linear-gradient(135deg, #fff2cc, #ffe680);
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcGF0dGVyblVuaXRzPSJ1c2VyU2NhbGUiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iNSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==') repeat;
+      opacity: 0.1;
+    }
+    .hero-logo {
+      width: 300px;
+      height: auto;
+      margin: 0 auto 30px;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
     }
     .hero h1 {
       font-size: 3.8rem;
@@ -101,6 +119,19 @@
       transition: all 0.2s;
     }
     .btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(0, 243, 255, 0.5); }
+
+    /* Общие стили для всех страниц */
+    .page::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcGF0dGVyblVuaXRzPSJ1c2VyU2NhbGUiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iNSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==') repeat;
+      opacity: 0.05;
+      z-index: -1;
+    }
 
     /* Профиль */
     .cover {
@@ -261,6 +292,7 @@
 <!-- Главная -->
 <div id="home" class="page active">
   <div class="hero">
+    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImdyYWQxIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmYwMCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmZmYwMCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjUwIiByPSIyMCIgZmlsbD0iI2ZmZmYwMCIvPjxjaXJjbGUgY3g9IjE1MCIgY3k9IjUwIiByPSIyMCIgZmlsbD0iI2ZmZmYwMCIvPjxjaXJjbGUgY3g9IjIwMCIgY3k9IjUwIiByPSIyMCIgZmlsbD0iI2ZmZmYwMCIvPjx0ZXh0IHg9IjEwMCIgeT0iOTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzAwMDAwMCI+Q1JZUFRPQlJPUzwvdGV4dD48dGV4dCB4PSIxMDAiIHk9IjEwNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMDAwMDAwIj5CUk9TIElOLiBOT0lTRSBPVVQuPC90ZXh0Pjwvc3ZnPg==" alt="CRYPTOBROS" class="hero-logo">
     <h1>AI TRIBUNAL. ZERO KYC.</h1>
     <p>The first social network where three AIs — Grok, Qwen2, and Phi-3 — debate every token in real time before speaking the truth.</p>
     <button class="btn" onclick="goTo('manifest')">Get Access</button>
