@@ -7,14 +7,14 @@
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      background: linear-gradient(135deg, #0a0a1a, #0f0f2a, #150e3a);
-      color: #fff;
+      background: #f8f9fa;
+      color: #333;
       font-family: 'Segoe UI', Arial, sans-serif;
       min-height: 100vh;
       padding: 20px;
       overflow-x: hidden;
     }
-    .container { max-width: 800px; margin: 0 auto; }
+    .container { max-width: 1000px; margin: 0 auto; }
     .page { display: none; animation: fadeIn 0.4s ease; }
     .page.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -37,13 +37,13 @@
       top: 0;
       left: 0;
       padding: 6px 12px;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.8);
       border-radius: 50%;
       cursor: pointer;
       transition: all 0.3s;
     }
     .back-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 1);
       transform: scale(1.1);
     }
 
@@ -66,18 +66,18 @@
 
     /* Manifest */
     .manifest-box {
-      background: rgba(20, 20, 40, 0.7);
-      border: 1px solid #444;
+      background: #fff;
+      border: 1px solid #ddd;
       border-radius: 20px;
       padding: 30px;
       margin: 30px 0;
       line-height: 1.6;
-      box-shadow: 0 0 20px rgba(255, 119, 0, 0.1);
+      box-shadow: 0 0 20px rgba(0,0,0,0.05);
     }
     .manifest-box p {
       margin: 12px 0;
       font-size: 1.05rem;
-      color: #ddd;
+      color: #333;
     }
 
     /* Profile Setup */
@@ -87,25 +87,25 @@
     .form-label {
       display: block;
       margin-bottom: 10px;
-      color: #aaa;
+      color: #555;
       font-size: 1.05rem;
     }
     .form-input {
       width: 100%;
       padding: 14px;
-      background: rgba(30, 30, 50, 0.8);
-      border: 1px solid #555;
+      background: #fff;
+      border: 1px solid #ddd;
       border-radius: 12px;
-      color: white;
+      color: #333;
       font-size: 1.1rem;
     }
     #avatar-preview {
       width: 120px;
       height: 120px;
-      border: 2px dashed #666;
+      border: 2px dashed #aaa;
       border-radius: 50%;
       margin: 15px auto;
-      background: #111;
+      background: #eee;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -114,16 +114,140 @@
     }
     #avatar-preview:hover { border-color: #ffaa00; }
     #avatar-preview img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-    #avatar-preview span { color: #666; font-size: 2.5rem; }
+    #avatar-preview span { color: #aaa; font-size: 2.5rem; }
+
+    /* User Profile Page */
+    .profile-header {
+      background: linear-gradient(135deg, #0d0d1a, #1a1a2e);
+      color: white;
+      padding: 30px;
+      border-radius: 16px;
+      margin: 20px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .profile-banner {
+      height: 200px;
+      background: url('https://via.placeholder.com/1000x200/000000/ffffff?text=Your+Banner') center/cover;
+      border-radius: 16px 16px 0 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1;
+    }
+    .profile-info {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-top: 120px;
+    }
+    .profile-avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 3px solid #ff7700;
+      background: #eee;
+      box-shadow: 0 0 20px rgba(255, 119, 0, 0.3);
+    }
+    .profile-name {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #ffaa00;
+    }
+    .profile-status {
+      font-size: 1.1rem;
+      color: #ddd;
+      margin-top: 5px;
+    }
+    .profile-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .profile-actions button {
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      border-radius: 8px;
+    }
+    .profile-actions button:first-child {
+      background: #4a90e2;
+      color: white;
+    }
+    .profile-actions button:last-child {
+      background: #9b59b6;
+      color: white;
+    }
+
+    /* Profile Blocks */
+    .profile-blocks {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+    .block {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    .block-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .block-title i {
+      font-size: 1.2rem;
+      color: #ff7700;
+    }
+    .block-content {
+      line-height: 1.6;
+      color: #555;
+    }
+    .music-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      margin: 8px 0;
+    }
+    .music-item img {
+      width: 50px;
+      height: 50px;
+      border-radius: 4px;
+    }
+    .friends-online {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .friend-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #ddd;
+      border: 2px solid #ff7700;
+    }
 
     /* Feed */
     .post {
-      background: rgba(20, 20, 40, 0.6);
+      background: #fff;
+      border: 1px solid #ddd;
       border-radius: 16px;
       padding: 20px;
       margin: 20px 0;
-      border-left: 4px solid #ff7700;
-      box-shadow: 0 0 15px rgba(255, 119, 0, 0.05);
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
     }
     .post-header {
       display: flex;
@@ -135,24 +259,12 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: #555;
+      background: #ddd;
     }
     .post-name { font-weight: bold; color: #ffaa00; }
     .post-content { line-height: 1.5; }
 
-    /* Profile Page */
-    .profile-header {
-      text-align: center;
-      margin: 30px 0;
-    }
-    .profile-avatar {
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      margin: 0 auto 20px;
-      border: 3px solid #ff7700;
-      box-shadow: 0 0 20px rgba(255, 119, 0, 0.3);
-    }
+    /* Question Input */
     #question-input {
       margin-top: 20px;
       display: none;
@@ -160,10 +272,10 @@
     #question-textarea {
       width: 100%;
       padding: 14px;
-      background: rgba(30, 30, 50, 0.8);
-      border: 1px solid #555;
+      background: #fff;
+      border: 1px solid #ddd;
       border-radius: 12px;
-      color: white;
+      color: #333;
       font-size: 1.1rem;
       height: 100px;
       resize: vertical;
@@ -248,8 +360,58 @@
       <div class="back-btn" onclick="navigateTo('feed')">&larr;</div>
       <h1>My Profile</h1>
     </div>
-    <div class="profile-avatar" id="my-avatar"></div>
-    <h2 id="my-name">Loading...</h2>
+    <div class="profile-header">
+      <div class="profile-banner"></div>
+      <div class="profile-info">
+        <div class="profile-avatar" id="my-avatar"></div>
+        <div>
+          <div class="profile-name" id="my-name">Loading...</div>
+          <div class="profile-status" id="my-status">Crypto enthusiast | Analyzing $AURA</div>
+        </div>
+      </div>
+      <div class="profile-actions">
+        <button onclick="editProfile()">Edit Profile</button>
+        <button onclick="showMore()">More</button>
+      </div>
+    </div>
+    <div class="profile-blocks">
+      <div class="block">
+        <div class="block-title"><i>🎵</i> Токены</div>
+        <div class="block-content">
+          <div class="music-item">
+            <img src="https://via.placeholder.com/50/000000/ffffff?text=AURA" alt="AURA">
+            <div>
+              <strong>$AURA</strong><br>
+              <small>On-chain growth +300%</small>
+            </div>
+          </div>
+          <div class="music-item">
+            <img src="https://via.placeholder.com/50/000000/ffffff?text=SOL" alt="SOL">
+            <div>
+              <strong>$SOL</strong><br>
+              <small>Volatility 180%</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title"><i>📸</i> Анализы</div>
+        <div class="block-content">
+          <p>Latest analysis: Grok vs Qwen2 on $XYZ — high risk, low liquidity.</p>
+          <p>Next: Phi-3-mini detects whale movement on $AURA.</p>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title"><i>👥</i> Друзья онлайн</div>
+        <div class="friends-online">
+          <div class="friend-avatar"></div>
+          <div class="friend-avatar"></div>
+          <div class="friend-avatar"></div>
+          <div class="friend-avatar"></div>
+        </div>
+        <div style="margin-top: 10px; font-size: 0.9rem; color: #666;">8 друзей онлайн</div>
+      </div>
+    </div>
     <button class="btn btn-primary" id="ask-btn">Ask a Question</button>
     <div id="question-input">
       <textarea id="question-textarea" placeholder="Type your question to the community..."></textarea>
@@ -308,8 +470,10 @@
   function loadProfile() {
     const name = localStorage.getItem('cryptobros_name') || 'Anonymous';
     const avatar = localStorage.getItem('cryptobros_avatar') || 'image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23555"/><circle cx="50" cy="40" r="15" fill="%23777"/><path d="M30,70 Q50,85 70,70" stroke="%23777" stroke-width="5" fill="none"/></svg>';
+    const status = localStorage.getItem('cryptobros_status') || 'Crypto enthusiast | Analyzing $AURA';
     
     document.getElementById('my-name').textContent = name;
+    document.getElementById('my-status').textContent = status;
     document.getElementById('my-avatar').style.backgroundImage = `url(${avatar})`;
     document.getElementById('my-avatar').style.backgroundSize = 'cover';
     
