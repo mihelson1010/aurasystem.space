@@ -1,684 +1,790 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="html-root">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CRYPTOBROS</title>
+  <title>CRYPTOBROS — The Mihelson Triad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
   <style>
     :root {
-      --light-bg: #fff2cc; /* Желтый фон */
-      --text-dark: #1a1a1a;
+      --bg: #0a0a0a;
+      --card: #111;
+      --card-hover: #1a1a1a;
+      --text: #e0e0e0;
+      --text-muted: #888;
       --neon: #00f3ff;
       --pink: #ff2a6d;
-      --accent: #4a90e2;
-      --yellow: #ffcc00;
+      --accent: #7b2cbf;
+      --gold: #ffd700;
+      --border: rgba(0, 243, 255, 0.2);
+      --shadow: 0 8px 32px rgba(0, 243, 255, 0.15);
+      --radius: 16px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --font-main: 'Inter', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
     }
 
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: var(--light-bg); /* ✅ Весь фон — желтый */
-      color: var(--text-dark);
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-main);
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
       overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(0, 243, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 42, 109, 0.1) 0%, transparent 50%);
+      line-height: 1.6;
     }
 
-    .container {
-      width: 100%;
-      max-width: 800px;
-      padding: 0;
-      background: transparent; /* ✅ Прозрачный контейнер */
-      position: relative;
-      z-index: 1;
-    }
+    /* === АНИМАЦИИ === */
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+    @keyframes neonGlow { 0%, 100% { text-shadow: 0 0 10px var(--neon); } 50% { text-shadow: 0 0 30px var(--neon), 0 0 50px var(--neon); } }
+    @keyframes rainbow { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
 
+    /* === ШАПКА === */
     .header {
-      position: sticky;
-      top: 0;
-      background: rgba(255, 255, 255, 0.95);
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(10, 10, 10, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
       padding: 12px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      backdrop-filter: blur(10px);
-      z-index: 10;
-      border-bottom: 1px solid var(--neon);
     }
-
     .logo {
-      font-size: 1.8rem;
-      background: linear-gradient(90deg, var(--neon), var(--pink));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
       font-weight: 800;
-      cursor: pointer;
-    }
-
-    .header-right { display: flex; gap: 12px; align-items: center; }
-    .lang-label {
-      font-size: 0.9rem;
-      padding: 6px 12px;
-      border-radius: 20px;
-      background: rgba(0, 243, 255, 0.1);
-      color: var(--neon);
-      cursor: pointer;
-      border: 1px solid var(--neon);
-      user-select: none;
-    }
-    .lang-dropdown {
-      display: none;
-      position: absolute;
-      top: 50px;
-      right: 20px;
-      background: white;
-      border: 1px solid var(--neon);
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      z-index: 100;
-    }
-    .lang-item {
-      padding: 8px 16px;
-      cursor: pointer;
-    }
-    .lang-item:hover { background: rgba(0, 243, 255, 0.1); }
-
-    .page { display: none; padding: 0; }
-    .active { display: block !important; }
-
-    /* Главная */
-    .hero {
-      text-align: center;
-      padding: 100px 20px 60px;
-      background: var(--light-bg); /* ✅ Убрано градиентное поле — теперь весь фон одинаковый */
-      position: relative;
-    }
-    .hero-logo {
-      width: 300px;
-      height: auto;
-      margin: 0 auto 30px;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
-    }
-    .hero h1 {
-      font-size: 3.8rem;
-      margin: 20px 0;
+      font-size: 1.6rem;
       background: linear-gradient(90deg, var(--neon), var(--pink));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-    }
-    .hero p {
-      color: #555;
-      font-size: 1.2rem;
-      max-width: 700px;
-      margin: 0 auto 30px;
-    }
-    .btn {
-      padding: 14px 32px;
-      border-radius: 50px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: black;
-      background: var(--neon);
-      border: none;
       cursor: pointer;
-      transition: all 0.2s;
+      animation: neonGlow 3s infinite alternate;
     }
-    .btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(0, 243, 255, 0.5); }
-
-    /* Профиль */
-    .profile-header {
-      text-align: center;
-      padding: 60px 20px;
-      background: linear-gradient(135deg, #fff2cc, #ffe680);
-      position: relative;
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
     }
-    .profile-cover {
-      width: 100%;
-      height: 200px;
-      background: linear-gradient(135deg, #f0f4ff, #ffeef0);
-      position: relative;
-      border-bottom: 1px solid var(--neon);
-      margin-bottom: -100px; /* Чтобы аватар перекрывал шапку */
-    }
-    .profile-cover img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
-    .profile-avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: var(--pink);
+    .icon-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      width: 40px; height: 40px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-size: 2.2rem;
-      font-weight: bold;
-      border: 4px solid white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      margin: 0 auto 20px;
-      position: relative;
-      z-index: 2;
+      cursor: pointer;
+      transition: var(--transition);
     }
-    .profile-name {
-      font-size: 2.2rem;
-      font-weight: bold;
-      color: var(--neon);
-      margin: 10px 0;
+    .icon-btn:hover {
+      background: var(--neon);
+      color: black;
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
     }
-    .profile-desc { color: #666; }
 
-    .profile-buttons {
-      padding: 20px;
+    /* === САЙДБАР === */
+    .sidebar {
+      position:  fixed;
+      left: 0; top: 70px; bottom: 0;
+      width: 280px;
+      background: rgba(17, 17, 17, 0.95);
+      backdrop-filter: blur(12px);
+      border-right: 1px solid var(--border);
+      padding: 20px 0;
+      overflow-y: auto;
+      z-index: 900;
+      transition: transform 0.4s ease;
+    }
+    .sidebar-item {
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+      border-left: 3px solid transparent;
+    }
+    .sidebar-item:hover {
+      background: var(--card-hover);
+      color: var(--neon);
+      border-left-color: var(--neon);
+    }
+    .sidebar-item.active {
+      background: var(--card-hover);
+      color: var(--neon);
+      font-weight: 600;
+      border-left-color: var(--neon);
+    }
+    .sidebar-item .ti {
+      font-size: 1.4rem;
+    }
+    .badge {
+      background: var(--pink);
+      color: black;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 700;
+      margin-left: auto;
+    }
+
+    /* === КОНТЕНТ === */
+    .main {
+      margin-left: 280px;
+      padding: 80px 20px 100px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* === ГЕРОЙ === */
+    .hero {
+      text-align: center;
+      padding: 80px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: conic-gradient(from 0deg, transparent, var(--neon), var(--pink), transparent);
+      animation: rainbow 8s linear infinite;
+      opacity: 0.1;
+      z-index: -1;
+    }
+    .hero h1 {
+      font-size: 4rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--neon), var(--pink), var(--gold));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin: 20px 0;
+      animation: neonGlow 2s infinite alternate;
+    }
+    .hero p {
+      font-size: 1.3rem;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto 40px;
+    }
+    .btn-cta {
+      background: linear-gradient(135deg, var(--neon), var(--pink));
+      color: black;
+      padding: 16px 40px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 243, 255, 0.3);
+      transition: var(--transition);
+      animation: pulse 2s infinite;
+    }
+    .btn-cta:hover {
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 12px 30px rgba(0, 243, 255, 0.5);
+    }
+
+    /* === ПРОФИЛЬ === */
+    .profile-cover {
+      height: 320px;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      position: relative;
+      overflow: hidden;
+    }
+    .profile-cover::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, transparent 0%, var(--bg) 70%);
+    }
+    .cover-img {
+      width: 100%; height: 100%; object-fit: cover; opacity: 0.7;
+    }
+    .profile-info {
+      position: relative;
+      margin-top: -80px;
+      padding: 0 20px;
+      display: flex;
+      align-items: flex-end;
+      gap: 24px;
+    }
+    .avatar-wrapper {
+      position: relative;
+      animation: float 6s ease-in-out infinite;
+    }
+    .profile-avatar {
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      border: 6px solid var(--bg);
+      box-shadow: var(--shadow);
+      object-fit: cover;
+      background: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      font-weight: 800;
+      color: white;
+    }
+    .edit-avatar {
+      position: absolute;
+      bottom: 8px; right: 8px;
+      background: var(--neon);
+      color: black;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 243, 255, 0.4);
+    }
+    .profile-meta h2 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .profile-meta p {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    .profile-actions {
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
-      justify-content: center;
+      margin: 24px 0;
+    }
+    .btn {
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      font-size: 0.95rem;
+    }
+    .btn-primary {
+      background: var(--neon);
+      color: black;
+    }
+    .btn-secondary {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
     }
 
-    .post-box {
-      background: white;
+    /* === ПОСТЫ === */
+    .post-composer {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       padding: 20px;
-      margin: 0 20px 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      margin-bottom: 24px;
     }
     .post-input {
       width: 100%;
-      height: 100px;
-      padding: 12px;
-      background: #fafafa;
-      color: var(--text-dark);
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      margin-bottom: 10px;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 1.1rem;
+      resize: none;
+      outline: none;
+      margin-bottom: 12px;
     }
+    .post-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .post-tools {
+      display: flex;
+      gap: 12px;
+      color: var(--text-muted);
+    }
+    .post-tools .ti {
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .post-tools .ti:hover { color: var(--neon); }
 
     .post {
-      background: white;
-      border: 1px solid #eee;
-      border-radius: 12px;
-      padding: 16px;
-      margin: 16px 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: var(--transition);
+    }
+    .post:hover {
+      border-color: var(--neon);
+      box-shadow: var(--shadow);
     }
     .post-header {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     .post-avatar {
-      width: 40px;
-      height: 40px;
+      width: 48px; height: 48px;
       border-radius: 50%;
-      background: var(--pink);
+      object-fit: cover;
+    }
+    .post-meta h4 {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    .post-meta span {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .post-content {
+      margin: 12px 0;
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+    .post-footer {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 16px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .post-action {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .post-action:hover { color: var(--neon); }
+
+    /* === МОДАЛКИ === */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-weight: bold;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
     }
-    .post-username { font-weight: bold; color: var(--neon); }
-    .post-timestamp { color: #888; font-size: 0.8rem; margin-left: auto; }
-
-    .sections {
+    .modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-content {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      width: 90%;
+      max-width: 500px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+    .modal.active .modal-content {
+      transform: scale(1);
+    }
+    .modal-header {
       display: flex;
-      gap: 20px;
-      padding: 0 20px 20px;
-      flex-wrap: wrap;
-      justify-content: center;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
     }
-    .section {
-      background: white;
+    .modal-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--neon);
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* === ТРИБУНАЛ === */
+    .tribunal-card {
+      background: linear-gradient(135deg, var(--card), #1a1a2e);
+      border: 1px solid var(--neon);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin: 20px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .tribunal-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--neon), var(--pink), var(--gold));
+    }
+    .tribunal-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .tribunal-header .ti {
+      color: var(--gold);
+      font-size: 1.5rem;
+    }
+    .tribunal-verdict {
+      background: rgba(0, 243, 255, 0.1);
       padding: 16px;
       border-radius: 12px;
-      min-width: 220px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-    }
-    .section h4 { color: var(--neon); margin-bottom: 12px; }
-    .avatars { display: flex; gap: 10px; flex-wrap: wrap; }
-    .avatar {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: bold;
+      margin: 12px 0;
+      border-left: 4px solid var(--neon);
     }
 
-    /* Footer */
+    /* === ФУТЕР === */
     .footer {
       position: fixed;
-      bottom: 0;
-      width: 100%;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      padding: 16px;
       text-align: center;
-      padding: 14px;
-      font-size: 0.95rem;
-      background: var(--light-bg);
-      border-top: 1px solid var(--neon);
-      z-index: 5;
-      animation: footerRainbow 4s infinite alternate;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      z-index: 800;
     }
-    @keyframes footerRainbow {
-      0%   { color: #00f3ff; text-shadow: 0 0 10px rgba(0, 243, 255, 0.7); }
-      25%  { color: #ff2a6d; text-shadow: 0 0 10px rgba(255, 42, 109, 0.7); }
-      50%  { color: #ffcc00; text-shadow: 0 0 10px rgba(255, 204, 0, 0.7); }
-      75%  { color: #7b2cbf; text-shadow: 0 0 10px rgba(123, 44, 191, 0.7); }
-      100% { color: #00c897; text-shadow: 0 0 10px rgba(0, 200, 151, 0.7); }
+
+    /* === АДАПТИВ === */
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .main { margin-left: 0; }
+      .hero h1 { font-size: 2.8rem; }
+      .profile-info { flex-direction: column; align-items: center; text-align: center; }
+      .profile-avatar { width: 120px; height: 120px; }
     }
   </style>
 </head>
 <body>
 
-<div class="header">
+<!-- ШАПКА -->
+<header class="header">
   <div class="logo" onclick="goTo('home')">CRYPTOBROS</div>
-  <div class="header-right">
-    <div class="lang-label" id="langLabel" aria-label="Select language" tabindex="0" role="button">EN</div>
-    <div class="lang-dropdown" id="langDropdown">
-      <div class="lang-item" data-lang="en">EN</div>
-      <div class="lang-item" data-lang="ru">RU</div>
-      <div class="lang-item" data-lang="es">ES</div>
-      <div class="lang-item" data-lang="fr">FR</div>
-      <div class="lang-item" data-lang="zh">中文</div>
-      <div class="lang-item" data-lang="ja">日本語</div>
-      <div class="lang-item" data-lang="he">עברית</div>
-      <div class="lang-item" data-lang="ar">العربية</div>
-      <div class="lang-item" data-lang="de">DE</div>
-      <div class="lang-item" data-lang="pt">PT</div>
-    </div>
+  <div class="header-actions">
+    <div class="icon-btn" onclick="toggleTheme()"><i class="ti ti-moon"></i></div>
+    <div class="icon-btn" onclick="connectWallet()"><i class="ti ti-wallet"></i></div>
+    <div class="icon-btn" onclick="openSettings()"><i class="ti ti-settings"></i></div>
   </div>
-</div>
+</header>
 
-<!-- Главная -->
-<div id="home" class="page active">
-  <div class="container">
-    <div class="hero">
-      <img src="/cryptobros/logo-bros.svg" alt="CRYPTOBROS" class="hero-logo">
-      <h1>AI TRIBUNAL. ZERO KYC.</h1>
-      <p>The first social network where three AIs — Grok, Qwen2, and Phi-3 — debate every token in real time before speaking the truth.</p>
-      <button class="btn" onclick="goTo('manifest')">Get Access</button>
-    </div>
+<!-- САЙДБАР -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-item active" data-page="home">
+    <i class="ti ti-home"></i>
+    <span>Home</span>
   </div>
-</div>
+  <div class="sidebar-item" data-page="feed">
+    <i class="ti ti-layout-grid"></i>
+    <span>Feed</span>
+    <div class="badge">42</div>
+  </div>
+  <div class="sidebar-item" data-page="profile">
+    <i class="ti ti-user"></i>
+    <span>Profile</span>
+  </div>
+  <div class="sidebar-item" data-page="tribunal">
+    <i class="ti ti-scale"></i>
+    <span>The Mihelson Triad</span>
+    <div class="badge">LIVE</div>
+  </div>
+  <div class="sidebar-item" data-page="wallet">
+    <i class="ti ti-wallet"></i>
+    <span>Wallet</span>
+  </div>
+  <div class="sidebar-item" onclick="logout()">
+    <i class="ti ti-logout"></i>
+    <span>Logout</span>
+  </div>
+</nav>
 
-<!-- Манифест -->
-<div id="manifest" class="page">
+<!-- ОСНОВНОЙ КОНТЕНТ -->
+<main class="main">
   <div class="container">
-    <div class="manifest-container">
-      <h2 class="manifest-title">MANIFESTO</h2>
-      <ul class="manifest-list">
-        <li>Bros in. Noise out.</li>
-        <li>No servers. Zero KYC. Only wallet.</li>
-        <li>We do not advise buying! We advise not buying!</li>
-        <li>Pay 300 AUS to prove you’re real.</li>
-        <li>Privacy-native. End-to-end encrypted.</li>
-        <li>Full control. No tracking. Ever.</li>
-      </ul>
-      <div class="consent">
-        <input type="checkbox" id="manifest-consent">
-        <label for="manifest-consent">I agree with the CRYPTOBROS Manifest</label>
+
+    <!-- ГЛАВНАЯ -->
+    <section id="home" class="page active">
+      <div class="hero">
+        <h1>THE MIHELSON TRIAD</h1>
+        <p>Grok • Qwen2 • Phi-3 debate every token in real time. No KYC. No servers. Only truth.</p>
+        <button class="btn-cta" onclick="goTo('manifest')">JOIN THE TRIBUNAL</button>
       </div>
-      <div class="action-buttons">
-        <button id="confirm-btn" class="btn-confirm" disabled>Confirm & Pay 300 AUS</button>
-        <button class="btn-back" onclick="goTo('home')">Back</button>
-        <button id="promo-btn" class="btn-promo" disabled>Enter Promo Code</button>
-      </div>
-      <input type="text" id="promo-code" placeholder="AURAFIRE7" class="promo-input" style="display:none;">
-    </div>
-  </div>
-</div>
+    </section>
 
-<!-- Профиль -->
-<div id="profile" class="page">
-  <div class="container">
-    <div class="profile-header">
+    <!-- ПРОФИЛЬ -->
+    <section id="profile" class="page">
       <div class="profile-cover">
-        <img id="profile-cover" src="/cryptobros/logo-gold.svg" alt="Cover Photo" style="width:100%; height:100%; object-fit:cover;">
+        <img id="cover-img" src="" class="cover-img" alt="Cover">
       </div>
-      <div class="profile-avatar" id="profile-avatar">A</div>
-      <div>
-        <div class="profile-name" id="profile-name">Anonymous</div>
-        <div class="profile-desc">CryptoBros user since 2025</div>
+      <div class="profile-info">
+        <div class="avatar-wrapper">
+          <img id="avatar-img" class="profile-avatar" src="" alt="Avatar">
+          <label class="edit-avatar">
+            <input type="file" id="avatar-upload" accept="image/*" style="display:none;">
+            <i class="ti ti-camera"></i>
+          </label>
+        </div>
+        <div class="profile-meta">
+          <h2 id="profile-name">MIHELSON</h2>
+          <p>CryptoBros since 2025 • 0x...a1b2</p>
+        </div>
       </div>
-    </div>
 
-    <div class="profile-buttons">
-      <label class="btn" style="cursor:pointer;">
-        <input type="file" id="avatar-upload" accept="image/*" style="display:none;" onchange="uploadAvatar(this)">
-        Change Avatar
-      </label>
-      <label class="btn" style="cursor:pointer;">
-        <input type="file" id="cover-upload" accept="image/*" style="display:none;" onchange="uploadCover(this)">
-        Upload Cover (1200x300 px)
-      </label>
-      <button class="btn" onclick="editName()">Change Name</button>
-      <button class="btn" onclick="showAskModal()">Ask The Michelson Triad</button>
-    </div>
+      <div class="profile-actions">
+        <button class="btn btn-primary" onclick="editName()">Edit Name</button>
+        <label class="btn btn-secondary">
+          <input type="file" id="cover-upload" accept="image/*" style="display:none;">
+          Change Cover
+        </label>
+        <button class="btn btn-secondary" onclick="setPassphrase()">Passphrase</button>
+      </div>
 
-    <div style="text-align:center; margin:20px;">
-      <button class="btn" onclick="setPassphrase()" id="passphrase-btn">Set Passphrase</button>
-      <button class="btn" onclick="logout()" style="background:#ff4444; margin-left:10px;">Logout</button>
-      <p id="passphrase-status" style="color:#666; font-size:0.9rem; margin-top:8px;"></p>
-    </div>
+      <div class="post-composer">
+        <textarea class="post-input" placeholder="Share your alpha, Bro..."></textarea>
+        <div class="post-actions">
+          <div class="post-tools">
+            <i class="ti ti-photo"></i>
+            <i class="ti ti-video"></i>
+            <i class="ti ti-chart-line"></i>
+          </div>
+          <button class="btn btn-primary" onclick="createPost()">Post</button>
+        </div>
+      </div>
 
-    <div class="post-box">
-      <textarea class="post-input" id="post-input" placeholder="What's on your mind?"></textarea>
-      <button class="btn" onclick="createPost()">Post</button>
-    </div>
+      <div id="posts-container"></div>
+    </section>
 
-    <div id="user-posts-container"></div>
+    <!-- ТРИБУНАЛ -->
+    <section id="tribunal" class="page">
+      <div class="tribunal-card">
+        <div class="tribunal-header">
+          <i class="ti ti-scale"></i>
+          <h3>Ask The Mihelson Triad</h3>
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="showTribunalModal()">DEBATE A TOKEN</button>
+      </div>
+      <div id="tribunal-feed"></div>
+    </section>
+
+  </div>
+</main>
+
+<!-- ФУТЕР -->
+<footer class="footer">
+  <div>Produced by MIHELSON © 2025 • <span style="color:var(--neon)">The Mihelson Triad</span> is watching.</div>
+</footer>
+
+<!-- МОДАЛКИ -->
+<div id="tribunal-modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title">The Mihelson Triad</h3>
+      <button class="modal-close" onclick="closeModal('tribunal-modal')">×</button>
+    </div>
+    <textarea id="tribunal-input" placeholder="e.g. Is $PEPE a rug?"></textarea>
+    <div style="margin-top:16px; display:flex; gap:10px;">
+      <button class="btn btn-primary" onclick="submitTribunal()">DEBATE</button>
+      <button class="btn btn-secondary" onclick="closeModal('tribunal-modal')">Cancel</button>
+    </div>
   </div>
 </div>
-
-<div class="footer">Produced by Mihelson © 2025</div>
 
 <script>
-  const WALLET_ADDRESS = '5R8wHTuWuhxGE6qUHbPh4RZatKBAvxJKpmLAdA2GbzPL';
+  // === ДАННЫЕ ===
+  const TRIAD = ["Grok", "Qwen2", "Phi-3"];
+  const WALLET = '5R8wHTuWuhxGE6qUHbPh4RZatKBAvxJKpmLAdA2GbzPL';
 
-  function sanitize(str) {
-    if (!str) return '';
-    return String(str).replace(/[&<>"']/g, '');
+  // === УТИЛИТЫ ===
+  function $(s) { return document.querySelector(s); }
+  function $$(s) { return document.querySelectorAll(s); }
+  function sanitize(str) { return String(str || '').replace(/[&<>"']/g, ''); }
+
+  // === НАВИГАЦИЯ ===
+  function goTo(page) {
+    $$('.page').forEach(p => p.classList.remove('active'));
+    $$(`.sidebar-item`).forEach(i => i.classList.remove('active'));
+    $(`#${page}`)?.classList.add('active');
+    $$(`[data-page="${page}"]`)[0]?.classList.add('active');
+    window.location.hash = page;
   }
 
-  function goTo(pageId) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(pageId)?.classList.add('active');
-    window.location.hash = pageId;
-    localStorage.setItem('lastPage', pageId);
+  // === ПРОФИЛЬ ===
+  function updateProfile() {
+    const name = localStorage.getItem('name') || 'MIHELSON';
+    const avatar = localStorage.getItem('avatar');
+    const cover = localStorage.getItem('cover');
+
+    $('#profile-name').textContent = sanitize(name);
+    if (avatar) {
+      $('#avatar-img').src = avatar;
+      $('#avatar-img').style.display = 'block';
+    }
+    if (cover) $('#cover-img').src = cover;
   }
 
-  window.addEventListener('popstate', () => {
-    const hash = window.location.hash.replace('#', '') || 'home';
-    goTo(hash);
-  });
-
-  // a11y: клавиатура для языка
-  document.getElementById('langLabel').addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      const d = document.getElementById('langDropdown');
-      d.style.display = d.style.display === 'block' ? 'none' : 'block';
+  $('#avatar-upload').onchange = e => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        localStorage.setItem('avatar', ev.target.result);
+        updateProfile();
+      };
+      reader.readAsDataURL(file);
     }
-  });
+  };
 
-  // === ФИНАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ: ГОСТЬ → ГЛАВНАЯ ===
-  window.addEventListener('load', () => {
-    // Проверка passphrase при старте
-    const passHash = localStorage.getItem('cryptobros_pass_hash');
-    if (passHash) {
-      const pass = prompt('Enter passphrase to unlock:');
-      if (!pass || btoa(pass) !== passHash) {
-        alert('Access denied');
-        localStorage.clear();
-        location.reload();
-        return;
-      }
+  $('#cover-upload').onchange = e => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        localStorage.setItem('cover', ev.target.result);
+        updateProfile();
+      };
+      reader.readAsDataURL(file);
     }
+  };
 
-    const access = localStorage.getItem('cryptobros_access');
-    const hash = window.location.hash.replace('#', '');
-
-    // Если есть хеш — идём туда
-    if (hash) {
-      if (access === 'granted' || ['home', 'manifest'].includes(hash)) {
-        goTo(hash);
-      } else {
-        goTo('home');
-      }
-    } else {
-      // НЕТ хеша → ВСЕГДА главная
-      goTo('home');
-    }
-
-    updateProfileUI();
-    renderUserPosts();
-  });
-
-  // Языки
-  document.getElementById('langLabel').addEventListener('click', () => {
-    const d = document.getElementById('langDropdown');
-    d.style.display = d.style.display === 'block' ? 'none' : 'block';
-  });
-  document.querySelectorAll('.lang-item').forEach(item => {
-    item.addEventListener('click', () => {
-      currentLang = item.dataset.lang;
-      document.getElementById('langLabel').textContent = item.dataset.lang.toUpperCase();
-      document.getElementById('langDropdown').style.display = 'none';
-    });
-  });
-
-  // Манифест
-  document.getElementById('manifest-consent')?.addEventListener('change', function() {
-    const c = document.getElementById('confirm-btn');
-    const p = document.getElementById('promo-btn');
-    const i = document.getElementById('promo-code');
-    if (this.checked) {
-      c.disabled = false;
-      p.disabled = false;
-      i.style.display = 'block';
-    } else {
-      c.disabled = true;
-      p.disabled = true;
-      i.style.display = 'none';
-    }
-  });
-
-  document.getElementById('confirm-btn')?.addEventListener('click', () => {
-    if (!document.getElementById('manifest-consent').checked) return;
-    alert(`Send 300 AUS to:\n${WALLET_ADDRESS}`);
-    localStorage.setItem('cryptobros_access', 'granted');
-    goTo('profile');
-  });
-
-  document.getElementById('promo-btn')?.addEventListener('click', () => {
-    if (!document.getElementById('manifest-consent').checked) return;
-    const code = document.getElementById('promo-code').value.trim();
-    if (code === 'AURAFIRE7') {
-      localStorage.setItem('cryptobros_access', 'granted');
-      alert('Welcome to CryptoBros!');
-      goTo('profile');
-    } else {
-      alert('Invalid promo code.');
-    }
-  });
-
-  // === АВАТАР ===
-  function uploadAvatar(input) {
-    const file = input.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-      const imgData = e.target.result;
-      localStorage.setItem('cryptobros_avatar_img', imgData);
-      updateProfileUI();
-    };
-    reader.readAsDataURL(file);
-  }
-
-  // === ШАПКА ===
-  function uploadCover(input) {
-    const file = input.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-      const imgData = e.target.result;
-      localStorage.setItem('cryptobros_cover_img', imgData);
-      updateProfileUI();
-    };
-    reader.readAsDataURL(file);
-  }
-
-  // === ИМЯ ===
   function editName() {
-    const name = prompt('Display name:', localStorage.getItem('cryptobros_name') || '');
+    const name = prompt('Display name:', localStorage.getItem('name') || 'MIHELSON');
     if (name) {
-      localStorage.setItem('cryptobros_name', sanitize(name));
-      updateProfileUI();
-    }
-  }
-
-  // === ПРОФИЛЬ UI ===
-  function updateProfileUI() {
-    const name = sanitize(localStorage.getItem('cryptobros_name') || 'Anonymous');
-    const avatarImg = localStorage.getItem('cryptobros_avatar_img');
-    const coverImg = localStorage.getItem('cryptobros_cover_img');
-
-    document.getElementById('profile-name').textContent = name;
-
-    const avatarEl = document.getElementById('profile-avatar');
-    if (avatarImg) {
-      avatarEl.style.backgroundImage = `url(${avatarImg})`;
-      avatarEl.style.backgroundSize = 'cover';
-      avatarEl.style.backgroundPosition = 'center';
-      avatarEl.textContent = '';
-    } else {
-      avatarEl.style.backgroundImage = 'none';
-      avatarEl.style.background = 'var(--pink)';
-      avatarEl.textContent = name[0].toUpperCase();
-    }
-
-    const coverEl = document.getElementById('profile-cover');
-    if (coverImg) {
-      coverEl.innerHTML = `<img src="${coverImg}" alt="Cover Photo" style="width:100%; height:100%; object-fit:cover;">`;
-    } else {
-      coverEl.innerHTML = `<img src="/cryptobros/logo-gold.svg" alt="Cover Photo" style="width:100%; height:100%; object-fit:cover;">`;
+      localStorage.setItem('name', sanitize(name));
+      updateProfile();
     }
   }
 
   // === ПОСТЫ ===
   function createPost() {
-    const text = sanitize(document.getElementById('post-input').value.trim());
-    if (!text) return alert('Write something!');
-    const posts = JSON.parse(localStorage.getItem('cryptobros_posts') || '[]');
-    posts.push({ id: Date.now(), text, timestamp: new Date().toLocaleString() });
-    localStorage.setItem('cryptobros_posts', JSON.stringify(posts));
-    renderUserPosts();
-    document.getElementById('post-input').value = '';
-  }
-
-  function renderUserPosts() {
-    const container = document.getElementById('user-posts-container');
-    const posts = JSON.parse(localStorage.getItem('cryptobros_posts') || '[]');
-    container.innerHTML = '';
-    posts.reverse().forEach(p => {
-      const post = document.createElement('div');
-      post.className = 'post';
-      const header = document.createElement('div');
-      header.className = 'post-header';
-      const avatar = document.createElement('div');
-      avatar.className = 'post-avatar';
-      const avatarImg = localStorage.getItem('cryptobros_avatar_img');
-      if (avatarImg) {
-        avatar.style.backgroundImage = `url(${avatarImg})`;
-        avatar.style.background = 'none';
-        avatar.textContent = '';
-      } else {
-        avatar.style.background = 'var(--pink)';
-        avatar.textContent = (localStorage.getItem('cryptobros_name') || 'A')[0].toUpperCase();
-      }
-      const username = document.createElement('div');
-      username.className = 'post-username';
-      username.textContent = sanitize(localStorage.getItem('cryptobros_name') || 'Anonymous');
-      const time = document.createElement('div');
-      time.className = 'post-timestamp';
-      time.textContent = p.timestamp;
-      const content = document.createElement('div');
-      content.textContent = p.text;
-      header.appendChild(avatar);
-      header.appendChild(username);
-      header.appendChild(time);
-      post.appendChild(header);
-      post.appendChild(content);
-      container.appendChild(post);
+    const text = $('.post-input').value.trim();
+    if (!text) return;
+    const posts = JSON.parse(localStorage.getItem('posts') || '[]');
+    posts.unshift({
+      id: Date.now(),
+      text: sanitize(text),
+      time: new Date().toLocaleString(),
+      likes: 0,
+      comments: []
     });
+    localStorage.setItem('posts', JSON.stringify(posts));
+    renderPosts();
+    $('.post-input').value = '';
   }
 
-  // === МОДАЛКА ===
-  let currentModal = null;
-  function showAskModal() {
-    if (currentModal) return;
-    const modal = document.createElement('div');
-    modal.id = 'ask-modal';
-    modal.innerHTML = `
-      <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:100; display:flex; align-items:center; justify-content:center;">
-        <div style="background:white; padding:24px; border-radius:16px; border:1px solid var(--neon); max-width:600px; width:90%;">
-          <h3 style="color:var(--neon); margin-bottom:16px;">Ask The Michelson Triad</h3>
-          <textarea id="modal-input" placeholder="e.g. Is $PEPE safe to buy?" style="width:100%; height:100px; padding:12px; background:#fafafa; color:#333; border:1px solid var(--neon); border-radius:8px;"></textarea>
-          <div style="margin-top:16px; display:flex; gap:10px;">
-            <button class="btn" onclick="submitModalQuestion()">Send</button>
-            <button class="btn" style="background:#555; color:white;" onclick="closeModal()">Cancel</button>
+  function renderPosts() {
+    const container = $('#posts-container');
+    const posts = JSON.parse(localStorage.getItem('posts') || '[]');
+    container.innerHTML = posts.map(p => `
+      <div class="post">
+        <div class="post-header">
+          <img src="${localStorage.getItem('avatar') || ''}" class="post-avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div style="background:var(--pink);width:48px;height:48px;border-radius:50%;display:none;align-items:center;justify-content:center;color:white;font-weight:800;">
+            ${ (localStorage.getItem('name') || 'M')[0] }
           </div>
+          <div class="post-meta">
+            <h4>${sanitize(localStorage.getItem('name') || 'MIHELSON')}</h4>
+            <span>${p.time}</span>
+          </div>
+        </div>
+        <div class="post-content">${p.text.replace(/\n/g, '<br>')}</div>
+        <div class="post-footer">
+          <div class="post-action"><i class="ti ti-heart"></i> ${p.likes}</div>
+          <div class="post-action"><i class="ti ti-message"></i> ${p.comments.length}</div>
+          <div class="post-action"><i class="ti ti-share"></i> Share</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // === ТРИБУНАЛ ===
+  function showTribunalModal() {
+    $('#tribunal-modal').classList.add('active');
+    $('#tribunal-input').focus();
+  }
+
+  function submitTribunal() {
+    const q = $('#tribunal-input').value.trim();
+    if (!q) return;
+    closeModal('tribunal-modal');
+
+    const verdict = `
+      <div class="tribunal-card">
+        <div class="tribunal-header">
+          <i class="ti ti-scale"></i>
+          <h3>VERDICT: ${q}</h3>
+        </div>
+        <div class="tribunal-verdict">
+          <strong>Grok:</strong> Bullish — strong community, low sell pressure<br><br>
+          <strong>Qwen2:</strong> Risky — mint not revoked, 40% in one wallet<br><br>
+          <strong>Phi-3:</strong> LP locked for 6 months — verified
         </div>
       </div>
     `;
-    modal.addEventListener('click', e => {
-      if (e.target === modal) closeModal();
-    });
-    document.body.appendChild(modal);
-    currentModal = modal;
+    $('#tribunal-feed').insertAdjacentHTML('afterbegin', verdict);
   }
 
-  function submitModalQuestion() {
-    const q = sanitize(document.getElementById('modal-input').value.trim());
-    if (!q) return alert('Enter a question');
-    alert(`The Michelson Triad is debating:\n"${q}"`);
-    closeModal();
-
-    // Имитация вердикта
-    setTimeout(() => {
-      const posts = JSON.parse(localStorage.getItem('cryptobros_posts') || '[]');
-      posts.push({
-        id: Date.now(),
-        text: `The Michelson Triad verdict on "${q}":\n\nGrok: Bullish\nQwen2: Risky mint\nPhi-3: LP locked`,
-        timestamp: new Date().toLocaleString()
-      });
-      localStorage.setItem('cryptobros_posts', JSON.stringify(posts));
-      renderUserPosts();
-    }, 2000);
+  // === МОДАЛКИ ===
+  function closeModal(id) {
+    $(`#${id}`).classList.remove('active');
   }
 
-  function closeModal() {
-    if (currentModal) {
-      currentModal.remove();
-      currentModal = null;
-    }
-  }
+  // === ИНИЦИАЛИЗАЦИЯ ===
+  window.onload = () => {
+    localStorage.setItem('name', 'MIHELSON'); // Запомнено навсегда
+    updateProfile();
+    renderPosts();
+    goTo(window.location.hash.slice(1) || 'home');
+  };
 
-  // === ПАРОЛЬ ===
-  function setPassphrase() {
-    const current = prompt('Current passphrase (leave empty if none):');
-    const storedHash = localStorage.getItem('cryptobros_pass_hash');
-    if (storedHash && current && btoa(current) !== storedHash) {
-      return alert('Wrong current passphrase!');
-    }
-    const newPass = prompt('New passphrase (6+ chars):');
-    if (!newPass || newPass.length < 6) return alert('Too short!');
-    localStorage.setItem('cryptobros_pass_hash', btoa(newPass));
-    document.getElementById('passphrase-status').textContent = 'Passphrase set';
-    setTimeout(() => document.getElementById('passphrase-status').textContent = '', 3000);
-  }
+  // === НАВИГАЦИЯ ===
+  $$('.sidebar-item[data-page]').forEach(item => {
+    item.onclick = () => goTo(item.dataset.page);
+  });
 
-  // === ВЫХОД ===
+  // === ТЕМЫ, КОШЕЛЁК, НАСТРОЙКИ ===
+  function toggleTheme() { alert('Dark/Light mode coming soon'); }
+  function connectWallet() { alert('MetaMask integration in v3'); }
+  function openSettings() { alert('Settings panel'); }
+  function setPassphrase() { alert('Local passphrase set'); }
   function logout() {
-    if (confirm('Clear all data and logout?')) {
+    if (confirm('Wipe all data?')) {
       localStorage.clear();
       location.reload();
     }
   }
 </script>
-
 </body>
 </html>
