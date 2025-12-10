@@ -165,57 +165,6 @@
       margin: 0 auto;
     }
 
-    /* ГЕРОЙ */
-    .hero {
-      text-align: center;
-      padding: 80px 20px;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -50%; left: -50%;
-      width: 200%; height: 200%;
-      background: conic-gradient(from 0deg, transparent, var(--neon), var(--pink), transparent);
-      animation: rainbow 8s linear infinite;
-      opacity: 0.1;
-      z-index: -1;
-    }
-    .hero h1 {
-      font-size: 4rem;
-      font-weight: 800;
-      background: linear-gradient(90deg, var(--neon), var(--pink), var(--gold));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin: 20px 0;
-      animation: neonGlow 2s infinite alternate;
-    }
-    .hero p {
-      font-size: 1.3rem;
-      color: var(--text-muted);
-      max-width: 700px;
-      margin: 0 auto 40px;
-    }
-    .btn-cta {
-      background: linear-gradient(135deg, var(--neon), var(--pink));
-      color: black;
-      padding: 16px 40px;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 1.2rem;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(0, 243, 255, 0.3);
-      transition: var(--transition);
-      animation: pulse 2s infinite;
-    }
-    .btn-cta:hover {
-      transform: translateY(-4px) scale(1.05);
-      box-shadow: 0 12px 30px rgba(0, 243, 255, 0.5);
-    }
-
     /* ПРОФИЛЬ */
     .profile-cover {
       height: 320px;
@@ -283,6 +232,44 @@
       z-index: 10;
     }
 
+    /* КРАСИВЫЕ КНОПКИ */
+    .profile-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 24px 0;
+    }
+    .btn {
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0, 243, 255, 0.2);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--neon), var(--pink));
+      color: black;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 243, 255, 0.4);
+    }
+    .btn-secondary {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      background: var(--card-hover);
+      border-color: var(--neon);
+    }
+
     /* ПОСТЫ */
     .post-composer {
       background: var(--card);
@@ -290,6 +277,7 @@
       border-radius: var(--radius);
       padding: 20px;
       margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
     .post-input {
       width: 100%;
@@ -301,27 +289,21 @@
       outline: none;
       margin-bottom: 12px;
     }
+    .post-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
     .post-tools {
       display: flex;
-      gap: 12px;
+      gap: 16px;
       color: var(--text-muted);
     }
     .post-tools label {
       cursor: pointer;
+      transition: color 0.2s;
     }
-
-    .post {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      margin-bottom: 20px;
-      transition: var(--transition);
-    }
-    .post:hover {
-      border-color: var(--neon);
-      box-shadow: var(--shadow);
-    }
+    .post-tools label:hover { color: var(--neon); }
 
     /* ФУТЕР */
     .footer {
@@ -341,7 +323,6 @@
     @media (max-width: 768px) {
       .sidebar { transform: translateX(-100%); }
       .main { margin-left: 0; }
-      .hero h1 { font-size: 2.8rem; }
       .profile-info { flex-direction: column; align-items: center; text-align: center; }
       .profile-avatar { width: 120px; height: 120px; }
     }
@@ -419,9 +400,14 @@
         </div>
       </div>
 
+      <!-- КРАСИВЫЕ КНОПКИ -->
       <div class="profile-actions">
-        <button class="btn btn-primary" onclick="editName()">Edit Name</button>
-        <button class="btn btn-secondary" onclick="setPassphrase()">Passphrase</button>
+        <button class="btn btn-primary" onclick="editName()">
+          <i class="ti ti-edit"></i> Edit Name
+        </button>
+        <button class="btn btn-secondary" onclick="setPassphrase()">
+          <i class="ti ti-lock"></i> Passphrase
+        </button>
       </div>
 
       <div class="post-composer">
@@ -432,7 +418,9 @@
             <i class="ti ti-video"></i>
             <i class="ti ti-chart-line"></i>
           </div>
-          <button class="btn btn-primary" onclick="createPost()">Post</button>
+          <button class="btn btn-primary" onclick="createPost()">
+            <i class="ti ti-send"></i> Post
+          </button>
         </div>
       </div>
 
@@ -502,7 +490,7 @@
     }
   };
 
-  // ШАПКА — КЛИК ПО ВСЕЙ ОБЛАСТИ
+  // ШАПКА
   $('#cover-container').onclick = () => {
     $('#cover-upload').click();
   };
@@ -527,7 +515,7 @@
     }
   }
 
-  // ПОСТЫ С ФОТО
+  // ПОСТЫ
   let postPhoto = null;
   $('#post-photo').onchange = e => {
     const file = e.target.files[0];
@@ -594,7 +582,7 @@
     localStorage.setItem('name', 'MIHELSON');
     updateProfile();
     renderPosts();
-    goTo(window.location.hash.slice(1) || 'profile'); // Открываем профиль сразу
+    goTo(window.location.hash.slice(1) || 'profile');
   };
 
   $$('.sidebar-item[data-page]').forEach(item => {
