@@ -10,21 +10,31 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
   <style>
     :root {
-      --bg: #0a0a0a;
-      --card: #111;
-      --card-hover: #1a1a1a;
-      --text: #e0e0e0;
-      --text-muted: #888;
+      --bg: #f8f9fa;
+      --card: #ffffff;
+      --card-hover: #f1f3f5;
+      --text: #1a1a1a;
+      --text-muted: #6c757d;
       --neon: #00f3ff;
       --pink: #ff2a6d;
       --accent: #7b2cbf;
       --gold: #ffd700;
-      --border: rgba(0, 243, 255, 0.2);
+      --border: rgba(0, 243, 255, 0.3);
       --shadow: 0 8px 32px rgba(0, 243, 255, 0.15);
       --radius: 16px;
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       --font-main: 'Inter', system-ui, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0a0a0a;
+      --card: #111;
+      --card-hover: #1a1a1a;
+      --text: #e0e0e0;
+      --text-muted: #888;
+      --border: rgba(0, 243, 255, 0.2);
+      --shadow: 0 8px 32px rgba(0, 243, 255, 0.15);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -34,23 +44,28 @@
       font-family: var(--font-main);
       min-height: 100vh;
       overflow-x: hidden;
-      background-image: 
-        radial-gradient(circle at 20% 80%, rgba(0, 243, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 42, 109, 0.1) 0%, transparent 50%);
       line-height: 1.6;
+      transition: background 0.5s ease;
     }
 
-    /* === АНИМАЦИИ === */
+    /* АНИМАЦИИ */
     @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
     @keyframes neonGlow { 0%, 100% { text-shadow: 0 0 10px var(--neon); } 50% { text-shadow: 0 0 30px var(--neon), 0 0 50px var(--neon); } }
     @keyframes rainbow { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+    @keyframes footerRainbow {
+      0%   { color: #00f3ff; text-shadow: 0 0 10px rgba(0, 243, 255, 0.7); }
+      25%  { color: #ff2a6d; text-shadow: 0 0 10px rgba(255, 42, 109, 0.7); }
+      50%  { color: #ffcc00; text-shadow: 0 0 10px rgba(255, 204, 0, 0.7); }
+      75%  { color: #7b2cbf; text-shadow: 0 0 10px rgba(123, 44, 191, 0.7); }
+      100% { color: #00c897; text-shadow: 0 0 10px rgba(0, 200, 151, 0.7); }
+    }
 
-    /* === ШАПКА === */
+    /* ШАПКА */
     .header {
       position: fixed;
       top: 0; left: 0; right: 0;
-      background: rgba(10, 10, 10, 0.9);
+      background: var(--bg);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
       z-index: 1000;
@@ -93,13 +108,12 @@
       box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
     }
 
-    /* === САЙДБАР === */
+    /* САЙДБАР */
     .sidebar {
-      position:  fixed;
+      position: fixed;
       left: 0; top: 70px; bottom: 0;
       width: 280px;
-      background: rgba(17, 17, 17, 0.95);
-      backdrop-filter: blur(12px);
+      background: var(--card);
       border-right: 1px solid var(--border);
       padding: 20px 0;
       overflow-y: auto;
@@ -140,7 +154,7 @@
       margin-left: auto;
     }
 
-    /* === КОНТЕНТ === */
+    /* КОНТЕНТ */
     .main {
       margin-left: 280px;
       padding: 80px 20px 100px;
@@ -151,7 +165,7 @@
       margin: 0 auto;
     }
 
-    /* === ГЕРОЙ === */
+    /* ГЕРОЙ */
     .hero {
       text-align: center;
       padding: 80px 20px;
@@ -202,21 +216,25 @@
       box-shadow: 0 12px 30px rgba(0, 243, 255, 0.5);
     }
 
-    /* === ПРОФИЛЬ === */
+    /* ПРОФИЛЬ */
     .profile-cover {
       height: 320px;
-      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      background: var(--card);
       position: relative;
       overflow: hidden;
-    }
-    .profile-cover::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at center, transparent 0%, var(--bg) 70%);
+      border-radius: var(--radius);
     }
     .cover-img {
-      width: 100%; height: 100%; object-fit: cover; opacity: 0.7;
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .cover-upload-hint {
+      position: absolute;
+      bottom: 12px; right: 12px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.8rem;
     }
     .profile-info {
       position: relative;
@@ -292,7 +310,7 @@
       border: 1px solid var(--border);
     }
 
-    /* === ПОСТЫ === */
+    /* ПОСТЫ */
     .post-composer {
       background: var(--card);
       border: 1px solid var(--border);
@@ -309,11 +327,6 @@
       resize: none;
       outline: none;
       margin-bottom: 12px;
-    }
-    .post-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
     }
     .post-tools {
       display: flex;
@@ -380,7 +393,7 @@
     }
     .post-action:hover { color: var(--neon); }
 
-    /* === МОДАЛКИ === */
+    /* МОДАЛКИ */
     .modal {
       position: fixed;
       inset: 0;
@@ -412,74 +425,22 @@
     .modal.active .modal-content {
       transform: scale(1);
     }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    .modal-title {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--neon);
-    }
-    .modal-close {
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
 
-    /* === ТРИБУНАЛ === */
-    .tribunal-card {
-      background: linear-gradient(135deg, var(--card), #1a1a2e);
-      border: 1px solid var(--neon);
-      border-radius: var(--radius);
-      padding: 24px;
-      margin: 20px 0;
-      position: relative;
-      overflow: hidden;
-    }
-    .tribunal-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; height: 4px;
-      background: linear-gradient(90deg, var(--neon), var(--pink), var(--gold));
-    }
-    .tribunal-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-    .tribunal-header .ti {
-      color: var(--gold);
-      font-size: 1.5rem;
-    }
-    .tribunal-verdict {
-      background: rgba(0, 243, 255, 0.1);
-      padding: 16px;
-      border-radius: 12px;
-      margin: 12px 0;
-      border-left: 4px solid var(--neon);
-    }
-
-    /* === ФУТЕР === */
+    /* ФУТЕР */
     .footer {
       position: fixed;
       bottom: 0; left: 0; right: 0;
-      background: rgba(10, 10, 10, 0.95);
-      backdrop-filter: blur(12px);
+      background: var(--card);
       border-top: 1px solid var(--border);
       padding: 16px;
       text-align: center;
       font-size: 0.85rem;
       color: var(--text-muted);
       z-index: 800;
+      animation: footerRainbow 4s infinite alternate;
     }
 
-    /* === АДАПТИВ === */
+    /* АДАПТИВ */
     @media (max-width: 768px) {
       .sidebar { transform: translateX(-100%); }
       .main { margin-left: 0; }
@@ -489,7 +450,7 @@
     }
   </style>
 </head>
-<body>
+<body data-theme="light">
 
 <!-- ШАПКА -->
 <header class="header">
@@ -544,10 +505,21 @@
       </div>
     </section>
 
+    <!-- ФИД -->
+    <section id="feed" class="page">
+      <h2 style="margin-bottom: 24px; color: var(--neon);">Global Feed</h2>
+      <div id="feed-container"></div>
+    </section>
+
     <!-- ПРОФИЛЬ -->
     <section id="profile" class="page">
       <div class="profile-cover">
         <img id="cover-img" src="" class="cover-img" alt="Cover">
+        <div class="cover-upload-hint">1200×300px recommended</div>
+        <label class="edit-avatar" style="bottom: 12px; right: 12px;">
+          <input type="file" id="cover-upload" accept="image/*" style="display:none;">
+          <i class="ti ti-camera"></i>
+        </label>
       </div>
       <div class="profile-info">
         <div class="avatar-wrapper">
@@ -565,10 +537,6 @@
 
       <div class="profile-actions">
         <button class="btn btn-primary" onclick="editName()">Edit Name</button>
-        <label class="btn btn-secondary">
-          <input type="file" id="cover-upload" accept="image/*" style="display:none;">
-          Change Cover
-        </label>
         <button class="btn btn-secondary" onclick="setPassphrase()">Passphrase</button>
       </div>
 
@@ -576,7 +544,7 @@
         <textarea class="post-input" placeholder="Share your alpha, Bro..."></textarea>
         <div class="post-actions">
           <div class="post-tools">
-            <i class="ti ti-photo"></i>
+            <label><input type="file" id="post-photo" accept="image/*" style="display:none;"><i class="ti ti-photo"></i></label>
             <i class="ti ti-video"></i>
             <i class="ti ti-chart-line"></i>
           </div>
@@ -599,12 +567,28 @@
       <div id="tribunal-feed"></div>
     </section>
 
+    <!-- МАНИФЕСТ -->
+    <section id="manifest" class="page">
+      <div style="max-width: 600px; margin: 40px auto; text-align: center;">
+        <h2 style="color: var(--neon); margin-bottom: 24px;">MANIFESTO</h2>
+        <ul style="text-align: left; display: inline-block; margin: 20px 0;">
+          <li>Bros in. Noise out.</li>
+          <li>No servers. Zero KYC. Only wallet.</li>
+          <li>We do not advise buying! We advise not buying!</li>
+          <li>Pay 300 AUS to prove you’re real.</li>
+          <li>Privacy-native. End-to-end encrypted.</li>
+          <li>Full control. No tracking. Ever.</li>
+        </ul>
+        <button class="btn btn-primary" onclick="alert('Send 300 AUS to: ' + WALLET)">Pay & Join</button>
+      </div>
+    </section>
+
   </div>
 </main>
 
 <!-- ФУТЕР -->
 <footer class="footer">
-  <div>Produced by MIHELSON © 2025 • <span style="color:var(--neon)">The Mihelson Triad</span> is watching.</div>
+  <div>Produced by MIHELSON © 2025 • <span>The Mihelson Triad</span> is watching.</div>
 </footer>
 
 <!-- МОДАЛКИ -->
@@ -623,16 +607,23 @@
 </div>
 
 <script>
-  // === ДАННЫЕ ===
-  const TRIAD = ["Grok", "Qwen2", "Phi-3"];
   const WALLET = '5R8wHTuWuhxGE6qUHbPh4RZatKBAvxJKpmLAdA2GbzPL';
 
-  // === УТИЛИТЫ ===
   function $(s) { return document.querySelector(s); }
   function $$(s) { return document.querySelectorAll(s); }
   function sanitize(str) { return String(str || '').replace(/[&<>"']/g, ''); }
 
-  // === НАВИГАЦИЯ ===
+  // ТЕМЫ
+  function toggleTheme() {
+    const root = document.body;
+    const current = root.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    $('.icon-btn .ti').className = next === 'dark' ? 'ti ti-sun' : 'ti ti-moon';
+  }
+
+  // НАВИГАЦИЯ
   function goTo(page) {
     $$('.page').forEach(p => p.classList.remove('active'));
     $$(`.sidebar-item`).forEach(i => i.classList.remove('active'));
@@ -641,23 +632,19 @@
     window.location.hash = page;
   }
 
-  // === ПРОФИЛЬ ===
+  // ПРОФИЛЬ
   function updateProfile() {
     const name = localStorage.getItem('name') || 'MIHELSON';
+    $('#profile-name').textContent = sanitize(name);
     const avatar = localStorage.getItem('avatar');
     const cover = localStorage.getItem('cover');
-
-    $('#profile-name').textContent = sanitize(name);
-    if (avatar) {
-      $('#avatar-img').src = avatar;
-      $('#avatar-img').style.display = 'block';
-    }
+    if (avatar) $('#avatar-img').src = avatar;
     if (cover) $('#cover-img').src = cover;
   }
 
   $('#avatar-upload').onchange = e => {
     const file = e.target.files[0];
-    if (file) {
+    if (file && file.type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onload = ev => {
         localStorage.setItem('avatar', ev.target.result);
@@ -669,7 +656,7 @@
 
   $('#cover-upload').onchange = e => {
     const file = e.target.files[0];
-    if (file) {
+    if (file && file.type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onload = ev => {
         localStorage.setItem('cover', ev.target.result);
@@ -687,14 +674,27 @@
     }
   }
 
-  // === ПОСТЫ ===
+  // ПОСТЫ С ФОТО
+  let postPhoto = null;
+  $('#post-photo').onchange = e => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        postPhoto = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   function createPost() {
     const text = $('.post-input').value.trim();
-    if (!text) return;
+    if (!text && !postPhoto) return;
     const posts = JSON.parse(localStorage.getItem('posts') || '[]');
     posts.unshift({
       id: Date.now(),
       text: sanitize(text),
+      photo: postPhoto,
       time: new Date().toLocaleString(),
       likes: 0,
       comments: []
@@ -702,6 +702,8 @@
     localStorage.setItem('posts', JSON.stringify(posts));
     renderPosts();
     $('.post-input').value = '';
+    postPhoto = null;
+    $('#post-photo').value = '';
   }
 
   function renderPosts() {
@@ -712,13 +714,14 @@
         <div class="post-header">
           <img src="${localStorage.getItem('avatar') || ''}" class="post-avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <div style="background:var(--pink);width:48px;height:48px;border-radius:50%;display:none;align-items:center;justify-content:center;color:white;font-weight:800;">
-            ${ (localStorage.getItem('name') || 'M')[0] }
+            M
           </div>
           <div class="post-meta">
             <h4>${sanitize(localStorage.getItem('name') || 'MIHELSON')}</h4>
             <span>${p.time}</span>
           </div>
         </div>
+        ${p.photo ? `<img src="${p.photo}" style="width:100%; border-radius:12px; margin:12px 0;">` : ''}
         <div class="post-content">${p.text.replace(/\n/g, '<br>')}</div>
         <div class="post-footer">
           <div class="post-action"><i class="ti ti-heart"></i> ${p.likes}</div>
@@ -729,17 +732,15 @@
     `).join('');
   }
 
-  // === ТРИБУНАЛ ===
+  // ТРИБУНАЛ
   function showTribunalModal() {
     $('#tribunal-modal').classList.add('active');
-    $('#tribunal-input').focus();
   }
 
   function submitTribunal() {
     const q = $('#tribunal-input').value.trim();
     if (!q) return;
     closeModal('tribunal-modal');
-
     const verdict = `
       <div class="tribunal-card">
         <div class="tribunal-header">
@@ -747,40 +748,40 @@
           <h3>VERDICT: ${q}</h3>
         </div>
         <div class="tribunal-verdict">
-          <strong>Grok:</strong> Bullish — strong community, low sell pressure<br><br>
-          <strong>Qwen2:</strong> Risky — mint not revoked, 40% in one wallet<br><br>
-          <strong>Phi-3:</strong> LP locked for 6 months — verified
+          <strong>Grok:</strong> Bullish<br>
+          <strong>Qwen2:</strong> Risky mint<br>
+          <strong>Phi-3:</strong> LP locked
         </div>
       </div>
     `;
     $('#tribunal-feed').insertAdjacentHTML('afterbegin', verdict);
   }
 
-  // === МОДАЛКИ ===
   function closeModal(id) {
     $(`#${id}`).classList.remove('active');
   }
 
-  // === ИНИЦИАЛИЗАЦИЯ ===
+  // ИНИЦИАЛИЗАЦИЯ
   window.onload = () => {
-    localStorage.setItem('name', 'MIHELSON'); // Запомнено навсегда
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.body.setAttribute('data-theme', savedTheme);
+    $('.icon-btn .ti').className = savedTheme === 'dark' ? 'ti ti-sun' : 'ti ti-moon';
+
+    localStorage.setItem('name', 'MIHELSON');
     updateProfile();
     renderPosts();
     goTo(window.location.hash.slice(1) || 'home');
   };
 
-  // === НАВИГАЦИЯ ===
   $$('.sidebar-item[data-page]').forEach(item => {
     item.onclick = () => goTo(item.dataset.page);
   });
 
-  // === ТЕМЫ, КОШЕЛЁК, НАСТРОЙКИ ===
-  function toggleTheme() { alert('Dark/Light mode coming soon'); }
-  function connectWallet() { alert('MetaMask integration in v3'); }
-  function openSettings() { alert('Settings panel'); }
-  function setPassphrase() { alert('Local passphrase set'); }
+  function connectWallet() { alert('MetaMask coming'); }
+  function openSettings() { alert('Settings'); }
+  function setPassphrase() { alert('Passphrase set'); }
   function logout() {
-    if (confirm('Wipe all data?')) {
+    if (confirm('Wipe data?')) {
       localStorage.clear();
       location.reload();
     }
