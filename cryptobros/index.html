@@ -5,12 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CRYPTOBROS — The Mihelson Triad</title>
   <base href="/">
+  <!-- УБРАНЫ ПРОБЕЛЫ ИЗ URL -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#00f3ff">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' fill='%2300f3ff'>⚔️</text></svg>">
   <style>
     :root {
       --bg: #f8f9fa;
@@ -20,6 +22,8 @@
       --text-muted: #6c757d;
       --neon: #00f3ff;
       --pink: #ff2a6d;
+      --accent: #7b2cbf;
+      --gold: #ffd700;
       --border: rgba(0, 243, 255, 0.3);
       --shadow: 0 8px 32px rgba(0, 243, 255, 0.15);
       --radius: 16px;
@@ -61,50 +65,277 @@
       100% { color: #00c897; text-shadow: 0 0 10px rgba(0, 200, 151, 0.7); }
     }
 
-    .header { position: fixed; top: 0; left: 0; right: 0; background: var(--bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); z-index: 1000; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-weight: 800; font-size: 1.6rem; background: linear-gradient(90deg, var(--neon), var(--pink)); -webkit-background-clip: text; background-clip: text; color: transparent; cursor: pointer; animation: neonGlow 3s infinite alternate; }
-    .icon-btn { background: var(--card); border: 1px solid var(--border); color: var(--text); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); }
-    .icon-btn:hover { background: var(--neon); color: black; transform: translateY(-2px); box-shadow: 0 0 20px rgba(0, 243, 255, 0.4); }
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: var(--bg);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-weight: 800;
+      font-size: 1.6rem;
+      background: linear-gradient(90deg, var(--neon), var(--pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      cursor: pointer;
+      animation: neonGlow 3s infinite alternate;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .icon-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .icon-btn:hover {
+      background: var(--neon);
+      color: black;
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+    }
 
-    .sidebar { position: fixed; left: 0; top: 70px; bottom: 0; width: 280px; background: var(--card); border-right: 1px solid var(--border); padding: 20px 0; overflow-y: auto; z-index: 900; transition: transform 0.4s ease; }
-    .sidebar-item { padding: 14px 24px; display: flex; align-items: center; gap: 16px; color: var(--text-muted); cursor: pointer; transition: var(--transition); border-left: 3px solid transparent; }
-    .sidebar-item:hover, .sidebar-item.active { background: var(--card-hover); color: var(--neon); font-weight: 600; border-left-color: var(--neon); }
-    .sidebar-item .ti { font-size: 1.4rem; }
-    .badge { background: var(--pink); color: black; font-size: 0.7rem; padding: 2px 8px; border-radius: 20px; font-weight: 700; margin-left: auto; }
+    .sidebar {
+      position: fixed;
+      left: 0; top: 70px; bottom: 0;
+      width: 280px;
+      background: var(--card);
+      border-right: 1px solid var(--border);
+      padding: 20px 0;
+      overflow-y: auto;
+      z-index: 900;
+      transition: transform 0.4s ease;
+    }
+    .sidebar-item {
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+      border-left: 3px solid transparent;
+    }
+    .sidebar-item:hover, .sidebar-item.active {
+      background: var(--card-hover);
+      color: var(--neon);
+      font-weight: 600;
+      border-left-color: var(--neon);
+    }
+    .sidebar-item .ti {
+      font-size: 1.4rem;
+    }
+    .badge {
+      background: var(--pink);
+      color: black;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 700;
+      margin-left: auto;
+    }
 
-    .main { margin-left: 280px; padding: 80px 20px 100px; min-height: 100vh; }
-    .container { max-width: 800px; margin: 0 auto; }
+    .main {
+      margin-left: 280px;
+      padding: 80px 20px 100px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
 
-    .profile-cover { height: 320px; background: var(--card); position: relative; overflow: hidden; border-radius: var(--radius); cursor: pointer; }
-    .cover-img { width: 100%; height: 100%; object-fit: cover; }
-    .cover-upload-hint { position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.7); color: white; padding: 6px 10px; border-radius: 8px; font-size: 0.8rem; opacity: 0; transition: opacity 0.3s; }
-    .profile-cover:hover .cover-upload-hint { opacity: 1; }
-    .profile-info { position: relative; margin-top: -80px; padding: 0 20px; display: flex; align-items: flex-end; gap: 24px; }
-    .avatar-wrapper { position: relative; animation: float 6s ease-in-out infinite; }
-    .profile-avatar { width: 160px; height: 160px; border-radius: 50%; border: 6px solid var(--card); box-shadow: var(--shadow); object-fit: cover; background: var(--card); display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 800; color: white; }
-    .edit-avatar { position: absolute; bottom: 8px; right: 8px; background: var(--neon); color: black; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0, 243, 255, 0.4); z-index: 10; }
+    .profile-cover {
+      height: 320px;
+      background: var(--card);
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      cursor: pointer;
+      box-shadow: var(--shadow);
+    }
+    .cover-img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .cover-upload-hint {
+      position: absolute;
+      bottom: 12px; right: 12px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .profile-cover:hover .cover-upload-hint {
+      opacity: 1;
+    }
+    .profile-info {
+      position: relative;
+      margin-top: -80px;
+      padding: 0 20px;
+      display: flex;
+      align-items: flex-end;
+      gap: 24px;
+    }
+    .avatar-wrapper {
+      position: relative;
+      animation: float 6s ease-in-out infinite;
+    }
+    .profile-avatar {
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      border: 6px solid var(--card);
+      box-shadow: var(--shadow);
+      object-fit: cover;
+      background: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      font-weight: 800;
+      color: white;
+    }
+    .edit-avatar {
+      position: absolute;
+      bottom: 8px; right: 8px;
+      background: var(--neon);
+      color: black;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 243, 255, 0.4);
+      z-index: 10;
+    }
 
-    .qr-profile { margin-top: 16px; text-align: center; }
-    #profile-qr { width: 120px; height: 120px; margin: 0 auto; background: white; padding: 4px; border-radius: 8px; }
+    .qr-profile {
+      margin-top: 16px;
+      text-align: center;
+    }
+    #profile-qr {
+      width: 120px; height: 120px;
+      margin: 0 auto;
+      background: white;
+      padding: 4px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
 
-    .btn { padding: 12px 24px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: var(--transition); border: none; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0, 243, 255, 0.2); }
-    .btn-primary { background: linear-gradient(135deg, var(--neon), var(--pink)); color: black; }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 243, 255, 0.4); }
-    .btn-secondary { background: var(--card); color: var(--text); border: 1px solid var(--border); }
-    .btn-secondary:hover { background: var(--card-hover); border-color: var(--neon); }
+    .btn {
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0, 243, 255, 0.2);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--neon), var(--pink));
+      color: black;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 243, 255, 0.4);
+    }
+    .btn-secondary {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      background: var(--card-hover);
+      border-color: var(--neon);
+    }
 
-    .post-composer { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    .post-input { width: 100%; background: transparent; border: none; color: var(--text); font-size: 1.1rem; resize: none; outline: none; margin-bottom: 12px; }
+    .post-composer {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .post-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 1.1rem;
+      resize: none;
+      outline: none;
+      margin-bottom: 12px;
+    }
 
-    .post-actions { display: flex; justify-content: space-between; align-items: center; }
-    .post-tools { display: flex; gap: 16px; color: var(--text-muted); }
-    .post-tools label { cursor: pointer; transition: color 0.2s; }
+    .post-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .post-tools {
+      display: flex;
+      gap: 16px;
+      color: var(--text-muted);
+    }
+    .post-tools label {
+      cursor: pointer;
+      transition: color 0.2s;
+    }
     .post-tools label:hover { color: var(--neon); }
 
-    .post { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; transition: var(--transition); }
-    .post:hover { border-color: var(--neon); box-shadow: var(--shadow); }
+    .post {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: var(--transition);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .post:hover {
+      border-color: var(--neon);
+      box-shadow: var(--shadow);
+    }
 
-    .footer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-top: 1px solid var(--border); padding: 16px; text-align: center; font-size: 0.85rem; color: var(--text-muted); z-index: 800; animation: footerRainbow 4s infinite alternate; }
+    .footer {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      padding: 16px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      z-index: 800;
+      animation: footerRainbow 4s infinite alternate;
+    }
 
     @media (max-width: 768px) {
       .sidebar { transform: translateX(-100%); }
@@ -117,6 +348,7 @@
 </head>
 <body data-theme="light">
 
+<!-- ШАПКА С ЛОГОТИПОМ НА КАЖДОЙ СТРАНИЦЕ -->
 <header class="header">
   <div class="logo" onclick="goTo('home')">CRYPTOBROS</div>
   <div class="header-actions">
@@ -152,16 +384,21 @@
 
 <main class="main">
   <div class="container">
+
+    <!-- HOME -->
     <section id="home" class="page active">
       <div style="text-align:center; padding:60px 20px;">
-        <h1 style="font-size:3rem; background:linear-gradient(90deg,var(--neon),var(--pink));-webkit-background-clip:text;color:transparent;">
+        <h1 style="font-size:3rem; background:linear-gradient(90deg,var(--neon),var(--pink));-webkit-background-clip:text;color:transparent; margin-bottom:20px;">
           THE MIHELSON TRIAD
         </h1>
-        <p style="color:var(--text-muted); margin:20px 0;">Grok • Qwen2 • Phi-3 debate every token in real time.</p>
+        <p style="color:var(--text-muted); margin:20px 0; font-size:1.2rem;">
+          Grok • Qwen2 • Phi-3 debate every token in real time.
+        </p>
         <button class="btn btn-primary" onclick="goTo('manifest')">JOIN THE TRIBUNAL</button>
       </div>
     </section>
 
+    <!-- PROFILE -->
     <section id="profile" class="page">
       <div class="profile-cover" id="cover-container">
         <img id="cover-img" src="" class="cover-img" alt="Cover">
@@ -213,36 +450,42 @@
       <div id="posts-container"></div>
     </section>
 
+    <!-- TRIBUNAL -->
     <section id="tribunal" class="page">
       <div style="text-align:center; padding:60px 20px;">
-        <h2 style="color:var(--neon);">The Mihelson Triad</h2>
-        <p style="color:var(--text-muted); margin:20px 0;">Debate any token with 3 AI oracles.</p>
+        <h2 style="color:var(--neon); font-size:2.2rem; margin-bottom:20px;">The Mihelson Triad</h2>
+        <p style="color:var(--text-muted); margin:20px 0; max-width:600px; margin-left:auto; margin-right:auto;">
+          Three AI oracles debate every crypto token in real time. No noise. Only signal.
+        </p>
         <button class="btn btn-primary" onclick="alert('Token debate UI coming soon')">DEBATE A TOKEN</button>
       </div>
     </section>
 
+    <!-- WALLET -->
     <section id="wallet" class="page">
       <div style="text-align:center; padding:60px 20px;">
-        <h2 style="color:var(--neon);">Wallet</h2>
-        <p>Connect to manage AUS.</p>
-        <button class="btn btn-primary" onclick="connectWallet()">Connect</button>
+        <h2 style="color:var(--neon); font-size:2.2rem; margin-bottom:20px;">AUS Wallet</h2>
+        <p style="color:var(--text-muted); margin:20px 0;">Connect MetaMask or Phantom to manage your AUS tokens.</p>
+        <button class="btn btn-primary" onclick="connectWallet()">Connect Wallet</button>
       </div>
     </section>
 
+    <!-- MANIFEST -->
     <section id="manifest" class="page">
       <div style="max-width:600px; margin:40px auto; text-align:center;">
-        <h2 style="color:var(--neon); margin-bottom:24px;">MANIFESTO</h2>
-        <ul style="text-align:left; display:inline-block; margin:20px 0;">
-          <li>Bros in. Noise out.</li>
-          <li>No servers. Zero KYC. Only wallet.</li>
-          <li>We do not advise buying! We advise not buying!</li>
-          <li>Pay 300 AUS to prove you’re real.</li>
-          <li>Privacy-native. End-to-end encrypted.</li>
-          <li>Full control. No tracking. Ever.</li>
+        <h2 style="color:var(--neon); margin-bottom:24px; font-size:2.2rem;">THE MANIFESTO</h2>
+        <ul style="text-align:left; display:inline-block; margin:20px 0; padding-left:20px;">
+          <li style="margin:8px 0;">Bros in. Noise out.</li>
+          <li style="margin:8px 0;">No servers. Zero KYC. Only wallet.</li>
+          <li style="margin:8px 0;">We do not advise buying! We advise not buying!</li>
+          <li style="margin:8px 0;">Pay 300 AUS to prove you’re real.</li>
+          <li style="margin:8px 0;">Privacy-native. End-to-end encrypted.</li>
+          <li style="margin:8px 0;">Full control. No tracking. Ever.</li>
         </ul>
         <button class="btn btn-primary" onclick="alert('Send 300 AUS to: ' + WALLET)">Pay & Join</button>
       </div>
     </section>
+
   </div>
 </main>
 
@@ -250,6 +493,7 @@
   <div>Produced by MIHELSON © 2025 • The Mihelson Triad is watching.</div>
 </footer>
 
+<!-- БЕЗ ПРОБЕЛОВ В URL -->
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/tweetnacl@1.0.3/nacl.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/libsodium-wrappers@0.7.13/dist/modules/libsodium-wrappers.min.js"></script>
@@ -322,7 +566,7 @@
         };
       }
 
-      $('#profile-pubkey').textContent = 'PubKey: ' + Array.from(KEYPAIR.publicKey).slice(0,4).map(b=>b.toString(16).padStart(2,'0')).join('') + '...';
+      $('#profile-pubkey').textContent = 'PubKey: ' + Array.from(KEYPAIR.publicKey).slice(0,4).map(b=>b.toString(16).padStart(2,'0')).join('...') + '...';
       await loadProfile();
       updateQR();
       renderPosts();
@@ -343,7 +587,7 @@
       );
       localStorage.setItem(key, JSON.stringify({
         nonce: Array.from(nonce),
-         Array.from(ciphertext)
+        data: Array.from(ciphertext)
       }));
     } catch (e) {
       console.error('Encrypt failed:', e);
@@ -543,7 +787,6 @@
     }
   }
 
-  // 🔥 КРИТИЧЕСКИ ВАЖНО: currentName ВНЕ map()
   async function renderPosts() {
     try {
       const container = $('#posts-container');
@@ -563,10 +806,10 @@
             ? `<video src="${p.media}" controls style="width:100%; border-radius:12px; margin:12px 0;"></video>`
             : `<img src="${p.media}" style="width:100%; border-radius:12px; margin:12px 0;">`) : ''}
           <div style="margin:12px 0;">${escapeHtml(p.text).replace(/\n/g, '<br>')}</div>
-          <div class="post-footer" style="display:flex;gap:20px;color:var(--text-muted);margin-top:12px;flex-wrap:wrap;">
-            <div class="post-action" onclick="sharePost(${p.id})"><i class="ti ti-share"></i> Share</div>
-            <div class="post-action" onclick="editPost(${p.id})"><i class="ti ti-edit"></i> Edit</div>
-            <div class="post-action" onclick="deletePost(${p.id})"><i class="ti ti-trash"></i> Delete</div>
+          <div class="post-footer" style="display:flex;gap:20px;color:var(--text-muted);margin-top:12px;flex-wrap:wrap;font-size:0.9rem;">
+            <div class="post-action" onclick="sharePost(${p.id})" style="cursor:pointer;"><i class="ti ti-share"></i> Share</div>
+            <div class="post-action" onclick="editPost(${p.id})" style="cursor:pointer;"><i class="ti ti-edit"></i> Edit</div>
+            <div class="post-action" onclick="deletePost(${p.id})" style="cursor:pointer;"><i class="ti ti-trash"></i> Delete</div>
           </div>
         </div>
       `).join('');
@@ -586,13 +829,10 @@
     window.location.hash = page;
   }
 
-  // 🔥 ОБЯЗАТЕЛЬНО: привязка сайдбара
-  document.addEventListener('DOMContentLoaded', () => {
-    $$('.sidebar-item[data-page]').forEach(item => {
-      item.addEventListener('click', (e) => {
-        e.preventDefault();
-        goTo(item.dataset.page);
-      });
+  $$('.sidebar-item[data-page]').forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      goTo(item.dataset.page);
     });
   });
 
@@ -603,7 +843,7 @@
     $('.icon-btn .ti').className = next === 'dark' ? 'ti ti-sun' : 'ti ti-moon';
   }
 
-  function connectWallet() { alert('MetaMask / Phantom coming soon'); }
+  function connectWallet() { alert('MetaMask / Phantom integration coming soon'); }
   function openSettings() { alert('Settings'); }
   function logout() {
     if (confirm('Wipe all local data?')) {
