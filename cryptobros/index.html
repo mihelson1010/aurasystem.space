@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#00f3ff">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' fill='%2300f3ff'>⚔️</text></svg>">
   <style>
     :root {
       --bg: #f8f9fa;
@@ -21,8 +20,6 @@
       --text-muted: #6c757d;
       --neon: #00f3ff;
       --pink: #ff2a6d;
-      --accent: #7b2cbf;
-      --gold: #ffd700;
       --border: rgba(0, 243, 255, 0.3);
       --shadow: 0 8px 32px rgba(0, 243, 255, 0.15);
       --radius: 16px;
@@ -224,7 +221,6 @@
       </div>
     </section>
 
-    <!-- WALLET -->
     <section id="wallet" class="page">
       <div style="text-align:center; padding:60px 20px;">
         <h2 style="color:var(--neon);">Wallet</h2>
@@ -233,7 +229,6 @@
       </div>
     </section>
 
-    <!-- MANIFEST -->
     <section id="manifest" class="page">
       <div style="max-width:600px; margin:40px auto; text-align:center;">
         <h2 style="color:var(--neon); margin-bottom:24px;">MANIFESTO</h2>
@@ -255,7 +250,6 @@
   <div>Produced by MIHELSON © 2025 • The Mihelson Triad is watching.</div>
 </footer>
 
-<!-- Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/tweetnacl@1.0.3/nacl.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/libsodium-wrappers@0.7.13/dist/modules/libsodium-wrappers.min.js"></script>
@@ -263,7 +257,6 @@
 <script>
   const WALLET = '5R8wHTuWuhxGE6qUHbPh4RZatKBAvxJKpmLAdA2GbzPL';
 
-  // === УТИЛИТЫ ===
   const $ = s => document.querySelector(s);
   const $$ = s => document.querySelectorAll(s);
   const escapeHtml = str => {
@@ -272,12 +265,10 @@
     return div.innerHTML;
   };
 
-  // === ГЛОБАЛЫ ===
   let MASTER_KEY = null;
   let CRYPTO_READY = false;
   let KEYPAIR = null;
 
-  // === ИНИЦИАЛИЗАЦИЯ ===
   async function init() {
     try {
       await libsodium.ready;
@@ -287,11 +278,10 @@
       await initCrypto();
     } catch (e) {
       console.error('Init failed:', e);
-      alert('Failed to initialize. Please refresh.');
+      alert('Failed to initialize.');
     }
   }
 
-  // === КРИПТОГРАФИЯ ===
   async function initCrypto() {
     try {
       const hasData = localStorage.getItem('encrypted_name');
@@ -299,7 +289,7 @@
         ? prompt('🔒 Enter passphrase:')
         : prompt('🔐 Set passphrase (min 8 chars):');
 
-      if (!passphrase || !hasData && passphrase.length < 8) return initCrypto();
+      if (!passphrase || (!hasData && passphrase.length < 8)) return initCrypto();
 
       const salt = hasData
         ? new Uint8Array(JSON.parse(localStorage.getItem('salt')))
@@ -339,11 +329,10 @@
       goTo(window.location.hash.slice(1) || 'home');
     } catch (e) {
       console.error('Crypto init failed:', e);
-      alert('Crypto error. Try again.');
+      alert('Crypto error.');
     }
   }
 
-  // === ШИФРОВАНИЕ ===
   async function encryptStorage(key, data) {
     try {
       if (!CRYPTO_READY) return;
@@ -354,7 +343,7 @@
       );
       localStorage.setItem(key, JSON.stringify({
         nonce: Array.from(nonce),
-        data: Array.from(ciphertext)
+         Array.from(ciphertext)
       }));
     } catch (e) {
       console.error('Encrypt failed:', e);
@@ -377,7 +366,6 @@
     }
   }
 
-  // === ПРОФИЛЬ ===
   async function loadProfile() {
     const name = await decryptStorage('name') || 'MIHELSON';
     $('#profile-name').textContent = escapeHtml(name);
@@ -394,7 +382,6 @@
     QRCode.toCanvas($('#profile-qr'), qrData, { width: 120 });
   }
 
-  // === РЕСАЙЗ ===
   function resizeImage(file, maxWidth, maxHeight) {
     return new Promise(resolve => {
       const img = new Image();
@@ -416,7 +403,6 @@
     });
   }
 
-  // === МЕДИА ===
   $('#avatar-upload').onchange = async e => {
     const file = e.target.files[0];
     if (file?.type.startsWith('image/')) {
@@ -458,7 +444,6 @@
     }
   }
 
-  // === ПОСТЫ ===
   let postMedia = null;
   let postMediaType = null;
 
@@ -506,7 +491,6 @@
       $('#post-video').value = '';
     } catch (e) {
       console.error('Post creation failed:', e);
-      alert('Failed to create post.');
     }
   }
 
@@ -523,7 +507,6 @@
       }
     } catch (e) {
       console.error('Edit failed:', e);
-      alert('Failed to edit post.');
     }
   }
 
@@ -536,7 +519,6 @@
       renderPosts();
     } catch (e) {
       console.error('Delete failed:', e);
-      alert('Failed to delete post.');
     }
   }
 
@@ -557,22 +539,25 @@
         prompt('Copy and share:', fallback);
       }
     } catch (e) {
-      if (e.name !== 'AbortError') {
-        console.error('Share failed:', e);
-        alert('Share not supported.');
-      }
+      if (e.name !== 'AbortError') console.error('Share failed:', e);
     }
   }
 
+  // 🔥 КРИТИЧЕСКИ ВАЖНО: currentName ВНЕ map()
   async function renderPosts() {
     try {
       const container = $('#posts-container');
       const posts = (await decryptStorage('posts')) || [];
+      const currentName = await decryptStorage('name') || 'MIHELSON';
+
       container.innerHTML = posts.map(p => `
         <div class="post">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
             <div style="background:var(--pink);width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;">M</div>
-            <div><h4>${escapeHtml(await decryptStorage('name') || 'MIHELSON')}</h4><span style="color:var(--text-muted);font-size:0.9rem;">${escapeHtml(p.time)}</span></div>
+            <div>
+              <h4>${escapeHtml(currentName)}</h4>
+              <span style="color:var(--text-muted);font-size:0.9rem;">${escapeHtml(p.time)}</span>
+            </div>
           </div>
           ${p.media ? (p.mediaType === 'video' 
             ? `<video src="${p.media}" controls style="width:100%; border-radius:12px; margin:12px 0;"></video>`
@@ -587,21 +572,28 @@
       `).join('');
     } catch (e) {
       console.error('Render failed:', e);
-      container.innerHTML = '<p>Failed to load posts.</p>';
+      $('#posts-container').innerHTML = '<p style="color:var(--pink);">Failed to load posts.</p>';
     }
   }
 
-  // === НАВИГАЦИЯ ===
   function goTo(page) {
     $$('.page').forEach(p => p.classList.remove('active'));
     $$('.sidebar-item').forEach(i => i.classList.remove('active'));
-    $(`#${page}`)?.classList.add('active');
-    $(`.sidebar-item[data-page="${page}"]`)?.classList.add('active');
+    const targetPage = $(`#${page}`);
+    const targetItem = $(`.sidebar-item[data-page="${page}"]`);
+    if (targetPage) targetPage.classList.add('active');
+    if (targetItem) targetItem.classList.add('active');
     window.location.hash = page;
   }
 
-  $$('.sidebar-item[data-page]').forEach(item => {
-    item.addEventListener('click', () => goTo(item.dataset.page));
+  // 🔥 ОБЯЗАТЕЛЬНО: привязка сайдбара
+  document.addEventListener('DOMContentLoaded', () => {
+    $$('.sidebar-item[data-page]').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        goTo(item.dataset.page);
+      });
+    });
   });
 
   function toggleTheme() {
@@ -620,14 +612,12 @@
     }
   }
 
-  // === PWA ===
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./sw.js').catch(console.warn);
     });
   }
 
-  // ЗАПУСК
   window.addEventListener('load', init);
 </script>
 </body>
