@@ -223,6 +223,7 @@
       position: relative;
       overflow: hidden;
       border-radius: var(--radius);
+      cursor: pointer;
     }
     .cover-img {
       width: 100%; height: 100%; object-fit: cover;
@@ -235,6 +236,11 @@
       padding: 6px 10px;
       border-radius: 8px;
       font-size: 0.8rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .profile-cover:hover .cover-upload-hint {
+      opacity: 1;
     }
     .profile-info {
       position: relative;
@@ -274,40 +280,7 @@
       justify-content: center;
       cursor: pointer;
       box-shadow: 0 4px 12px rgba(0, 243, 255, 0.4);
-    }
-    .profile-meta h2 {
-      font-size: 2.2rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    .profile-meta p {
-      color: var(--text-muted);
-      font-size: 1rem;
-    }
-
-    .profile-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin: 24px 0;
-    }
-    .btn {
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
-      border: none;
-      font-size: 0.95rem;
-    }
-    .btn-primary {
-      background: var(--neon);
-      color: black;
-    }
-    .btn-secondary {
-      background: var(--card);
-      color: var(--text);
-      border: 1px solid var(--border);
+      z-index: 10;
     }
 
     /* ПОСТЫ */
@@ -333,11 +306,9 @@
       gap: 12px;
       color: var(--text-muted);
     }
-    .post-tools .ti {
+    .post-tools label {
       cursor: pointer;
-      transition: color 0.2s;
     }
-    .post-tools .ti:hover { color: var(--neon); }
 
     .post {
       background: var(--card);
@@ -350,80 +321,6 @@
     .post:hover {
       border-color: var(--neon);
       box-shadow: var(--shadow);
-    }
-    .post-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    .post-avatar {
-      width: 48px; height: 48px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-    .post-meta h4 {
-      font-weight: 600;
-      font-size: 1rem;
-    }
-    .post-meta span {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-    .post-content {
-      margin: 12px 0;
-      line-height: 1.7;
-      font-size: 1.05rem;
-    }
-    .post-footer {
-      display: flex;
-      justify-content: space-between;
-      padding-top: 12px;
-      border-top: 1px solid var(--border);
-      margin-top: 16px;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
-    .post-action {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      transition: color 0.2s;
-    }
-    .post-action:hover { color: var(--neon); }
-
-    /* МОДАЛКИ */
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(8px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
-    .modal.active {
-      opacity: 1;
-      visibility: visible;
-    }
-    .modal-content {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      width: 90%;
-      max-width: 500px;
-      padding: 24px;
-      box-shadow: var(--shadow);
-      transform: scale(0.9);
-      transition: transform 0.3s ease;
-    }
-    .modal.active .modal-content {
-      transform: scale(1);
     }
 
     /* ФУТЕР */
@@ -496,31 +393,18 @@
 <main class="main">
   <div class="container">
 
-    <!-- ГЛАВНАЯ -->
-    <section id="home" class="page active">
-      <div class="hero">
-        <h1>THE MIHELSON TRIAD</h1>
-        <p>Grok • Qwen2 • Phi-3 debate every token in real time. No KYC. No servers. Only truth.</p>
-        <button class="btn-cta" onclick="goTo('manifest')">JOIN THE TRIBUNAL</button>
-      </div>
-    </section>
-
-    <!-- ФИД -->
-    <section id="feed" class="page">
-      <h2 style="margin-bottom: 24px; color: var(--neon);">Global Feed</h2>
-      <div id="feed-container"></div>
-    </section>
-
     <!-- ПРОФИЛЬ -->
     <section id="profile" class="page">
-      <div class="profile-cover">
+      <!-- ШАПКА ПРОФИЛЯ -->
+      <div class="profile-cover" id="cover-container">
         <img id="cover-img" src="" class="cover-img" alt="Cover">
         <div class="cover-upload-hint">1200×300px recommended</div>
-        <label class="edit-avatar" style="bottom: 12px; right: 12px;">
+        <label class="edit-avatar" style="bottom: 12px; right: 12px; z-index: 10;">
           <input type="file" id="cover-upload" accept="image/*" style="display:none;">
           <i class="ti ti-camera"></i>
         </label>
       </div>
+
       <div class="profile-info">
         <div class="avatar-wrapper">
           <img id="avatar-img" class="profile-avatar" src="" alt="Avatar">
@@ -555,34 +439,6 @@
       <div id="posts-container"></div>
     </section>
 
-    <!-- ТРИБУНАЛ -->
-    <section id="tribunal" class="page">
-      <div class="tribunal-card">
-        <div class="tribunal-header">
-          <i class="ti ti-scale"></i>
-          <h3>Ask The Mihelson Triad</h3>
-        </div>
-        <button class="btn btn-primary" style="width:100%" onclick="showTribunalModal()">DEBATE A TOKEN</button>
-      </div>
-      <div id="tribunal-feed"></div>
-    </section>
-
-    <!-- МАНИФЕСТ -->
-    <section id="manifest" class="page">
-      <div style="max-width: 600px; margin: 40px auto; text-align: center;">
-        <h2 style="color: var(--neon); margin-bottom: 24px;">MANIFESTO</h2>
-        <ul style="text-align: left; display: inline-block; margin: 20px 0;">
-          <li>Bros in. Noise out.</li>
-          <li>No servers. Zero KYC. Only wallet.</li>
-          <li>We do not advise buying! We advise not buying!</li>
-          <li>Pay 300 AUS to prove you’re real.</li>
-          <li>Privacy-native. End-to-end encrypted.</li>
-          <li>Full control. No tracking. Ever.</li>
-        </ul>
-        <button class="btn btn-primary" onclick="alert('Send 300 AUS to: ' + WALLET)">Pay & Join</button>
-      </div>
-    </section>
-
   </div>
 </main>
 
@@ -590,21 +446,6 @@
 <footer class="footer">
   <div>Produced by MIHELSON © 2025 • <span>The Mihelson Triad</span> is watching.</div>
 </footer>
-
-<!-- МОДАЛКИ -->
-<div id="tribunal-modal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h3 class="modal-title">The Mihelson Triad</h3>
-      <button class="modal-close" onclick="closeModal('tribunal-modal')">×</button>
-    </div>
-    <textarea id="tribunal-input" placeholder="e.g. Is $PEPE a rug?"></textarea>
-    <div style="margin-top:16px; display:flex; gap:10px;">
-      <button class="btn btn-primary" onclick="submitTribunal()">DEBATE</button>
-      <button class="btn btn-secondary" onclick="closeModal('tribunal-modal')">Cancel</button>
-    </div>
-  </div>
-</div>
 
 <script>
   const WALLET = '5R8wHTuWuhxGE6qUHbPh4RZatKBAvxJKpmLAdA2GbzPL';
@@ -638,10 +479,17 @@
     $('#profile-name').textContent = sanitize(name);
     const avatar = localStorage.getItem('avatar');
     const cover = localStorage.getItem('cover');
-    if (avatar) $('#avatar-img').src = avatar;
-    if (cover) $('#cover-img').src = cover;
+    if (avatar) {
+      $('#avatar-img').src = avatar;
+      $('#avatar-img').style.display = 'block';
+    }
+    if (cover) {
+      $('#cover-img').src = cover;
+      $('#cover-img').style.display = 'block';
+    }
   }
 
+  // АВАТАР
   $('#avatar-upload').onchange = e => {
     const file = e.target.files[0];
     if (file && file.type.startsWith('image/')) {
@@ -652,6 +500,11 @@
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  // ШАПКА — КЛИК ПО ВСЕЙ ОБЛАСТИ
+  $('#cover-container').onclick = () => {
+    $('#cover-upload').click();
   };
 
   $('#cover-upload').onchange = e => {
@@ -732,35 +585,6 @@
     `).join('');
   }
 
-  // ТРИБУНАЛ
-  function showTribunalModal() {
-    $('#tribunal-modal').classList.add('active');
-  }
-
-  function submitTribunal() {
-    const q = $('#tribunal-input').value.trim();
-    if (!q) return;
-    closeModal('tribunal-modal');
-    const verdict = `
-      <div class="tribunal-card">
-        <div class="tribunal-header">
-          <i class="ti ti-scale"></i>
-          <h3>VERDICT: ${q}</h3>
-        </div>
-        <div class="tribunal-verdict">
-          <strong>Grok:</strong> Bullish<br>
-          <strong>Qwen2:</strong> Risky mint<br>
-          <strong>Phi-3:</strong> LP locked
-        </div>
-      </div>
-    `;
-    $('#tribunal-feed').insertAdjacentHTML('afterbegin', verdict);
-  }
-
-  function closeModal(id) {
-    $(`#${id}`).classList.remove('active');
-  }
-
   // ИНИЦИАЛИЗАЦИЯ
   window.onload = () => {
     const savedTheme = localStorage.getItem('theme') || 'light';
@@ -770,7 +594,7 @@
     localStorage.setItem('name', 'MIHELSON');
     updateProfile();
     renderPosts();
-    goTo(window.location.hash.slice(1) || 'home');
+    goTo(window.location.hash.slice(1) || 'profile'); // Открываем профиль сразу
   };
 
   $$('.sidebar-item[data-page]').forEach(item => {
