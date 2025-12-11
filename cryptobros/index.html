@@ -4,262 +4,124 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CRYPTOBROS — The Mihelson Triad</title>
-  <base href="./">
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self';
-                 script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
-                 style-src 'self' 'unsafe-inline';
-                 img-src 'self' https:;
-                 frame-ancestors 'none';
-                 base-uri 'self';">
+  <meta name="description" content="Zero KYC. AI Tribunal. Full Control.">
+  <meta property="og:title" content="CRYPTOBROS">
+  <meta property="og:description" content="No servers. No accounts. Full control.">
+  <meta property="og:image" content="https://cryptobros.mihelson.app/logo.png">
+  <meta property="og:url" content="https://cryptobros.mihelson.app">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://cryptobros.mihelson.app">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#00f3ff">
-  <link rel="apple-touch-icon" href="image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' fill='%2300f3ff'>⚔️</text></svg>">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; frame-ancestors 'none';">
   <style>
     :root {
-      --bg: #0a0a0a;
-      --card: #121212;
-      --card-hover: #1a1a1a;
-      --text: #e0e0e0;
-      --text-muted: #888;
-      --neon: #00f3ff;
-      --pink: #ff2a6d;
-      --border: rgba(0, 243, 255, 0.2);
-      --shadow: 0 8px 32px rgba(0, 243, 255, 0.15);
-      --radius: 16px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      --font-main: 'Inter', system-ui, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+      --bg: #f8f9fa; --card: #fff; --text: #1a1a1a; --neon: #00f3ff; --pink: #ff2a6d;
+      --border: rgba(0,243,255,0.3); --radius: 16px; --transition: 0.3s ease;
     }
+    [data-theme="dark"] { --bg: #0a0a0a; --card: #111; --text: #e0e0e0; --border: rgba(0,243,255,0.2); }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; min-height:100vh; overflow-x:hidden; }
+    .page-bg { position:fixed; top:0; left:0; width:100%; height:100%; background-size:cover; opacity:0.3; z-index:-1; }
 
-    /* ✅ ФОНЫ ПО СТРАНИЦАМ */
-    #home {
-      background: #0a0a12 url('logo777.png') center/cover no-repeat fixed;
-      filter: brightness(1.4) contrast(1.2);
-    }
-    #profile {
-      background: #0b0b14 url('bg5.png') center/cover no-repeat fixed;
-    }
-    #tribunal {
-      background: #0c0c16 url('i3sy.png') center/cover no-repeat fixed;
-    }
-    #wallet {
-      background: #090912 url('i3.png') center/cover no-repeat fixed;
-    }
-    #manifest {
-      background: #080810 url('abstract.png') center/cover no-repeat fixed;
-    }
+    .header { position:fixed; top:0; left:0; right:0; background:var(--bg); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); z-index:1000; padding:12px 20px; display:flex; justify-content:space-between; align-items:center; }
+    .logo { font-weight:800; font-size:1.6rem; background:linear-gradient(90deg,var(--neon),var(--pink)); -webkit-background-clip:text; color:transparent; cursor:pointer; }
+    .hamburger { display:none; cursor:pointer; }
+    .hamburger span { display:block; width:25px; height:3px; background:var(--text); margin:5px; transition:0.3s; }
+    .hamburger.open span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+    .hamburger.open span:nth-child(2) { opacity:0; }
+    .hamburger.open span:nth-child(3) { transform:rotate(-45deg) translate(7px,-6px); }
 
-    .page {
-      min-height: 100vh;
-      padding: 80px 20px 100px;
-      display: none;
-    }
-    .page.active {
-      display: block;
-    }
+    .sidebar { position:fixed; left:0; top:70px; bottom:0; width:280px; background:var(--card); border-right:1px solid var(--border); padding:20px 0; z-index:900; transition:0.3s; }
+    .sidebar.open { transform:translateX(0); }
+    .sidebar-item { padding:14px 24px; display:flex; align-items:center; gap:16px; color:var(--text); cursor:pointer; transition:var(--transition); }
+    .sidebar-item:hover, .sidebar-item.active { color:var(--neon); font-weight:600; }
 
-    body {
-      color: var(--text);
-      font-family: var(--font-main);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
+    .main { margin-left:280px; padding:80px 20px 100px; }
+    .page { display:none; min-height:100vh; }
+    .page.active { display:block; }
 
-    @keyframes neonGlow { 
-      0%, 100% { text-shadow: 0 0 10px var(--neon); } 
-      50% { text-shadow: 0 0 30px var(--neon), 0 0 50px var(--neon); } 
-    }
-    @keyframes footerRainbow {
-      0%   { color: #00f3ff; text-shadow: 0 0 10px rgba(0, 243, 255, 0.7); }
-      25%  { color: #ff2a6d; text-shadow: 0 0 10px rgba(255, 42, 109, 0.7); }
-      50%  { color: #ffcc00; text-shadow: 0 0 10px rgba(255, 204, 0, 0.7); }
-      75%  { color: #7b2cbf; text-shadow: 0 0 10px rgba(123, 44, 191, 0.7); }
-      100% { color: #00c897; text-shadow: 0 0 10px rgba(0, 200, 151, 0.7); }
-    }
+    .btn { padding:12px 24px; border-radius:50px; font-weight:600; background:linear-gradient(135deg,var(--neon),var(--pink)); color:black; cursor:pointer; transition:var(--transition); }
+    .btn:hover { transform:translateY(-3px); box-shadow:0 0 25px rgba(0,243,255,0.8); }
 
-    .header {
-      position: fixed; top: 0; left: 0; right: 0;
-      background: rgba(10,10,16,0.8); backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border); z-index: 1000;
-      padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;
-    }
-    .logo {
-      font-weight: 800; font-size: 1.6rem;
-      background: linear-gradient(90deg, var(--neon), var(--pink));
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-      cursor: pointer; animation: neonGlow 3s infinite alternate;
-    }
-    .icon-btn {
-      background: var(--card); border: 1px solid var(--border); color: var(--text);
-      width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: var(--transition);
-    }
-    .icon-btn:hover {
-      background: var(--neon); color: black;
-      transform: translateY(-2px); box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
-    }
+    .post { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:20px; margin-bottom:20px; }
+    .post-footer { display:flex; gap:15px; margin-top:15px; color:var(--text); }
+    .post-action { cursor:pointer; transition:0.2s; }
+    .post-action:hover { color:var(--neon); }
 
-    .sidebar {
-      position: fixed; left: 0; top: 70px; bottom: 0; width: 280px;
-      background: rgba(18,18,18,0.9); border-right: 1px solid var(--border);
-      padding: 20px 0; overflow-y: auto; z-index: 900; transition: transform 0.4s ease;
-    }
-    .sidebar-item {
-      padding: 14px 24px; display: flex; align-items: center; gap: 16px;
-      color: var(--text-muted); cursor: pointer; transition: var(--transition); border-left: 3px solid transparent;
-    }
-    .sidebar-item:hover, .sidebar-item.active {
-      background: var(--card-hover); color: var(--neon); font-weight: 600; border-left-color: var(--neon);
-    }
-    .sidebar-item .ti { font-size: 1.4rem; }
-    .badge { background: var(--pink); color: black; font-size: 0.7rem; padding: 2px 8px; border-radius: 20px; font-weight: 700; margin-left: auto; }
+    .footer { position:fixed; bottom:0; left:0; right:0; background:var(--card); border-top:1px solid var(--border); padding:16px; text-align:center; font-size:0.85rem; color:var(--text); }
 
-    .main { margin-left: 280px; }
-    .container { max-width: 800px; margin: 0 auto; }
-
-    .profile-cover { height: 320px; background: var(--card); position: relative; overflow: hidden; border-radius: var(--radius); cursor: pointer; }
-    .cover-img { width: 100%; height: 100%; object-fit: cover; }
-    .profile-avatar { width: 160px; height: 160px; border-radius: 50%; border: 6px solid var(--card); box-shadow: var(--shadow); }
-
-    .btn {
-      padding: 12px 24px; border-radius: 50px; font-weight: 600; cursor: pointer;
-      transition: var(--transition); border: none; font-size: 0.95rem;
-      display: inline-flex; align-items: center; gap: 8px;
-      box-shadow: 0 4px 12px rgba(0, 243, 255, 0.2);
-    }
-    .btn-primary { background: linear-gradient(135deg, var(--neon), var(--pink)); color: black; }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 243, 255, 0.4); }
-    .btn-secondary { background: var(--card); color: var(--text); border: 1px solid var(--border); }
-    .btn-secondary:hover { background: var(--card-hover); border-color: var(--neon); }
-
-    .post-composer { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    .post-input { width: 100%; background: transparent; border: none; color: var(--text); font-size: 1.1rem; resize: none; outline: none; margin-bottom: 12px; }
-
-    .post-actions { display: flex; justify-content: space-between; align-items: center; }
-    .post-tools { display: flex; gap: 16px; color: var(--text-muted); }
-    .post-tools label { cursor: pointer; transition: color 0.2s; }
-    .post-tools label:hover { color: var(--neon); }
-
-    .post { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; transition: var(--transition); }
-    .post:hover { border-color: var(--neon); box-shadow: var(--shadow); }
-
-    .footer {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      background: var(--card); border-top: 1px solid var(--border);
-      padding: 16px; text-align: center; font-size: 0.85rem; color: var(--text-muted);
-      z-index: 800; animation: footerRainbow 4s infinite alternate;
-    }
-
-    @media (max-width: 768px) {
-      .sidebar { transform: translateX(-100%); }
-      .main { margin-left: 0; }
+    @media (max-width:768px) {
+      .hamburger { display:block; }
+      .sidebar { transform:translateX(-100%); }
+      .main { margin-left:0; }
     }
   </style>
 </head>
-<body data-theme="dark">
+<body data-theme="light">
+
+<div class="hamburger" onclick="toggleSidebar()">
+  <span></span><span></span><span></span>
+</div>
 
 <header class="header">
   <div class="logo" onclick="goTo('home')">CRYPTOBROS</div>
   <div class="header-actions">
-    <div class="icon-btn" onclick="toggleTheme()"><i class="ti ti-moon"></i></div>
-    <div class="icon-btn" onclick="connectWallet()"><i class="ti ti-wallet"></i></div>
-    <div class="icon-btn" onclick="openSettings()"><i class="ti ti-settings"></i></div>
+    <div class="icon-btn" onclick="toggleTheme()" style="background:var(--card); border:1px solid var(--border); width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center;">
+      <i class="ti ti-moon"></i>
+    </div>
   </div>
 </header>
 
 <nav class="sidebar" id="sidebar">
-  <div class="sidebar-item active" data-page="home">
-    <i class="ti ti-home"></i> <span>Home</span>
-  </div>
-  <div class="sidebar-item" data-page="profile">
-    <i class="ti ti-user"></i> <span>Profile</span>
-  </div>
-  <div class="sidebar-item" data-page="tribunal">
-    <i class="ti ti-scale"></i> <span>The Mihelson Triad</span>
-    <div class="badge">LIVE</div>
-  </div>
-  <div class="sidebar-item" data-page="wallet">
-    <i class="ti ti-wallet"></i> <span>Wallet</span>
-  </div>
-  <div class="sidebar-item" onclick="logout()">
-    <i class="ti ti-logout"></i> <span>Logout</span>
-  </div>
+  <div class="sidebar-item active" data-page="home"><i class="ti ti-home"></i> <span>Home</span></div>
+  <div class="sidebar-item" data-page="profile"><i class="ti ti-user"></i> <span>Profile</span></div>
+  <div class="sidebar-item" data-page="tribunal"><i class="ti ti-scale"></i> <span>The Mihelson Triad</span></div>
+  <div class="sidebar-item" data-page="manifest"><i class="ti ti-file"></i> <span>Manifesto</span></div>
+  <div class="sidebar-item" onclick="logout()"><i class="ti ti-logout"></i> <span>Logout</span></div>
 </nav>
 
 <main class="main">
   <div class="container">
 
     <section id="home" class="page active">
-      <div style="text-align:center; padding:60px 20px; color:white;">
-        <h1 style="font-size:3rem; background:linear-gradient(90deg,var(--neon),var(--pink));-webkit-background-clip:text;color:transparent;">
+      <div class="page-bg" style="background-image:url('logo777.png'); filter:brightness(1.4) contrast(1.2);"></div>
+      <div style="text-align:center;padding:60px 20px;color:var(--text);">
+        <h1 style="font-size:3rem;background:linear-gradient(90deg,var(--neon),var(--pink));-webkit-background-clip:text;color:transparent;">
           THE MIHELSON TRIAD
         </h1>
-        <p style="margin:20px 0; color:var(--text-muted);">
-          Grok • Qwen2 • Phi-3 debate every token in real time.
-        </p>
-        <button class="btn btn-primary" onclick="goTo('manifest')">JOIN THE TRIBUNAL</button>
+        <p style="margin:20px 0;">Grok • Qwen2 • Phi-3 debate every token.</p>
+        <button class="btn" onclick="goTo('manifest')">JOIN THE TRIBUNAL</button>
       </div>
     </section>
 
     <section id="profile" class="page">
-      <!-- профиль -->
-      <div class="profile-cover" id="cover-container">
-        <img id="cover-img" src="" class="cover-img" alt="Cover">
-        <label class="edit-avatar" style="bottom:12px; right:12px; z-index:10;">
-          <input type="file" id="cover-upload" accept="image/*" style="display:none;">
-          <i class="ti ti-camera"></i>
-        </label>
-      </div>
-      <div class="profile-info" style="position:relative; margin-top:-80px; padding:0 20px; display:flex; align-items:flex-end; gap:24px;">
-        <div class="avatar-wrapper">
-          <img id="avatar-img" class="profile-avatar" src="" alt="Avatar">
-          <label class="edit-avatar" style="position:absolute; bottom:8px; right:8px; background:var(--neon); color:black; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 4px 12px rgba(0,243,255,0.4);">
-            <input type="file" id="avatar-upload" accept="image/*" style="display:none;">
-            <i class="ti ti-camera"></i>
-          </label>
-        </div>
-        <div class="profile-meta">
-          <h2 id="profile-name">MIHELSON</h2>
-          <p id="profile-pubkey">...</p>
-        </div>
-      </div>
-      <div id="posts-container" style="margin-top:40px;"></div>
+      <div class="page-bg" style="background-image:url('bg5.png');"></div>
+      <h2 style="color:var(--neon);">Profile</h2>
+      <p>Coming soon...</p>
     </section>
 
     <section id="tribunal" class="page">
-      <div style="text-align:center; padding:60px 20px; color:white;">
-        <h2 style="color:var(--neon);">The Mihelson Triad</h2>
-        <button class="btn btn-primary" onclick="alert('Debate UI coming soon')">DEBATE A TOKEN</button>
-      </div>
-    </section>
-
-    <section id="wallet" class="page">
-      <div style="text-align:center; padding:60px 20px; color:white;">
-        <h2 style="color:var(--neon);">AUS Wallet</h2>
-        <button class="btn btn-primary" onclick="connectWallet()">Connect Wallet</button>
-      </div>
+      <div class="page-bg" style="background-image:url('i3sy.png');"></div>
+      <h2 style="color:var(--neon);">The Mihelson Triad</h2>
+      <p>AI oracles debating crypto tokens in real time.</p>
     </section>
 
     <section id="manifest" class="page">
-      <div style="max-width:600px; margin:40px auto; text-align:center; color:white;">
-        <h2 style="color:var(--neon); margin-bottom:24px;">MANIFESTO</h2>
-        <ul style="text-align:left; display:inline-block; margin:20px 0;">
-          <li>Bros in. Noise out.</li>
+      <div class="page-bg" style="background-image:url('abstract.png');"></div>
+      <div style="max-width:600px;margin:0 auto;text-align:center;color:var(--text);">
+        <h2 style="color:var(--neon);">MANIFESTO</h2>
+        <ul style="text-align:left;margin:20px 0;list-style:disc;padding-left:20px;">
           <li>No servers. Zero KYC. Only wallet.</li>
-          <li>We do not advise buying! We advise not buying!</li>
-          <li>Pay 300 AUS to prove you’re real.</li>
           <li>Privacy-native. End-to-end encrypted.</li>
           <li>Full control. No tracking. Ever.</li>
         </ul>
-        <button class="btn btn-primary" onclick="alert('Send 300 AUS to: ' + WALLET)">Pay & Join</button>
       </div>
     </section>
 
@@ -267,74 +129,58 @@
 </main>
 
 <footer class="footer">
-  <div>Produced by MIHELSON © 2025 • The Mihelson Triad is watching.</div>
+  Produced by MIHELSON © 2025
 </footer>
 
 <script>
-  const WALLET = '5R8wHTuWuhxGE6qUHbPh4RZatKBAvxJKpmLAdA2GbzPL';
-  const $ = s => document.querySelector(s);
-  const $$ = s => document.querySelectorAll(s);
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/tweetnacl@1.0.3/nacl.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/libsodium-wrappers@0.7.13/dist/modules/libsodium-wrappers.min.js"></script>
-
-<script>
-  let MASTER_KEY = null;
-  let CRYPTO_READY = false;
-  let KEYPAIR = null;
-
-  // Минимум JS для навигации (даже если крипто упадёт)
-  function goTo(page) {
-    $$('.page').forEach(p => p.classList.remove('active'));
-    $$('.sidebar-item').forEach(i => i.classList.remove('active'));
-    $(`#${page}`)?.classList.add('active');
-    $(`.sidebar-item[data-page="${page}"]`)?.classList.add('active');
-    window.location.hash = page;
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.querySelector('.hamburger').classList.toggle('open');
   }
 
-  $$('.sidebar-item[data-page]').forEach(item => {
-    item.addEventListener('click', e => {
+  function toggleTheme() {
+    try {
+      const theme = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.body.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+    } catch (e) { console.warn('Theme save failed'); }
+  }
+
+  function goTo(page) {
+    try {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+      const target = document.getElementById(page);
+      const item = document.querySelector(`[data-page="${page}"]`);
+      if (target) target.classList.add('active');
+      if (item) item.classList.add('active');
+      window.location.hash = page;
+      if (window.innerWidth <= 768) toggleSidebar();
+    } catch (e) { console.error('Navigation failed:', e); }
+  }
+
+  document.querySelectorAll('.sidebar-item[data-page]').forEach(item => {
+    item.addEventListener('click', (e) => {
       e.preventDefault();
       goTo(item.dataset.page);
     });
   });
 
-  // Остальной JS (посты, крипто и т.д.) можно подключить далее
-  // Но фон уже работает, даже если он упадёт!
-
-  // Пример: минимальная инициализация без крипто
-  window.addEventListener('load', () => {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    document.body.setAttribute('data-theme', savedTheme);
-    $('.icon-btn .ti').className = savedTheme === 'dark' ? 'ti ti-sun' : 'ti ti-moon';
-    
-    // Попробуем инициализировать крипто, но не ломаем сайт, если не выйдет
-    if (typeof libsodium !== 'undefined') {
-      libsodium.ready.then(() => {
-        // Здесь можно вызвать initCrypto(), если нужно
-        console.log('Crypto ready');
-      }).catch(e => console.warn('Crypto load failed:', e));
-    }
-  });
-
-  function toggleTheme() {
-    const next = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    document.body.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    $('.icon-btn .ti').className = next === 'dark' ? 'ti ti-sun' : 'ti ti-moon';
-  }
-
-  function connectWallet() { alert('MetaMask coming'); }
-  function openSettings() { alert('Settings'); }
   function logout() {
-    if (confirm('Wipe all data?')) {
+    if (confirm('Wipe all local data?')) {
       localStorage.clear();
       location.reload();
     }
   }
-</script>
 
+  window.addEventListener('load', () => {
+    try {
+      const theme = localStorage.getItem('theme') || 'light';
+      document.body.setAttribute('data-theme', theme);
+      const page = window.location.hash.slice(1) || 'home';
+      goTo(page);
+    } catch (e) { console.warn('Init failed:', e); }
+  });
+</script>
 </body>
 </html>
