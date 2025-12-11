@@ -38,44 +38,46 @@
       overflow: hidden;
     }
 
-    /* Мерцающая сетка поверх фона */
+    /* 🔥 Яркая пульсирующая сетка — ЧЕТКО ВИДИМА */
     .network-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
       pointer-events: none;
       z-index: 1;
       background: 
-        linear-gradient(transparent 99%, rgba(0, 243, 255, 0.25) 1%),
-        linear-gradient(90deg, transparent 99%, rgba(0, 243, 255, 0.25) 1%);
-      background-size: 50px 50px;
-      opacity: 0.3;
-      animation: networkPulse 10s infinite alternate;
+        linear-gradient(transparent 98%, rgba(0, 243, 255, 0.7) 2%),
+        linear-gradient(90deg, transparent 98%, rgba(255, 42, 109, 0.7) 2%);
+      background-size: 60px 60px;
+      opacity: 0.6;
+      animation: networkMove 12s infinite linear;
     }
 
-    @keyframes networkPulse {
-      0% { opacity: 0.2; background-position: 0 0; }
-      50% { opacity: 0.5; background-position: 25px 25px; }
-      100% { opacity: 0.2; background-position: 0 0; }
+    @keyframes networkMove {
+      0% { background-position: 0 0; }
+      100% { background-position: 60px 60px; }
     }
 
+    /* 🔮 Живой, меняющийся градиент заголовка */
     h1 {
       font-size: 7rem;
       font-weight: 800;
       letter-spacing: 4px;
       margin: 10px 0 10px;
-      background: linear-gradient(90deg, #00f3ff, #ff2a6d);
+      background: linear-gradient(90deg, #00f3ff, #ff2a6d, #7b2cbf, #2ecc71, #ffd700);
+      background-size: 300% 300%;
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
-      animation: neonGlow 3s infinite alternate;
+      animation: gradientShift 8s ease infinite;
       position: relative;
       z-index: 10;
+      text-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
     }
 
-    @keyframes neonGlow {
-      0%, 100% { text-shadow: 0 0 10px rgba(0, 243, 255, 0.7); }
-      50% { text-shadow: 0 0 30px rgba(0, 243, 255, 1), 0 0 50px rgba(255, 42, 109, 0.8); }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     .tagline {
@@ -121,7 +123,7 @@
     }
     .btn-cryptobros:hover {
       transform: translateY(-3px);
-      box-shadow: 0 0 25px rgba(155, 89, 182, 0.7);
+      box-shadow: 0 0 25px rgba(155, 89, 182, 0.8);
       background: linear-gradient(135deg, #9b59b6, #c0392b);
     }
 
@@ -130,17 +132,8 @@
     }
     .btn-office:hover {
       transform: translateY(-3px);
-      box-shadow: 0 0 25px rgba(255, 170, 0, 0.7);
+      box-shadow: 0 0 25px rgba(255, 170, 0, 0.8);
       background: linear-gradient(135deg, #ffaa00, #ffd700);
-    }
-
-    .btn-proxy {
-      background: linear-gradient(135deg, #2980b9, #3498db);
-    }
-    .btn-proxy:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 25px rgba(0, 243, 255, 0.7);
-      background: linear-gradient(135deg, #3498db, #00f3ff);
     }
 
     .btn-crypto {
@@ -148,7 +141,7 @@
     }
     .btn-crypto:hover {
       transform: translateY(-3px);
-      box-shadow: 0 0 25px rgba(46, 204, 113, 0.7);
+      box-shadow: 0 0 25px rgba(46, 204, 113, 0.8);
       background: linear-gradient(135deg, #2ecc71, #34e07c);
     }
 
@@ -174,7 +167,7 @@
 </head>
 <body>
 
-<!-- Мерцающая сетка -->
+<!-- 🔥 Сетка: теперь ЯРКО и чётко видна -->
 <div class="network-overlay"></div>
 
 <h1>AURASYSTEM</h1>
@@ -184,10 +177,10 @@
   No servers. No accounts. Full control.
 </div>
 
+<!-- ✅ Только 3 кнопки: без Shop и Proxy -->
 <div class="buttons">
   <a href="cryptobros/" class="btn btn-cryptobros">CRYPTOBROS</a>
   <a href="office/" class="btn btn-office">Aura Office</a>
-  <a href="proxy/" class="btn btn-proxy">Aura Proxy</a>
   <a href="cryptoaura.html" class="btn btn-crypto">CryptoAura</a>
 </div>
 
