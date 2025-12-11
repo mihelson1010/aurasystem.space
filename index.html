@@ -19,8 +19,11 @@
         content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https:; frame-ancestors 'none'; base-uri 'self';">
   <meta name="referrer" content="no-referrer">
   <link rel="canonical" href="https://aurasystem.space/">
+  <link rel="manifest" href="manifest.json">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800;900&display=swap" rel="stylesheet">
   <style>
+    html { scroll-behavior: smooth; }
+
     body {
       margin: 0;
       padding: 0;
@@ -38,7 +41,6 @@
       overflow: hidden;
     }
 
-    /* Сетка */
     .network-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -57,7 +59,6 @@
       100% { background-position: 70px 70px; }
     }
 
-    /* Заголовок */
     h1 {
       font-size: 7.2rem;
       font-weight: 900;
@@ -80,7 +81,6 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* Основной девиз — ЖИРНЫЙ, МЕРЦАЮЩИЙ, РАЗНОЦВЕТНЫЙ */
     .tagline {
       font-size: 1.6rem;
       font-weight: 900;
@@ -105,7 +105,6 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* Кнопки */
     .buttons {
       display: flex;
       flex-direction: column;
@@ -141,32 +140,36 @@
     .btn-crypto { background: linear-gradient(135deg, #27ae60, #2ecc71); }
     .btn-crypto:hover { transform: translateY(-3px); box-shadow: 0 0 25px rgba(46, 204, 113, 0.8); background: linear-gradient(135deg, #2ecc71, #34e07c); }
 
-    /* Футер: от белого до тёмно-голубого */
+    .btn-wallet {
+      margin-top: 12px;
+      font-size: 1.1rem;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(0, 243, 255, 0.5);
+    }
+    .btn-wallet:hover {
+      background: rgba(0, 243, 255, 0.1);
+      border-color: #00f3ff;
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+    }
+
+    /* ✅ НОРМАЛЬНЫЙ ФУТЕР — ЧИТАЕМЫЙ, АНИМИРОВАННЫЙ, НАДЕЖНЫЙ */
     .footer {
       position: fixed;
       bottom: 16px;
       right: 20px;
       font-size: 0.88rem;
       font-weight: 700;
+      color: #4cff4c; /* светло-зелёный */
+      text-shadow: 0 0 6px rgba(76, 255, 76, 0.6);
       opacity: 0.95;
       pointer-events: none;
       z-index: 10;
-      background: linear-gradient(90deg, #ffffff, #003366);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      animation: footerColorShift 7s infinite alternate;
+      animation: footerPulse 4s infinite alternate;
     }
 
-    @keyframes footerColorShift {
-      0% { 
-        background: linear-gradient(90deg, #ffffff, #a0cfff);
-        opacity: 1;
-      }
-      100% { 
-        background: linear-gradient(90deg, #e0f0ff, #003366);
-        opacity: 0.9;
-      }
+    @keyframes footerPulse {
+      0%, 100% { opacity: 0.9; text-shadow: 0 0 6px rgba(76, 255, 76, 0.6); }
+      50% { opacity: 1; text-shadow: 0 0 12px rgba(76, 255, 76, 0.9); }
     }
   </style>
 </head>
@@ -185,11 +188,33 @@
   <a href="cryptobros/" class="btn btn-cryptobros">CRYPTOBROS</a>
   <a href="office/" class="btn btn-office">Aura Office</a>
   <a href="cryptoaura.html" class="btn btn-crypto">CryptoAura</a>
+  <a href="#" class="btn btn-wallet" onclick="connectWallet(); return false;">Connect Wallet</a>
 </div>
 
+<!-- ✅ НОРМАЛЬНЫЙ ФУТЕР -->
 <div class="footer">Produced by Mihelson © 2025</div>
 
 <script>
+  // PWA
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(console.warn);
+  }
+
+  // Web3
+  async function connectWallet() {
+    if (typeof window.ethereum !== 'undefined') {
+      try {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        alert('Connected: ' + accounts[0].slice(0,6) + '...');
+      } catch (e) {
+        alert('Wallet access denied.');
+      }
+    } else {
+      alert('MetaMask not detected.');
+    }
+  }
+
+  // Clean URL
   if (window.location.search && window.location.search !== '?') {
     history.replaceState(null, '', window.location.pathname);
   }
