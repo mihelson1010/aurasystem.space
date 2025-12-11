@@ -19,6 +19,7 @@
         content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https:; frame-ancestors 'none'; base-uri 'self';">
   <meta name="referrer" content="no-referrer">
   <link rel="canonical" href="https://aurasystem.space/">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
@@ -26,7 +27,7 @@
       background: #0d0d1a url('fonsystem.png') center/cover no-repeat;
       background-attachment: fixed;
       color: #fff;
-      font-family: Arial, sans-serif;
+      font-family: 'Inter', system-ui, sans-serif;
       text-align: center;
       min-height: 100vh;
       display: flex;
@@ -37,115 +38,146 @@
       overflow: hidden;
     }
 
-    /* Анимированный неоновый эффект */
-    .neon-pulse {
-      animation: neonPulse 3s infinite alternate;
+    /* Мерцающая сетка поверх фона */
+    .network-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 1;
+      background: 
+        linear-gradient(transparent 99%, rgba(0, 243, 255, 0.25) 1%),
+        linear-gradient(90deg, transparent 99%, rgba(0, 243, 255, 0.25) 1%);
+      background-size: 50px 50px;
+      opacity: 0.3;
+      animation: networkPulse 10s infinite alternate;
     }
-    @keyframes neonPulse {
-      0% { text-shadow: 0 0 5px rgba(0, 243, 255, 0.7); }
-      50% { text-shadow: 0 0 20px rgba(0, 243, 255, 0.9), 0 0 30px rgba(0, 243, 255, 0.6); }
-      100% { text-shadow: 0 0 5px rgba(0, 243, 255, 0.7); }
+
+    @keyframes networkPulse {
+      0% { opacity: 0.2; background-position: 0 0; }
+      50% { opacity: 0.5; background-position: 25px 25px; }
+      100% { opacity: 0.2; background-position: 0 0; }
     }
 
     h1 {
       font-size: 7rem;
-      font-weight: bold;
-      color: #ff7700;
-      margin: 10px 0 5px;
-      letter-spacing: 3px;
+      font-weight: 800;
+      letter-spacing: 4px;
+      margin: 10px 0 10px;
+      background: linear-gradient(90deg, #00f3ff, #ff2a6d);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+      animation: neonGlow 3s infinite alternate;
       position: relative;
       z-index: 10;
     }
 
+    @keyframes neonGlow {
+      0%, 100% { text-shadow: 0 0 10px rgba(0, 243, 255, 0.7); }
+      50% { text-shadow: 0 0 30px rgba(0, 243, 255, 1), 0 0 50px rgba(255, 42, 109, 0.8); }
+    }
+
     .tagline {
-      font-size: 1.3rem;
-      margin-bottom: 30px;
-      line-height: 1.4;
+      font-size: 1.4rem;
+      margin-bottom: 40px;
+      line-height: 1.5;
+      color: #e0e0e0;
+      max-width: 600px;
+      padding: 0 20px;
       position: relative;
       z-index: 10;
+      font-weight: 300;
     }
 
     .buttons {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 22px;
       width: 100%;
-      max-width: 320px;
+      max-width: 380px;
       padding: 0 20px;
       position: relative;
       z-index: 10;
     }
 
     .btn {
-      padding: 14px 24px;
-      border-radius: 25px;
-      font-size: 1.2rem;
-      font-weight: bold;
+      padding: 16px 32px;
+      border-radius: 60px;
+      font-size: 1.3rem;
+      font-weight: 700;
       text-decoration: none;
       color: white;
       text-align: center;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    .btn-cryptobros {
+      background: linear-gradient(135deg, #8e44ad, #9b59b6);
+    }
+    .btn-cryptobros:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 25px rgba(155, 89, 182, 0.7);
+      background: linear-gradient(135deg, #9b59b6, #c0392b);
     }
 
-    .btn-cryptobros { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
-    .btn-office { background: linear-gradient(135deg, #ff7700, #ffaa00); }
-    .btn-shop { background: linear-gradient(135deg, #3498db, #2980b9); }
-    .btn-crypto { background: linear-gradient(135deg, #2ecc71, #34e07c); }
+    .btn-office {
+      background: linear-gradient(135deg, #ff7700, #ffaa00);
+    }
+    .btn-office:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 25px rgba(255, 170, 0, 0.7);
+      background: linear-gradient(135deg, #ffaa00, #ffd700);
+    }
+
+    .btn-proxy {
+      background: linear-gradient(135deg, #2980b9, #3498db);
+    }
+    .btn-proxy:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 25px rgba(0, 243, 255, 0.7);
+      background: linear-gradient(135deg, #3498db, #00f3ff);
+    }
+
+    .btn-crypto {
+      background: linear-gradient(135deg, #27ae60, #2ecc71);
+    }
+    .btn-crypto:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 25px rgba(46, 204, 113, 0.7);
+      background: linear-gradient(135deg, #2ecc71, #34e07c);
+    }
 
     .footer {
       position: fixed;
-      bottom: 12px;
-      right: 16px;
+      bottom: 16px;
+      right: 20px;
       font-size: 0.85rem;
       color: #4cff4c;
-      text-shadow: 0 0 8px rgba(76, 255, 76, 0.5);
+      text-shadow: 0 0 8px rgba(76, 255, 76, 0.6);
       opacity: 0.9;
-      animation: neonFlicker 3.5s infinite alternate;
+      animation: footerGlow 4s infinite alternate;
       pointer-events: none;
       z-index: 10;
+      font-weight: 600;
     }
 
-    @keyframes neonFlicker {
-      0%, 100% { opacity: 0.9; text-shadow: 0 0 8px rgba(76, 255, 76, 0.5); }
-      50% { opacity: 0.6; text-shadow: 0 0 4px rgba(76, 255, 76, 0.3); }
-    }
-
-    /* Анимированные точки (необязательно, но круто) */
-    .dot {
-      position: absolute;
-      background: rgba(0, 243, 255, 0.5);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-
-    .dot:nth-child(1) { top: 10%; left: 5%; width: 2px; height: 2px; animation: dotMove 8s infinite ease-in-out; }
-    .dot:nth-child(2) { top: 20%; right: 10%; width: 3px; height: 3px; animation: dotMove 6s infinite ease-in-out reverse; }
-    .dot:nth-child(3) { bottom: 15%; left: 20%; width: 2px; height: 2px; animation: dotMove 10s infinite ease-in-out; }
-    .dot:nth-child(4) { bottom: 5%; right: 5%; width: 3px; height: 3px; animation: dotMove 7s infinite ease-in-out reverse; }
-    .dot:nth-child(5) { top: 30%; left: 30%; width: 1px; height: 1px; animation: dotMove 12s infinite ease-in-out; }
-
-    @keyframes dotMove {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.5); }
-      100% { transform: scale(1); }
+    @keyframes footerGlow {
+      0%, 100% { opacity: 0.9; text-shadow: 0 0 8px rgba(76, 255, 76, 0.6); }
+      50% { opacity: 0.7; text-shadow: 0 0 15px rgba(76, 255, 76, 0.9); }
     }
   </style>
 </head>
 <body>
 
-<!-- Анимированные точки -->
-<div class="dot"></div>
-<div class="dot"></div>
-<div class="dot"></div>
-<div class="dot"></div>
-<div class="dot"></div>
+<!-- Мерцающая сетка -->
+<div class="network-overlay"></div>
 
-<h1 class="neon-pulse">AURASYSTEM</h1>
+<h1>AURASYSTEM</h1>
 
 <div class="tagline">
   Privacy-native tools.<br>
@@ -155,7 +187,7 @@
 <div class="buttons">
   <a href="cryptobros/" class="btn btn-cryptobros">CRYPTOBROS</a>
   <a href="office/" class="btn btn-office">Aura Office</a>
-  <a href="shop/" class="btn btn-shop">Aura Shop</a>
+  <a href="proxy/" class="btn btn-proxy">Aura Proxy</a>
   <a href="cryptoaura.html" class="btn btn-crypto">CryptoAura</a>
 </div>
 
