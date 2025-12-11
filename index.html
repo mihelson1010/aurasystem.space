@@ -19,7 +19,7 @@
         content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https:; frame-ancestors 'none'; base-uri 'self';">
   <meta name="referrer" content="no-referrer">
   <link rel="canonical" href="https://aurasystem.space/">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800;900&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
@@ -38,40 +38,40 @@
       overflow: hidden;
     }
 
-    /* 🔥 Яркая пульсирующая сетка — ЧЕТКО ВИДИМА */
+    /* Сетка */
     .network-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
       pointer-events: none;
       z-index: 1;
       background: 
-        linear-gradient(transparent 98%, rgba(0, 243, 255, 0.7) 2%),
-        linear-gradient(90deg, transparent 98%, rgba(255, 42, 109, 0.7) 2%);
-      background-size: 60px 60px;
-      opacity: 0.6;
-      animation: networkMove 12s infinite linear;
+        linear-gradient(transparent 97%, rgba(0, 243, 255, 0.8) 3%),
+        linear-gradient(90deg, transparent 97%, rgba(123, 44, 191, 0.6) 3%);
+      background-size: 70px 70px;
+      opacity: 0.7;
+      animation: networkMove 10s infinite linear;
     }
 
     @keyframes networkMove {
       0% { background-position: 0 0; }
-      100% { background-position: 60px 60px; }
+      100% { background-position: 70px 70px; }
     }
 
-    /* 🔮 Живой, меняющийся градиент заголовка */
+    /* Заголовок */
     h1 {
-      font-size: 7rem;
-      font-weight: 800;
+      font-size: 7.2rem;
+      font-weight: 900;
       letter-spacing: 4px;
-      margin: 10px 0 10px;
+      margin: 10px 0 15px;
       background: linear-gradient(90deg, #00f3ff, #ff2a6d, #7b2cbf, #2ecc71, #ffd700);
       background-size: 300% 300%;
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      animation: gradientShift 8s ease infinite;
+      animation: gradientShift 6s ease infinite;
       position: relative;
       z-index: 10;
-      text-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+      text-shadow: 0 0 12px rgba(0, 243, 255, 0.4);
     }
 
     @keyframes gradientShift {
@@ -80,18 +80,32 @@
       100% { background-position: 0% 50%; }
     }
 
+    /* Основной девиз — ЖИРНЫЙ, МЕРЦАЮЩИЙ, РАЗНОЦВЕТНЫЙ */
     .tagline {
-      font-size: 1.4rem;
-      margin-bottom: 40px;
-      line-height: 1.5;
-      color: #e0e0e0;
-      max-width: 600px;
+      font-size: 1.6rem;
+      font-weight: 900;
+      line-height: 1.4;
+      max-width: 700px;
       padding: 0 20px;
+      margin-bottom: 45px;
       position: relative;
       z-index: 10;
-      font-weight: 300;
+      background: linear-gradient(90deg, #ffd700, #00f3ff, #ff2a6d, #2ecc71);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: taglineGlow 5s ease infinite;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
     }
 
+    @keyframes taglineGlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Кнопки */
     .buttons {
       display: flex;
       flex-direction: column;
@@ -107,7 +121,7 @@
       padding: 16px 32px;
       border-radius: 60px;
       font-size: 1.3rem;
-      font-weight: 700;
+      font-weight: 800;
       text-decoration: none;
       color: white;
       text-align: center;
@@ -118,56 +132,46 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
-    .btn-cryptobros {
-      background: linear-gradient(135deg, #8e44ad, #9b59b6);
-    }
-    .btn-cryptobros:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 25px rgba(155, 89, 182, 0.8);
-      background: linear-gradient(135deg, #9b59b6, #c0392b);
-    }
+    .btn-cryptobros { background: linear-gradient(135deg, #8e44ad, #9b59b6); }
+    .btn-cryptobros:hover { transform: translateY(-3px); box-shadow: 0 0 25px rgba(155, 89, 182, 0.8); background: linear-gradient(135deg, #9b59b6, #c0392b); }
 
-    .btn-office {
-      background: linear-gradient(135deg, #ff7700, #ffaa00);
-    }
-    .btn-office:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 25px rgba(255, 170, 0, 0.8);
-      background: linear-gradient(135deg, #ffaa00, #ffd700);
-    }
+    .btn-office { background: linear-gradient(135deg, #ff7700, #ffaa00); }
+    .btn-office:hover { transform: translateY(-3px); box-shadow: 0 0 25px rgba(255, 170, 0, 0.8); background: linear-gradient(135deg, #ffaa00, #ffd700); }
 
-    .btn-crypto {
-      background: linear-gradient(135deg, #27ae60, #2ecc71);
-    }
-    .btn-crypto:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 25px rgba(46, 204, 113, 0.8);
-      background: linear-gradient(135deg, #2ecc71, #34e07c);
-    }
+    .btn-crypto { background: linear-gradient(135deg, #27ae60, #2ecc71); }
+    .btn-crypto:hover { transform: translateY(-3px); box-shadow: 0 0 25px rgba(46, 204, 113, 0.8); background: linear-gradient(135deg, #2ecc71, #34e07c); }
 
+    /* Футер: от белого до тёмно-голубого */
     .footer {
       position: fixed;
       bottom: 16px;
       right: 20px;
-      font-size: 0.85rem;
-      color: #4cff4c;
-      text-shadow: 0 0 8px rgba(76, 255, 76, 0.6);
-      opacity: 0.9;
-      animation: footerGlow 4s infinite alternate;
+      font-size: 0.88rem;
+      font-weight: 700;
+      opacity: 0.95;
       pointer-events: none;
       z-index: 10;
-      font-weight: 600;
+      background: linear-gradient(90deg, #ffffff, #003366);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: footerColorShift 7s infinite alternate;
     }
 
-    @keyframes footerGlow {
-      0%, 100% { opacity: 0.9; text-shadow: 0 0 8px rgba(76, 255, 76, 0.6); }
-      50% { opacity: 0.7; text-shadow: 0 0 15px rgba(76, 255, 76, 0.9); }
+    @keyframes footerColorShift {
+      0% { 
+        background: linear-gradient(90deg, #ffffff, #a0cfff);
+        opacity: 1;
+      }
+      100% { 
+        background: linear-gradient(90deg, #e0f0ff, #003366);
+        opacity: 0.9;
+      }
     }
   </style>
 </head>
 <body>
 
-<!-- 🔥 Сетка: теперь ЯРКО и чётко видна -->
 <div class="network-overlay"></div>
 
 <h1>AURASYSTEM</h1>
@@ -177,7 +181,6 @@
   No servers. No accounts. Full control.
 </div>
 
-<!-- ✅ Только 3 кнопки: без Shop и Proxy -->
 <div class="buttons">
   <a href="cryptobros/" class="btn btn-cryptobros">CRYPTOBROS</a>
   <a href="office/" class="btn btn-office">Aura Office</a>
