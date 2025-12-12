@@ -4,9 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CRYPTOBROS — The Mihelson Triad</title>
-  <base href="./">
   <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://*.libp2p.io; style-src 'self' 'unsafe-inline'; img-src 'self' https: ; connect-src https://*.libp2p.io wss:; frame-ancestors 'none';">
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://*.libp2p.io; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src https://*.libp2p.io wss:; frame-ancestors 'none';">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
@@ -57,7 +56,7 @@
     .page {
       display: none;
       flex: 1;
-      padding: 60px 0 40px; /* УБРАНО ПОЛНОЕ БОКОВОЕ ПОЛЕ — КОНТЕНТ ВО ВСЮ ШИРИНУ */
+      padding: 60px 0 80px;
       position: relative;
     }
     .page.active { display: flex; flex-direction: column; }
@@ -166,11 +165,10 @@
       box-shadow: 0 8px 20px rgba(0,243,255,0.4);
     }
 
-    /* PROFILE — ШАПКА И АВАТАР ВО ВСЮ ШИРИНУ */
+    /* PROFILE — HEADER & AVATAR */
     .profile-header {
       height: 300px;
       background: var(--card);
-      border: 2px dashed var(--border);
       position: relative;
       overflow: hidden;
       display: flex;
@@ -197,15 +195,12 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      font-size: 3rem;
-      font-weight: 800;
-      color: #aaa;
+      position: relative;
     }
     .edit-avatar {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      bottom: 8px;
+      right: 8px;
       background: var(--neon);
       color: #000;
       width: 40px;
@@ -218,8 +213,11 @@
       box-shadow: 0 4px 12px rgba(0,243,255,0.4);
       z-index: 10;
     }
+    .edit-avatar i {
+      color: #000 !important;
+      font-size: 18px;
+    }
 
-    /* POSTS — ВО ВСЮ ШИРИНУ */
     .post-composer {
       background: var(--card);
       border: 1px solid var(--border);
@@ -259,7 +257,6 @@
       transform: scale(1.15);
     }
 
-    /* МЕРЦАНИЕ */
     .flicker-rainbow {
       background: linear-gradient(90deg, var(--neon), var(--pink), var(--gold), var(--green), var(--neon));
       -webkit-background-clip: text;
@@ -273,7 +270,6 @@
       50% { opacity: 0.95; filter: blur(0.2px); }
     }
 
-    /* MANIFESTO */
     .manifest-content h2 {
       font-weight: 900;
       font-size: 2.4rem;
@@ -285,7 +281,6 @@
       line-height: 1.6;
     }
 
-    /* AURA SYSTEM LINK — МЕРЦАЕТ */
     .aura-link {
       text-align: center;
       margin: 30px 0;
@@ -305,7 +300,6 @@
       font-weight: 700;
     }
 
-    /* FOOTER — МЕРЦАЕТ */
     .footer {
       margin-top: auto;
       padding: 16px;
@@ -329,225 +323,262 @@
       .sidebar { transform: translateX(-100%); width: 280px; }
       .sidebar.open { transform: translateX(0); }
       .main { margin-left: 0; }
-      .profile-avatar-wrapper { top: 150px; left: 10px; }
+      .profile-avatar-wrapper { top: 160px; left: 10px; }
     }
   </style>
 </head>
-<body data-theme="dark">
+<body>
+  <!-- No data-theme: light by default -->
 
-<div class="hamburger" onclick="toggleSidebar()">
-  <span></span><span></span><span></span>
-</div>
-
-<header class="header">
-  <div class="logo" onclick="goTo('home')">CRYPTOBROS</div>
-  <div class="header-right">
-    <div class="icon-btn" onclick="toggleTheme()"><i class="ti ti-moon"></i></div>
+  <div class="hamburger" onclick="toggleSidebar()">
+    <span></span><span></span><span></span>
   </div>
-</header>
 
-<nav class="sidebar" id="sidebar">
-  <div class="sidebar-item active" data-page="home"><i class="ti ti-home"></i> <span>Home</span></div>
-  <div class="sidebar-item" data-page="profile"><i class="ti ti-user"></i> <span>Profile</span></div>
-  <div class="sidebar-item" data-page="tribunal"><i class="ti ti-scale"></i> <span>The Mihelson Triad</span></div>
-  <div class="sidebar-item" data-page="manifest"><i class="ti ti-file"></i> <span>Manifesto</span></div>
-  <div class="sidebar-item" data-page="messenger"><i class="ti ti-message-circle"></i> <span>Messenger</span></div>
-  <div class="sidebar-item" onclick="logout()"><i class="ti ti-logout"></i> <span>Logout</span></div>
-</nav>
+  <header class="header">
+    <div class="logo" onclick="window.location.href='https://aurasystem.space/'">CRYPTOBROS</div>
+    <div class="header-right">
+      <div class="icon-btn" onclick="toggleTheme()"><i class="ti ti-moon"></i></div>
+    </div>
+  </header>
 
-<main class="main">
-  <div class="container">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-item active" data-page="home"><i class="ti ti-home"></i> <span>Home</span></div>
+    <div class="sidebar-item" data-page="profile"><i class="ti ti-user"></i> <span>Profile</span></div>
+    <div class="sidebar-item" data-page="tribunal"><i class="ti ti-scale"></i> <span>The Mihelson Triad</span></div>
+    <div class="sidebar-item" data-page="manifest"><i class="ti ti-file"></i> <span>Manifesto</span></div>
+    <div class="sidebar-item" data-page="messenger"><i class="ti ti-message-circle"></i> <span>Messenger</span></div>
+    <div class="sidebar-item" onclick="logout()"><i class="ti ti-logout"></i> <span>Logout</span></div>
+  </nav>
 
-    <!-- HOME -->
-    <section id="home" class="page active">
-      <div class="page-bg"></div>
-      <div style="text-align:center;">
-        <h1 class="flicker-rainbow" style="font-size:3.2rem;margin-bottom:20px;">
-          THE MIHELSON TRIAD
-        </h1>
-        <p style="color:var(--muted);margin:20px 0;font-size:1.1rem;">
-          Grok • Qwen2 • Phi-3 debate every token in real time.
-        </p>
-        <button class="btn" onclick="goTo('manifest')">JOIN THE TRIBUNAL</button>
-      </div>
-      <div class="aura-link">
-        <a href="https://aurasystem.space" class="flicker-rainbow">← Back to AURA SYSTEM</a>
-      </div>
-    </section>
+  <main class="main">
+    <div class="container">
 
-    <!-- PROFILE -->
-    <section id="profile" class="page">
-      <div class="page-bg"></div>
-      
-      <!-- ШАПКА ВО ВСЮ ШИРИНУ -->
-      <div class="profile-header" id="cover-container" style="position:relative;">
-        <div id="cover-preview" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--muted);">
-          Upload cover
+      <!-- HOME -->
+      <section id="home" class="page active">
+        <div class="page-bg"></div>
+        <div style="text-align:center;">
+          <h1 class="flicker-rainbow" style="font-size:3.2rem;margin-bottom:20px;">
+            THE MIHELSON TRIAD
+          </h1>
+          <p style="color:var(--muted);margin:20px 0;font-size:1.1rem;">
+            Grok • Qwen2 • Phi-3 debate every token in real time.
+          </p>
+          <button class="btn" onclick="goTo('manifest')">JOIN THE TRIBUNAL</button>
         </div>
-        <input type="file" id="cover-upload" accept="image/*" style="display:none;">
-        <div style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.6);color:#fff;padding:6px 14px;border-radius:20px;font-size:0.85rem;cursor:pointer;" onclick="document.getElementById('cover-upload').click()">
-          <i class="ti ti-pencil"></i> Edit
+        <div class="aura-link">
+          <a href="https://aurasystem.space/" class="flicker-rainbow">← Back to AURA SYSTEM</a>
         </div>
-      </div>
+      </section>
 
-      <!-- АВАТАР ВО ВСЮ ШИРИНУ -->
-      <div class="profile-avatar-wrapper">
-        <div class="profile-avatar" id="avatar-img">M</div>
-        <label class="edit-avatar">
-          <i class="ti ti-plus" style="font-size:20px;"></i>
-          <input type="file" id="avatar-upload" accept="image/*" style="display:none;">
-        </label>
-        <div>
-          <div id="profile-name-display">MIHELSON</div>
-          <p id="profile-pubkey" style="color:var(--muted); margin-top: 6px;">Loading...</p>
-        </div>
-      </div>
-
-      <!-- ПОСТЫ ВО ВСЮ ШИРИНУ -->
-      <div style="margin-top:30px;max-width:100%;padding:0 20px;">
-        <div class="post-composer">
-          <textarea class="post-input" placeholder="Share your alpha, Bro..."></textarea>
-          <div class="post-actions">
-            <div class="post-tools">
-              <label for="post-photo"><i class="ti ti-photo"></i></label>
-              <label for="post-video"><i class="ti ti-video"></i></label>
-            </div>
-            <button class="btn" onclick="createPost()">Post</button>
+      <!-- PROFILE -->
+      <section id="profile" class="page">
+        <div class="page-bg"></div>
+        
+        <div class="profile-header" id="cover-container">
+          <div id="cover-preview" style="width:100%;height:100%;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:var(--muted);">
+            Upload cover
           </div>
-          <input type="file" id="post-photo" accept="image/*" style="display:none;">
-          <input type="file" id="post-video" accept="video/*" style="display:none;">
-        </div>
-        <div id="posts-container"></div>
-      </div>
-
-      <div class="aura-link">
-        <a href="https://aurasystem.space" class="flicker-rainbow">← Back to AURA SYSTEM</a>
-      </div>
-    </section>
-
-    <!-- TRIBUNAL — ВСЁ МЕРЦАЕТ -->
-    <section id="tribunal" class="page">
-      <div class="page-bg"></div>
-      <div style="text-align:center;max-width:800px;margin:0 auto;padding:0 20px;">
-        <h2 class="flicker-rainbow" style="font-size:2.6rem;margin-bottom:20px;">
-          The Mihelson Triad
-        </h2>
-
-        <p class="flicker-rainbow" style="font-size:1.6rem;margin:15px 0;line-height:1.4;">
-          Grok • Qwen2 • Phi-3
-        </p>
-        <p class="flicker-rainbow" style="font-size:1.2rem;margin:10px 0;font-style:italic;">
-          Three minds. One truth.
-        </p>
-
-        <p class="flicker-rainbow" style="font-size:1.2rem;margin:20px 0;line-height:1.5;">
-          We don’t predict prices.<br>
-          We reveal risk.<br><br>
-          No KYC. DYOR. Full Control.<br><br>
-          We do not advise buying.<br>
-          We advise NOT buying.
-        </p>
-
-        <button class="btn" onclick="alert('Debate UI coming soon')">DEBATE A TOKEN</button>
-      </div>
-      <div class="aura-link">
-        <a href="https://aurasystem.space" class="flicker-rainbow">← Back to AURA SYSTEM</a>
-      </div>
-    </section>
-
-    <!-- MANIFEST — ТОЛСТЫЙ, МЕРЦАЮЩИЙ -->
-    <section id="manifest" class="page">
-      <div class="page-bg"></div>
-      <div class="manifest-content" style="max-width:700px;margin:40px auto;text-align:center;padding:0 20px;">
-        <h2 class="flicker-rainbow">MANIFESTO</h2>
-        <ul style="text-align:left;display:inline-block;margin:20px 0;padding-left:20px;">
-          <li>Bros in. Noise out.</li>
-          <li>No servers. Zero KYC. Only wallet.</li>
-          <li>We do not advise buying! We advise not buying!</li>
-          <li>Pay 300 AUS to prove you’re real.</li>
-          <li>Privacy-native. End-to-end encrypted.</li>
-          <li>Full control. No tracking. Ever.</li>
-        </ul>
-
-        <div style="display:flex;align-items:center;gap:10px;margin:20px 0;color:var(--text);">
-          <input type="checkbox" id="agree-check" style="accent-color:var(--neon);">
-          <label for="agree-check">I agree to the Manifesto and accept full responsibility</label>
+          <input type="file" id="cover-upload" accept="image/*" style="display:none;">
+          <div style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.6);color:#fff;padding:6px 14px;border-radius:20px;font-size:0.85rem;cursor:pointer;" onclick="document.getElementById('cover-upload').click()">
+            <i class="ti ti-pencil"></i> Edit
+          </div>
         </div>
 
-        <button class="btn" id="pay-btn" disabled>Pay & Join</button>
-      </div>
-      <div class="aura-link">
-        <a href="https://aurasystem.space" class="flicker-rainbow">← Back to AURA SYSTEM</a>
-      </div>
-    </section>
-
-    <!-- MESSENGER -->
-    <section id="messenger" class="page">
-      <div class="page-bg"></div>
-      <div style="padding:20px;max-width:600px;margin:0 auto;">
-        <h2 class="flicker-rainbow" style="text-align:center;margin-bottom:20px;">P2P Messenger</h2>
-        <div style="background:var(--card);border-radius:var(--radius);padding:15px;margin-bottom:20px;">
-          <input type="text" id="peer-id" placeholder="Enter peer wallet (0x...)" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--text);">
-          <button class="btn" onclick="connectPeer()" style="margin-top:10px;width:100%;">Connect</button>
+        <div class="profile-avatar-wrapper">
+          <div class="profile-avatar">
+            <span id="avatar-placeholder" style="font-size:3rem;font-weight:800;color:#aaa;">M</span>
+            <img id="avatar-preview" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:50%;">
+          </div>
+          <label class="edit-avatar">
+            <i class="ti ti-camera"></i>
+            <input type="file" id="avatar-upload" accept="image/*" style="display:none;">
+          </label>
+          <div>
+            <div id="profile-name-display">MIHELSON</div>
+            <p id="profile-pubkey" style="color:var(--muted); margin-top: 6px;">0x...Loading</p>
+          </div>
         </div>
-        <div id="chat" style="height:300px;overflow-y:auto;background:var(--card);border-radius:var(--radius);padding:15px;margin-bottom:15px;"></div>
-        <div style="display:flex;gap:10px;">
-          <input type="text" id="msg-input" placeholder="Loading..." disabled style="flex:1;padding:12px;border:1px solid var(--border);border-radius:50px;background:transparent;color:var(--text);">
-          <button class="btn" onclick="sendMessage()" disabled>Send</button>
+
+        <div style="margin-top:30px;max-width:100%;padding:0 20px;">
+          <div class="post-composer">
+            <textarea class="post-input" placeholder="Share your alpha, Bro..."></textarea>
+            <div class="post-actions">
+              <div class="post-tools">
+                <label for="post-photo"><i class="ti ti-photo"></i></label>
+                <label for="post-video"><i class="ti ti-video"></i></label>
+              </div>
+              <button class="btn" onclick="createPost()">Post</button>
+            </div>
+            <input type="file" id="post-photo" accept="image/*" style="display:none;">
+            <input type="file" id="post-video" accept="video/*" style="display:none;">
+          </div>
+          <div id="posts-container"></div>
         </div>
-      </div>
-      <div class="aura-link">
-        <a href="https://aurasystem.space" class="flicker-rainbow">← Back to AURA SYSTEM</a>
-      </div>
-    </section>
 
-  </div>
-</main>
+        <div class="aura-link">
+          <a href="https://aurasystem.space/" class="flicker-rainbow">← Back to AURA SYSTEM</a>
+        </div>
+      </section>
 
-<footer class="footer">
-  <div class="footer-content">
-    Produced by MIHELSON © 2025 • The Mihelson Triad is watching.
-  </div>
-</footer>
+      <!-- TRIBUNAL -->
+      <section id="tribunal" class="page">
+        <div class="page-bg"></div>
+        <div style="text-align:center;max-width:800px;margin:0 auto;padding:0 20px;">
+          <h2 class="flicker-rainbow" style="font-size:2.6rem;margin-bottom:20px;">
+            The Mihelson Triad
+          </h2>
+          <p class="flicker-rainbow" style="font-size:1.6rem;margin:15px 0;line-height:1.4;">
+            Grok • Qwen2 • Phi-3
+          </p>
+          <p class="flicker-rainbow" style="font-size:1.2rem;margin:10px 0;font-style:italic;">
+            Three minds. One truth.
+          </p>
+          <p class="flicker-rainbow" style="font-size:1.2rem;margin:20px 0;line-height:1.5;">
+            We don’t predict prices.<br>
+            We reveal risk.<br><br>
+            No KYC. DYOR. Full Control.<br><br>
+            We do not advise buying.<br>
+            We advise NOT buying.
+          </p>
+          <button class="btn" onclick="alert('Debate UI coming soon')">DEBATE A TOKEN</button>
+        </div>
+        <div class="aura-link">
+          <a href="https://aurasystem.space/" class="flicker-rainbow">← Back to AURA SYSTEM</a>
+        </div>
+      </section>
 
-<script>
-  const $ = s => document.querySelector(s);
-  
-  $('#agree-check')?.addEventListener('change', e => {
-    $('#pay-btn').disabled = !e.target.checked;
-  });
+      <!-- MANIFEST -->
+      <section id="manifest" class="page">
+        <div class="page-bg"></div>
+        <div class="manifest-content" style="max-width:700px;margin:40px auto;text-align:center;padding:0 20px;">
+          <h2 class="flicker-rainbow">MANIFESTO</h2>
+          <ul style="text-align:left;display:inline-block;margin:20px 0;padding-left:20px;">
+            <li>Bros in. Noise out.</li>
+            <li>No servers. Zero KYC. Only wallet.</li>
+            <li>We do not advise buying! We advise not buying!</li>
+            <li>Pay 300 AUS to prove you’re real.</li>
+            <li>Privacy-native. End-to-end encrypted.</li>
+            <li>Full control. No tracking. Ever.</li>
+          </ul>
+          <div style="display:flex;align-items:center;gap:10px;margin:20px 0;color:var(--text);">
+            <input type="checkbox" id="agree-check" style="accent-color:var(--neon);">
+            <label for="agree-check">I agree to the Manifesto and accept full responsibility</label>
+          </div>
+          <button class="btn" id="pay-btn" disabled>Pay & Join</button>
+        </div>
+        <div class="aura-link">
+          <a href="https://aurasystem.space/" class="flicker-rainbow">← Back to AURA SYSTEM</a>
+        </div>
+      </section>
 
-  function goTo(page) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-    document.getElementById(page)?.classList.add('active');
-    document.querySelector(`.sidebar-item[data-page="${page}"]`)?.classList.add('active');
-    window.location.hash = page;
-  }
+      <!-- MESSENGER -->
+      <section id="messenger" class="page">
+        <div class="page-bg"></div>
+        <div style="padding:20px;max-width:600px;margin:0 auto;">
+          <h2 class="flicker-rainbow" style="text-align:center;margin-bottom:20px;">P2P Messenger</h2>
+          <div style="background:var(--card);border-radius:var(--radius);padding:15px;margin-bottom:20px;">
+            <input type="text" id="peer-id" placeholder="Enter peer wallet (0x...)" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--text);">
+            <button class="btn" onclick="connectPeer()" style="margin-top:10px;width:100%;">Connect</button>
+          </div>
+          <div id="chat" style="height:300px;overflow-y:auto;background:var(--card);border-radius:var(--radius);padding:15px;margin-bottom:15px;"></div>
+          <div style="display:flex;gap:10px;">
+            <input type="text" id="msg-input" placeholder="Loading..." disabled style="flex:1;padding:12px;border:1px solid var(--border);border-radius:50px;background:transparent;color:var(--text);">
+            <button class="btn" onclick="sendMessage()" disabled>Send</button>
+          </div>
+        </div>
+        <div class="aura-link">
+          <a href="https://aurasystem.space/" class="flicker-rainbow">← Back to AURA SYSTEM</a>
+        </div>
+      </section>
 
-  document.querySelectorAll('.sidebar-item[data-page]').forEach(i => 
-    i.addEventListener('click', () => goTo(i.dataset.page))
-  );
+    </div>
+  </main>
 
-  function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('open');
-    document.querySelector('.hamburger').classList.toggle('open');
-  }
+  <footer class="footer">
+    <div class="footer-content">
+      Produced by MIHELSON © 2025 • The Mihelson Triad is watching.
+    </div>
+  </footer>
 
-  function toggleTheme() {
-    const cur = document.body.getAttribute('data-theme');
-    const next = cur === 'dark' ? 'light' : 'dark';
-    document.body.setAttribute('data-theme', next);
-  }
+  <script>
+    const $ = s => document.querySelector(s);
 
-  function logout() {
-    if (confirm('Wipe all local data?')) localStorage.clear();
-  }
+    // Cover upload
+    $('#cover-upload')?.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (file) {
+        const url = URL.createObjectURL(file);
+        $('#cover-preview').style.backgroundImage = `url(${url})`;
+        $('#cover-preview').textContent = '';
+      }
+    });
 
-  window.addEventListener('load', () => {
-    goTo(window.location.hash.slice(1) || 'home');
-  });
-</script>
+    // Avatar upload
+    $('#avatar-upload')?.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (file) {
+        const url = URL.createObjectURL(file);
+        $('#avatar-preview').src = url;
+        $('#avatar-preview').style.display = 'block';
+        $('#avatar-placeholder').style.display = 'none';
+      }
+    });
 
+    // Agreement
+    $('#agree-check')?.addEventListener('change', e => {
+      $('#pay-btn').disabled = !e.target.checked;
+    });
+
+    // Navigation
+    function goTo(page) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+      const target = document.getElementById(page);
+      if (target) target.classList.add('active');
+      const item = document.querySelector(`.sidebar-item[data-page="${page}"]`);
+      if (item) item.classList.add('active');
+      window.location.hash = page;
+    }
+
+    document.querySelectorAll('.sidebar-item[data-page]').forEach(i =>
+      i.addEventListener('click', () => goTo(i.dataset.page))
+    );
+
+    // Mobile sidebar
+    function toggleSidebar() {
+      $('#sidebar').classList.toggle('open');
+      document.querySelector('.hamburger').classList.toggle('open');
+    }
+
+    // Theme
+    function initTheme() {
+      const saved = localStorage.getItem('theme');
+      if (saved) document.body.setAttribute('data-theme', saved);
+    }
+    function toggleTheme() {
+      const current = document.body.getAttribute('data-theme') || 'light';
+      const next = current === 'light' ? 'dark' : 'light';
+      document.body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+
+    // Stubs
+    function createPost() { console.log('Post stub'); }
+    function logout() {
+      if (confirm('Wipe all local data?')) {
+        localStorage.clear();
+        alert('Logged out');
+        goTo('home');
+      }
+    }
+    function connectPeer() { console.log('Connect peer stub'); }
+    function sendMessage() { console.log('Send message stub'); }
+
+    // Init
+    window.addEventListener('load', () => {
+      initTheme();
+      goTo(window.location.hash.slice(1) || 'home');
+    });
+  </script>
 </body>
 </html>
