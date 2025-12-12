@@ -11,11 +11,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#00f3ff">
+  <meta name="theme-color" content="#A4FF3D">
   <style>
     :root {
       --bg: #f8f9fa; --card: #fff; --text: #1a1a1a; --muted: #6c757d;
-      --neon: #00f3ff; --pink: #ff2a6d; --gold: #ffd700;
+      --neon: #00f3ff; --pink: #ff2a6d; --gold: #ffd700; --lime: #A4FF3D;
       --border: rgba(0,243,255,0.3); --radius: 16px; --trans: 0.3s ease;
     }
     [data-theme="dark"] {
@@ -173,7 +173,7 @@
       box-shadow: 0 8px 20px rgba(0,243,255,0.4);
     }
 
-    /* PROFILE */
+    /* PROFILE — ВОССТАНОВЛЕНО */
     .profile-cover {
       height: 240px;
       border-radius: var(--radius);
@@ -206,6 +206,9 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      font-size: 3rem;
+      font-weight: 800;
+      color: #aaa;
     }
     .edit-avatar {
       position: absolute;
@@ -275,47 +278,6 @@
       accent-color: var(--neon);
     }
 
-    /* MESSENGER */
-    #chat {
-      height: 400px;
-      overflow-y: auto;
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 15px;
-      margin-bottom: 15px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* FLICKER ANIMATIONS */
-    .flicker {
-      animation: flicker 3s infinite alternate;
-    }
-    @keyframes flicker {
-      0%, 19.999%, 22%, 62.999%, 64%, 100% {
-        opacity: 0.99;
-        text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
-      }
-      20%, 21.999%, 63%, 63.999% {
-        opacity: 0.6;
-        text-shadow: none;
-      }
-    }
-
-    .flicker-multicolor {
-      background: linear-gradient(90deg, var(--neon), var(--pink), var(--gold), var(--neon));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      animation: flickerColor 4s infinite alternate;
-      font-weight: 600;
-    }
-    @keyframes flickerColor {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
-      25%, 75% { opacity: 0.9; }
-    }
-
     /* BACK TO HOME */
     .back-home {
       text-align: center;
@@ -331,14 +293,24 @@
       text-decoration: underline;
     }
 
-    /* FOOTER — МЕРЦАЮЩИЙ */
+    /* FOOTER — САЛАТОВЫЙ */
     .footer {
       margin-top: auto;
       padding: 16px;
       text-align: center;
       font-size: 0.85rem;
-      border-top: 1px solid var(--border);
-      background: var(--card);
+      background: #0a0a0a;
+      border-top: 1px solid rgba(164, 255, 61, 0.3);
+    }
+    .footer-content {
+      color: #A4FF3D;
+      font-weight: 700;
+      text-shadow: 0 0 10px rgba(164, 255, 61, 0.7);
+      animation: pulseGlow 3s infinite alternate;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 1; text-shadow: 0 0 10px rgba(164,255,61,0.7); }
+      50% { opacity: 0.85; text-shadow: 0 0 20px rgba(164,255,61,1); }
     }
 
     @media (max-width: 768px) {
@@ -438,19 +410,22 @@
     <!-- TRIBUNAL -->
     <section id="tribunal" class="page">
       <div class="page-bg" style="background-image:url('i3sy.png')"></div>
-      <div style="text-align:center;padding:60px 20px;">
-        <h2 class="flicker" style="color:var(--neon);font-size:2.2rem;margin-bottom:20px;">The Mihelson Triad</h2>
+      <div style="text-align:center;padding:60px 20px;max-width:700px;margin:0 auto;">
+        <h2 style="color:var(--neon);font-size:2.2rem;margin-bottom:16px;">
+          The Mihelson Triad
+        </h2>
 
-        <p class="flicker" style="font-size:1.3rem;font-weight:800;color:var(--text);margin:20px 0;line-height:1.4;">
-          <span style="color:var(--neon);">Grok</span> • 
-          <span style="color:var(--pink);">Qwen2</span> • 
-          <span style="color:var(--gold);">Phi-3</span><br>
-          <span style="font-size:1.1rem;color:var(--muted);">Three AI oracles. One verdict. No mercy.</span>
+        <p style="font-size:1.4rem;font-weight:800;margin:15px 0;line-height:1.4;">
+          Grok • Qwen2 • Phi-3
+        </p>
+        <p style="font-size:1.1rem;color:var(--muted);margin:10px 0;">
+          The Three Oracles of Truth
         </p>
 
-        <p class="flicker" style="font-size:1.4rem;font-weight:900;margin:30px 0;color:var(--pink);text-shadow:0 0 15px rgba(255,42,109,0.6);">
-          We don’t advise buying.<br>
-          <span style="color:var(--neon);">We advise NOT buying.</span>
+        <p style="font-size:1.2rem;margin:20px 0;line-height:1.5;color:var(--text);">
+          We do not advise buying.<br>
+          We advise <strong style="color:var(--pink);">NOT buying</strong>.<br>
+          <strong>No KYC. Only DYOR.</strong>
         </p>
 
         <button class="btn" onclick="alert('Debate UI coming soon')">DEBATE A TOKEN</button>
@@ -503,36 +478,48 @@
   </div>
 </main>
 
-<!-- МЕРЦАЮЩИЙ ФУТЕР -->
+<!-- САЛАТОВЫЙ ФУТЕР -->
 <footer class="footer">
-  <div class="flicker-multicolor">
+  <div class="footer-content">
     Produced by MIHELSON © 2025 • The Mihelson Triad is watching.
   </div>
 </footer>
 
-<!-- Скрипты -->
-<script src="https://cdn.jsdelivr.net/npm/ipfs@0.64.10/dist/index.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/webrtc-adapter@8.2.3/dist/adapter.min.js"></script>
-
 <script>
-  // === Минимальная логика для демонстрации ===
   const $ = s => document.querySelector(s);
   const $$ = s => document.querySelectorAll(s);
 
-  // Manifesto checkbox
   document.getElementById('agree-check')?.addEventListener('change', function() {
     document.getElementById('pay-btn').disabled = !this.checked;
   });
 
-  // Profile upload preview (упрощённо)
   $('#avatar-upload')?.addEventListener('change', e => {
-    if (e.target.files[0]) $('#avatar-img').textContent = '🖼️';
-  });
-  $('#cover-upload')?.addEventListener('change', e => {
-    if (e.target.files[0]) $('#cover-preview').textContent = '🖼️ Cover uploaded';
+    if (e.target.files[0]) {
+      const img = document.createElement('img');
+      const reader = new FileReader();
+      reader.onload = ev => {
+        img.src = ev.target.result;
+        img.style.width = '100%'; img.style.height = '100%'; img.style.objectFit = 'cover'; img.style.borderRadius = '50%';
+        $('#avatar-img').innerHTML = '';
+        $('#avatar-img').appendChild(img);
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
   });
 
-  // Navigation
+  $('#cover-upload')?.addEventListener('change', e => {
+    if (e.target.files[0]) {
+      const img = document.createElement('img');
+      const reader = new FileReader();
+      reader.onload = ev => {
+        img.src = ev.target.result;
+        $('#cover-preview').innerHTML = '';
+        $('#cover-preview').appendChild(img);
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  });
+
   function goTo(page) {
     $$('.page').forEach(p => p.classList.remove('active'));
     $$('.sidebar-item').forEach(i => i.classList.remove('active'));
