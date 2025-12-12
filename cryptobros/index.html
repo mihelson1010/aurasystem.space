@@ -173,7 +173,7 @@
       box-shadow: 0 8px 20px rgba(0,243,255,0.4);
     }
 
-    /* PROFILE — ВОССТАНОВЛЕНО */
+    /* PROFILE */
     .profile-cover {
       height: 240px;
       border-radius: var(--radius);
@@ -278,18 +278,19 @@
       accent-color: var(--neon);
     }
 
-    /* BACK TO HOME */
-    .back-home {
+    /* AURA SYSTEM LINK */
+    .aura-link {
       text-align: center;
-      margin-top: 40px;
+      margin: 30px 0;
       font-size: 0.95rem;
     }
-    .back-home a {
-      color: var(--neon);
+    .aura-link a {
+      color: #A4FF3D;
+      font-weight: 700;
       text-decoration: none;
-      font-weight: 600;
+      text-shadow: 0 0 8px rgba(164,255,61,0.6);
     }
-    .back-home a:hover {
+    .aura-link a:hover {
       text-decoration: underline;
     }
 
@@ -361,14 +362,15 @@
         </p>
         <button class="btn" onclick="goTo('manifest')">JOIN THE TRIBUNAL</button>
       </div>
-      <div class="back-home"><a href="https://aurasystem.space/cryptobros/">← Back to CRYPTOBROS</a></div>
+      <div class="aura-link">
+        <a href="https://aurasystem.space">← Back to AURA SYSTEM</a>
+      </div>
     </section>
 
     <!-- PROFILE -->
     <section id="profile" class="page">
       <div class="page-bg" style="background-image:url('bg5.png')"></div>
       
-      <!-- Cover with icon -->
       <div class="profile-cover" id="cover-container" style="position:relative;">
         <div id="cover-preview" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--muted);">
           Click to upload cover
@@ -404,7 +406,9 @@
         <input type="file" id="post-video" accept="video/*" style="display:none;">
       </div>
       <div id="posts-container"></div>
-      <div class="back-home"><a href="https://aurasystem.space/cryptobros/">← Back to CRYPTOBROS</a></div>
+      <div class="aura-link">
+        <a href="https://aurasystem.space">← Back to AURA SYSTEM</a>
+      </div>
     </section>
 
     <!-- TRIBUNAL -->
@@ -430,7 +434,9 @@
 
         <button class="btn" onclick="alert('Debate UI coming soon')">DEBATE A TOKEN</button>
       </div>
-      <div class="back-home"><a href="https://aurasystem.space/cryptobros/">← Back to CRYPTOBROS</a></div>
+      <div class="aura-link">
+        <a href="https://aurasystem.space">← Back to AURA SYSTEM</a>
+      </div>
     </section>
 
     <!-- MANIFEST -->
@@ -454,7 +460,9 @@
 
         <button class="btn" id="pay-btn" disabled>Pay & Join</button>
       </div>
-      <div class="back-home"><a href="https://aurasystem.space/cryptobros/">← Back to CRYPTOBROS</a></div>
+      <div class="aura-link">
+        <a href="https://aurasystem.space">← Back to AURA SYSTEM</a>
+      </div>
     </section>
 
     <!-- MESSENGER -->
@@ -472,13 +480,14 @@
           <button class="btn" onclick="sendMessage()" disabled>Send</button>
         </div>
       </div>
-      <div class="back-home"><a href="https://aurasystem.space/cryptobros/">← Back to CRYPTOBROS</a></div>
+      <div class="aura-link">
+        <a href="https://aurasystem.space">← Back to AURA SYSTEM</a>
+      </div>
     </section>
 
   </div>
 </main>
 
-<!-- САЛАТОВЫЙ ФУТЕР -->
 <footer class="footer">
   <div class="footer-content">
     Produced by MIHELSON © 2025 • The Mihelson Triad is watching.
