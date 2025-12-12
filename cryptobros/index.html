@@ -35,7 +35,7 @@
       flex-direction: column;
     }
 
-    /* ФОН НА ВСЮ СТРАНИЦУ — ГРАДИЕНТЫ */
+    /* ФОН НА ВСЮ СТРАНИЦУ */
     .page-bg {
       position: fixed;
       top: 0;
@@ -57,7 +57,7 @@
     .page {
       display: none;
       flex: 1;
-      padding: 60px 20px 40px; /* уменьшено — больше контента */
+      padding: 60px 0 40px; /* УБРАНО ПОЛНОЕ БОКОВОЕ ПОЛЕ — КОНТЕНТ ВО ВСЮ ШИРИНУ */
       position: relative;
     }
     .page.active { display: flex; flex-direction: column; }
@@ -166,28 +166,26 @@
       box-shadow: 0 8px 20px rgba(0,243,255,0.4);
     }
 
-    /* PROFILE */
-    .profile-cover {
-      height: 300px; /* увеличено */
-      border-radius: var(--radius);
-      overflow: hidden;
-      cursor: pointer;
-      position: relative;
+    /* PROFILE — ШАПКА И АВАТАР ВО ВСЮ ШИРИНУ */
+    .profile-header {
+      height: 300px;
       background: var(--card);
+      border: 2px dashed var(--border);
+      position: relative;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--muted);
       margin-bottom: 20px;
-      border: 2px dashed var(--border);
     }
     .profile-avatar-wrapper {
-      position: relative;
-      margin-top: -80px;
+      position: absolute;
+      top: 200px;
+      left: 20px;
       display: flex;
       align-items: flex-end;
       gap: 24px;
-      padding: 0 20px;
     }
     .profile-avatar {
       width: 160px;
@@ -287,7 +285,7 @@
       line-height: 1.6;
     }
 
-    /* AURA SYSTEM LINK */
+    /* AURA SYSTEM LINK — МЕРЦАЕТ */
     .aura-link {
       text-align: center;
       margin: 30px 0;
@@ -298,8 +296,16 @@
       font-weight: 700;
       text-decoration: none;
     }
+    .aura-link a.flicker-rainbow {
+      background: linear-gradient(90deg, var(--neon), var(--pink), var(--gold), var(--green), var(--neon));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: flickerRainbow 5s infinite alternate;
+      font-weight: 700;
+    }
 
-    /* FOOTER */
+    /* FOOTER — МЕРЦАЕТ */
     .footer {
       margin-top: auto;
       padding: 16px;
@@ -309,12 +315,21 @@
       border-top: 1px solid var(--border);
       color: var(--muted);
     }
+    .footer-content {
+      background: linear-gradient(90deg, var(--neon), var(--pink), var(--gold), var(--green), var(--neon));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: flickerRainbow 5s infinite alternate;
+      font-weight: 700;
+    }
 
     @media (max-width: 768px) {
       .hamburger { display: flex; }
       .sidebar { transform: translateX(-100%); width: 280px; }
       .sidebar.open { transform: translateX(0); }
       .main { margin-left: 0; }
+      .profile-avatar-wrapper { top: 150px; left: 10px; }
     }
   </style>
 </head>
@@ -356,7 +371,7 @@
         <button class="btn" onclick="goTo('manifest')">JOIN THE TRIBUNAL</button>
       </div>
       <div class="aura-link">
-        <a href="https://aurasystem.space">← Back to AURA SYSTEM</a>
+        <a href="https://aurasystem.space" class="flicker-rainbow">← Back to AURA SYSTEM</a>
       </div>
     </section>
 
@@ -364,7 +379,8 @@
     <section id="profile" class="page">
       <div class="page-bg"></div>
       
-      <div class="profile-cover" id="cover-container" style="position:relative;">
+      <!-- ШАПКА ВО ВСЮ ШИРИНУ -->
+      <div class="profile-header" id="cover-container" style="position:relative;">
         <div id="cover-preview" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--muted);">
           Upload cover
         </div>
@@ -374,6 +390,7 @@
         </div>
       </div>
 
+      <!-- АВАТАР ВО ВСЮ ШИРИНУ -->
       <div class="profile-avatar-wrapper">
         <div class="profile-avatar" id="avatar-img">M</div>
         <label class="edit-avatar">
@@ -386,7 +403,8 @@
         </div>
       </div>
 
-      <div style="margin-top:30px;">
+      <!-- ПОСТЫ ВО ВСЮ ШИРИНУ -->
+      <div style="margin-top:30px;max-width:100%;padding:0 20px;">
         <div class="post-composer">
           <textarea class="post-input" placeholder="Share your alpha, Bro..."></textarea>
           <div class="post-actions">
@@ -403,14 +421,14 @@
       </div>
 
       <div class="aura-link">
-        <a href="https://aurasystem.space">← Back to AURA SYSTEM</a>
+        <a href="https://aurasystem.space" class="flicker-rainbow">← Back to AURA SYSTEM</a>
       </div>
     </section>
 
     <!-- TRIBUNAL — ВСЁ МЕРЦАЕТ -->
     <section id="tribunal" class="page">
       <div class="page-bg"></div>
-      <div style="text-align:center;max-width:800px;margin:0 auto;">
+      <div style="text-align:center;max-width:800px;margin:0 auto;padding:0 20px;">
         <h2 class="flicker-rainbow" style="font-size:2.6rem;margin-bottom:20px;">
           The Mihelson Triad
         </h2>
@@ -433,14 +451,14 @@
         <button class="btn" onclick="alert('Debate UI coming soon')">DEBATE A TOKEN</button>
       </div>
       <div class="aura-link">
-        <a href="https://aurasystem.space">← Back to AURA SYSTEM</a>
+        <a href="https://aurasystem.space" class="flicker-rainbow">← Back to AURA SYSTEM</a>
       </div>
     </section>
 
     <!-- MANIFEST — ТОЛСТЫЙ, МЕРЦАЮЩИЙ -->
     <section id="manifest" class="page">
       <div class="page-bg"></div>
-      <div class="manifest-content" style="max-width:700px;margin:40px auto;text-align:center;">
+      <div class="manifest-content" style="max-width:700px;margin:40px auto;text-align:center;padding:0 20px;">
         <h2 class="flicker-rainbow">MANIFESTO</h2>
         <ul style="text-align:left;display:inline-block;margin:20px 0;padding-left:20px;">
           <li>Bros in. Noise out.</li>
@@ -459,7 +477,7 @@
         <button class="btn" id="pay-btn" disabled>Pay & Join</button>
       </div>
       <div class="aura-link">
-        <a href="https://aurasystem.space">← Back to AURA SYSTEM</a>
+        <a href="https://aurasystem.space" class="flicker-rainbow">← Back to AURA SYSTEM</a>
       </div>
     </section>
 
@@ -479,7 +497,7 @@
         </div>
       </div>
       <div class="aura-link">
-        <a href="https://aurasystem.space">← Back to AURA SYSTEM</a>
+        <a href="https://aurasystem.space" class="flicker-rainbow">← Back to AURA SYSTEM</a>
       </div>
     </section>
 
@@ -487,7 +505,9 @@
 </main>
 
 <footer class="footer">
-  Produced by MIHELSON © 2025 • The Mihelson Triad is watching.
+  <div class="footer-content">
+    Produced by MIHELSON © 2025 • The Mihelson Triad is watching.
+  </div>
 </footer>
 
 <script>
