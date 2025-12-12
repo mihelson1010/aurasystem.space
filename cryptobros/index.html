@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CRYPTOBROS — The Mihelson Triad</title>
+  <base href="./">
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://*.libp2p.io; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src https://*.libp2p.io wss:; frame-ancestors 'none';">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,14 +23,16 @@
     html { scroll-behavior:smooth; }
     body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; min-height:100vh; overflow-x:hidden; display:flex; flex-direction:column; }
 
+    /* ФОН НА ВСЮ СТРАНИЦУ */
     .page-bg {
       position:fixed; top:0; left:0; width:100%; height:100vh; background-size:cover; background-position:center;
       opacity:0.25; z-index:-1; filter:brightness(1.2) contrast(1.1);
     }
 
-    .page { display:none; flex:1; padding:80px 0 60px; position:relative; }
+    .page { display:none; flex:1; padding:80px 20px 60px; position:relative; }
     .page.active { display:flex; flex-direction:column; }
 
+    /* ШАПКА */
     .header {
       position:fixed; top:0; left:0; right:0; background:var(--bg); backdrop-filter:blur(12px);
       border-bottom:1px solid var(--border); z-index:1000; padding:12px 20px; display:flex; justify-content:space-between; align-items:center;
@@ -40,13 +43,14 @@
     }
     .header-right { display:flex; gap:12px; align-items:center; margin-left:auto; }
 
+    /* ГАМБУРГЕР */
     .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
     .hamburger span { width:25px; height:3px; background:var(--text); border-radius:2px; transition:0.3s; }
     .hamburger.open span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
     .hamburger.open span:nth-child(2) { opacity:0; }
     .hamburger.open span:nth-child(3) { transform:rotate(-45deg) translate(7px,-6px); }
 
-    /* САЙДБАР */
+    /* САЙДБАР — КНОПКИ С МЕРЦАНИЕМ */
     .sidebar {
       position:fixed; left:0; top:70px; bottom:0; width:280px; background:var(--card); border-right:1px solid var(--border);
       padding:20px 0; z-index:900; transition:0.3s ease;
@@ -64,7 +68,7 @@
     @keyframes neonPulse { 0%,100% { text-shadow:0 0 8px var(--neon); } 50% { text-shadow:0 0 20px var(--neon),0 0 30px var(--neon); } }
 
     .main { margin-left:280px; flex:1; display:flex; flex-direction:column; }
-    .container { max-width:100%; margin:0 auto; flex:1; }
+    .container { max-width:800px; margin:0 auto; flex:1; }
 
     .btn {
       padding:12px 24px; border-radius:50px; font-weight:600; background:linear-gradient(135deg,var(--neon),var(--pink));
@@ -73,157 +77,61 @@
     }
     .btn:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,243,255,0.4); }
 
-    /* PROFILE — КАК В СКРИНЕ */
-    .profile-header {
-      height:300px; position:relative; overflow:hidden; background:var(--card);
-      margin-bottom:20px;
-    }
+    /* ПРОФИЛЬ — КАК В СКРИНЕ */
     .profile-cover {
-      width:100%; height:100%; background-size:cover; background-position:center;
-      cursor:pointer; position:absolute; top:0; left:0;
+      height:300px; border-radius:var(--radius); overflow:hidden; cursor:pointer; position:relative;
+      background:var(--card); display:flex; align-items:center; justify-content:center; color:var(--muted);
+      margin-bottom:20px; border:2px dashed var(--border);
     }
-    .profile-cover-placeholder {
-      width:100%; height:100%; display:flex; align-items:center; justify-content:center;
-      color:var(--muted); font-size:1.1rem;
-    }
-
-    .profile-info-card {
-      background:var(--card);
-      border-radius:var(--radius);
-      padding:20px;
-      margin: -80px 20px 20px;
-      box-shadow:0 4px 20px rgba(0,0,0,0.05);
-      position:relative;
-      z-index:2;
-    }
-
-    .profile-top {
-      display:flex; align-items:flex-end; gap:20px; margin-bottom:16px;
-    }
-
-    .profile-avatar-container {
-      position:relative;
+    .profile-avatar-wrapper {
+      position:relative; margin-top:-80px; display:flex; align-items:flex-end; gap:24px; padding:0 20px;
     }
     .profile-avatar {
-      width:160px;
-      height:160px;
-      border-radius:50%;
-      border:6px solid var(--bg);
-      background:var(--card);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-    }
-    .profile-avatar img {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:none;
-    }
-    .profile-avatar-placeholder {
-      font-size:3rem;
-      font-weight:800;
-      color:var(--muted);
+      width:160px; height:160px; border-radius:50%; border:6px solid var(--bg); background:var(--card);
+      display:flex; align-items:center; justify-content:center; overflow:hidden;
     }
     .edit-avatar {
-      position:absolute;
-      bottom:8px;
-      right:8px;
-      width:40px;
-      height:40px;
-      border-radius:50%;
-      background:var(--neon);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      box-shadow:0 4px 12px rgba(0,243,255,0.4);
-      z-index:10;
+      position:absolute; bottom:8px; right:8px; background:var(--neon); color:#000; width:36px; height:36px;
+      border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;
+      box-shadow:0 4px 12px rgba(0,243,255,0.4); z-index:10;
     }
-    .edit-avatar i {
-      font-size:20px;
-      color:#000 !important;
-    }
+    .upload-hint { background:var(--card); border:1px solid var(--border); padding:8px 12px; border-radius:8px; font-size:0.85rem; margin-top:8px; color:var(--muted); }
 
-    .profile-names {
-      flex:1;
-    }
-    .profile-fullname {
-      font-size:1.8rem;
-      font-weight:700;
-      margin-bottom:4px;
-    }
-    .profile-username {
-      color:var(--muted);
-      font-size:1rem;
-    }
+    /* ПОСТЫ */
+    .post-composer { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:20px; margin-bottom:24px; }
+    .post-input { width:100%; background:transparent; border:none; color:var(--text); font-size:1.1rem; resize:none; outline:none; margin-bottom:12px; min-height:80px; }
+    .post-actions { display:flex; justify-content:space-between; align-items:center; }
+    .post-tools { display:flex; gap:12px; color:var(--muted); }
+    .post-tools label { cursor:pointer; transition:0.2s; font-size:1.2rem; }
+    .post-tools label:hover { color:var(--neon); }
 
-    .profile-actions {
-      display:flex;
-      gap:10px;
-      margin-bottom:16px;
-    }
+    .post { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:20px; margin-bottom:20px; }
+    .post-footer { display:flex; gap:20px; margin-top:15px; color:var(--muted); font-size:0.9rem; }
+    .post-action { cursor:pointer; transition:0.2s; }
+    .post-action:hover { color:var(--neon); }
 
-    .profile-details {
-      color:var(--text);
-      font-size:1rem;
-      line-height:1.5;
+    /* MANIFESTO — КРУПНЫЙ ТЕКСТ В РАМКЕ С НЕОНОМ */
+    .manifest-content {
+      max-width:700px; margin:40px auto; text-align:center; padding:30px; border:2px solid var(--neon);
+      border-radius:var(--radius); background:var(--card); box-shadow:0 0 30px rgba(0,243,255,0.3);
+      animation:manifestGlow 3s infinite alternate;
     }
-    .profile-details a {
-      color:var(--neon);
-      text-decoration:none;
-    }
+    @keyframes manifestGlow { 0% { box-shadow:0 0 30px rgba(0,243,255,0.3); } 100% { box-shadow:0 0 50px rgba(0,243,255,0.6); } }
+    .manifest-content h2 { font-size:2.8rem; margin-bottom:24px; color:var(--neon); text-shadow:0 0 15px var(--neon); animation:neonPulse 1.5s infinite; }
+    .manifest-content ul { font-size:1.3rem; line-height:1.8; text-align:left; display:inline-block; margin:20px 0; padding-left:20px; }
+    .manifest-content li { margin:8px 0; color:var(--text); animation:fadeIn 1s forwards; opacity:0; }
+    .manifest-content li:nth-child(1) { animation-delay:0.2s; }
+    .manifest-content li:nth-child(2) { animation-delay:0.4s; }
+    .manifest-content li:nth-child(3) { animation-delay:0.6s; }
+    .manifest-content li:nth-child(4) { animation-delay:0.8s; }
+    .manifest-content li:nth-child(5) { animation-delay:1s; }
+    .manifest-content li:nth-child(6) { animation-delay:1.2s; }
+    @keyframes fadeIn { to { opacity:1; } }
 
-    /* POST COMPOSER — ВО ВСЮ ШИРИНУ */
-    .post-composer {
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:20px;
-      margin:0 20px 24px;
-      width:100%;
-    }
-    .post-input {
-      width:100%;
-      background:transparent;
-      border:none;
-      color:var(--text);
-      font-size:1.1rem;
-      resize:none;
-      outline:none;
-      margin-bottom:12px;
-      min-height:80px;
-    }
-    .post-actions {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-    }
-    .post-tools {
-      display:flex;
-      gap:16px;
-      color:var(--muted);
-    }
-    .post-tools i {
-      font-size:1.4rem;
-      cursor:pointer;
-      transition:0.2s;
-    }
-    .post-tools i:hover {
-      color:var(--neon) !important;
-      transform:scale(1.15);
-    }
-
-    /* FOOTER */
+    /* ФУТЕР */
     .footer {
-      margin-top:auto;
-      padding:16px;
-      text-align:center;
-      font-size:0.85rem;
-      color:var(--muted);
-      border-top:1px solid var(--border);
-      background:var(--card);
+      margin-top:auto; padding:16px; text-align:center; font-size:0.85rem; color:var(--muted);
+      border-top:1px solid var(--border); background:var(--card);
     }
 
     @media (max-width:768px) {
@@ -231,9 +139,6 @@
       .sidebar { transform:translateX(-100%); }
       .sidebar.open { transform:translateX(0); }
       .main { margin-left:0; }
-      .profile-top { flex-direction:column; align-items:flex-start; }
-      .profile-avatar { width:100px; height:100px; }
-      .profile-info-card { margin: -60px 10px 20px; }
     }
   </style>
 </head>
@@ -263,74 +168,66 @@
 <main class="main">
   <div class="container">
 
-    <!-- PROFILE — КАК В СКРИНЕ -->
-    <section id="profile" class="page">
-      <div class="page-bg" style="background-image:url('bg5.png')"></div>
-      
-      <!-- ШАПКА — 300px, во всю ширину -->
-      <div class="profile-header">
-        <div id="cover-preview" class="profile-cover">
-          <div class="profile-cover-placeholder">Upload cover</div>
-          <input type="file" id="cover-upload" accept="image/*" style="display:none;">
-        </div>
-        <div style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.6);color:#fff;padding:6px 14px;border-radius:20px;font-size:0.85rem;cursor:pointer;" onclick="document.getElementById('cover-upload').click()">
-          <i class="ti ti-pencil"></i> Edit
-        </div>
-      </div>
-
-      <!-- АВАТАР + ИНФО КАРТОЧКА -->
-      <div class="profile-info-card">
-        <div class="profile-top">
-          <div class="profile-avatar-container">
-            <div class="profile-avatar">
-              <span class="profile-avatar-placeholder">M</span>
-              <img id="avatar-preview" src="" alt="">
-            </div>
-            <label class="edit-avatar">
-              <i class="ti ti-plus" style="font-size:20px;"></i>
-              <input type="file" id="avatar-upload" accept="image/*" style="display:none;">
-            </label>
-          </div>
-          <div class="profile-names">
-            <div id="profile-name-display">MIHELSON</div>
-            <p id="profile-pubkey" style="color:var(--muted); margin-top: 6px;">Loading...</p>
-          </div>
-        </div>
-
-        <div class="profile-actions">
-          <button class="btn" style="padding:8px 16px;font-size:0.9rem;" onclick="alert('Edit profile stub')">
-            Редактировать профиль
-          </button>
-          <button class="btn" style="padding:8px 16px;font-size:0.9rem;" onclick="alert('More stub')">
-            Ещё
-          </button>
-        </div>
-
-        <div class="profile-details">
-          <div>«Ам Исраэль Хай!» (Народ Израиля жив!) — 🇮🇱</div>
-          <div>📍 Екатеринбург • <a href="#" style="color:var(--muted);">Подробнее</a></div>
-        </div>
-      </div>
-
-      <!-- ПОСТЫ — ВО ВСЮ ШИРИНУ -->
-      <div style="margin-top:30px;max-width:100%;padding:0 20px;">
-        <div class="post-composer">
-          <textarea class="post-input" placeholder="Share your alpha, Bro..."></textarea>
-          <div class="post-actions">
-            <div class="post-tools">
-              <label for="post-photo"><i class="ti ti-photo"></i></label>
-              <label for="post-video"><i class="ti ti-video"></i></label>
-            </div>
-            <button class="btn" onclick="createPost()">Post</button>
-          </div>
-          <input type="file" id="post-photo" accept="image/*" style="display:none;">
-          <input type="file" id="post-video" accept="video/*" style="display:none;">
-        </div>
-        <div id="posts-container"></div>
+    <!-- HOME -->
+    <section id="home" class="page active">
+      <div class="page-bg" style="background-image:url('logo777.png')"></div>
+      <div style="text-align:center;padding:60px 20px;">
+        <h1 style="font-size:3rem;background:linear-gradient(90deg,var(--neon),var(--pink));-webkit-background-clip:text;color:transparent;margin-bottom:20px;">
+          THE MIHELSON TRIAD
+        </h1>
+        <p style="color:var(--muted);margin:20px 0;font-size:1.1rem;">
+          Grok • Qwen2 • Phi-3 debate every token in real time.
+        </p>
+        <button class="btn" onclick="goTo('manifest')">JOIN THE TRIBUNAL</button>
       </div>
     </section>
 
-    <!-- MANIFESTO -->
+    <!-- PROFILE -->
+    <section id="profile" class="page">
+      <div class="page-bg" style="background-image:url('bg5.png')"></div>
+      <div class="profile-cover" id="cover-container">
+        <div class="cover-placeholder">Click to upload cover (1200×300)</div>
+        <input type="file" id="cover-upload" accept="image/*" style="display:none;">
+      </div>
+      <div style="text-align:center;margin:10px 0;">
+        <button class="btn" style="padding:6px 16px;font-size:0.9rem;" onclick="document.getElementById('cover-upload').click()">
+          <i class="ti ti-photo"></i> Upload Cover
+        </button>
+        <div class="upload-hint">Cover: 1200×300 px</div>
+      </div>
+
+      <div class="profile-avatar-wrapper">
+        <div class="profile-avatar" id="avatar-img">M</div>
+        <label class="edit-avatar">
+          <input type="file" id="avatar-upload" accept="image/*" style="display:none;">
+          <i class="ti ti-camera"></i>
+        </label>
+        <div>
+          <h2 id="profile-name">MIHELSON</h2>
+          <p id="profile-pubkey" style="color:var(--muted);">Loading...</p>
+        </div>
+      </div>
+      
+      <div style="text-align:center;margin-top:10px;">
+        <button class="btn" style="padding:6px 16px;font-size:0.9rem;" onclick="document.getElementById('avatar-upload').click()">
+          <i class="ti ti-user"></i> Upload Avatar
+        </button>
+        <div class="upload-hint">Avatar: 512×512 px</div>
+      </div>
+
+      <div id="posts-container" style="margin-top:40px;"></div>
+    </section>
+
+    <!-- TRIBUNAL -->
+    <section id="tribunal" class="page">
+      <div class="page-bg" style="background-image:url('i3sy.png')"></div>
+      <div style="text-align:center;padding:60px 20px;">
+        <h2 style="color:var(--neon);font-size:2.2rem;margin-bottom:20px;">The Mihelson Triad</h2>
+        <button class="btn" onclick="alert('Debate UI coming soon')">DEBATE A TOKEN</button>
+      </div>
+    </section>
+
+    <!-- MANIFEST -->
     <section id="manifest" class="page">
       <div class="page-bg" style="background-image:url('abstract.png')"></div>
       <div class="manifest-content">
@@ -351,41 +248,39 @@
       </div>
     </section>
 
-    <!-- HOME -->
-    <section id="home" class="page">
-      <div class="page-bg" style="background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);"></div>
-      <div style="text-align:center;">
-        <h1 style="font-size:2.8rem;margin-bottom:20px;color:var(--neon);">WELCOME TO CRYPTOBROS</h1>
-        <p style="color:var(--muted);margin:20px 0;">Join the decentralized social layer for crypto natives.</p>
-        <button class="btn" onclick="goTo('manifest')">Read Manifesto</button>
-      </div>
-    </section>
-
-    <!-- TRIBUNAL -->
-    <section id="tribunal" class="page">
-      <div class="page-bg" style="background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);"></div>
-      <div style="text-align:center;">
-        <h2 style="font-size:2.4rem;margin-bottom:20px;color:var(--neon);">The Mihelson Triad</h2>
-        <p style="color:var(--muted);">Grok • Qwen2 • Phi-3 in real-time consensus.</p>
+    <!-- MESSENGER -->
+    <section id="messenger" class="page">
+      <div class="page-bg" style="background-image:url('i3.png')"></div>
+      <div style="padding:20px;max-width:600px;margin:0 auto;">
+        <h2 style="color:var(--neon);text-align:center;margin-bottom:20px;">P2P Messenger</h2>
+        <div style="background:var(--card);border-radius:var(--radius);padding:15px;margin-bottom:20px;">
+          <input type="text" id="peer-id" placeholder="Enter peer wallet (0x...)" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--text);">
+          <button class="btn" style="margin-top:10px;width:100%;">Connect</button>
+        </div>
+        <div id="chat" style="height:300px;overflow-y:auto;background:var(--card);border-radius:var(--radius);padding:15px;margin-bottom:15px;"></div>
+        <div style="display:flex;gap:10px;">
+          <input type="text" id="msg-input" placeholder="Loading..." disabled style="flex:1;padding:12px;border:1px solid var(--border);border-radius:50px;background:transparent;color:var(--text);">
+          <button class="btn" disabled>Send</button>
+        </div>
       </div>
     </section>
 
     <!-- FEED -->
     <section id="feed" class="page">
-      <div class="page-bg" style="background: linear-gradient(135deg, #16222A, #3A6073);"></div>
-      <div style="text-align:center;">
-        <h2 style="font-size:2.2rem;margin-bottom:20px;">Лента</h2>
-        <p style="color:var(--muted);">Coming soon: your decentralized feed.</p>
+      <div class="page-bg" style="background-image:url('i3.png')"></div>
+      <div class="post-composer">
+        <textarea class="post-input" placeholder="What’s new, Bro?" id="feed-post-text"></textarea>
+        <div class="post-actions">
+          <div class="post-tools">
+            <label for="feed-photo"><i class="ti ti-photo"></i></label>
+            <label for="feed-video"><i class="ti ti-video"></i></label>
+          </div>
+          <button class="btn" onclick="createFeedPost()">Post</button>
+        </div>
+        <input type="file" id="feed-photo" accept="image/*" style="display:none;">
+        <input type="file" id="feed-video" accept="video/*" style="display:none;">
       </div>
-    </section>
-
-    <!-- MESSENGER -->
-    <section id="messenger" class="page">
-      <div class="page-bg" style="background: linear-gradient(135deg, #16222A, #3A6073);"></div>
-      <div style="text-align:center;">
-        <h2 style="font-size:2.2rem;margin-bottom:20px;">P2P Messenger</h2>
-        <p style="color:var(--muted);">E2EE. No metadata. WebRTC + Libp2p.</p>
-      </div>
+      <div id="feed-posts"></div>
     </section>
 
   </div>
@@ -396,101 +291,44 @@
 </footer>
 
 <script>
-  // === НАВИГАЦИЯ ===
-  function goTo(pageId) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-    const page = document.getElementById(pageId);
-    if (page) page.classList.add('active');
-    const item = document.querySelector(`.sidebar-item[data-page="${pageId}"]`);
-    if (item) item.classList.add('active');
-    window.history.pushState(null, '', `#${pageId}`);
-  }
-
-  document.querySelectorAll('.sidebar-item[data-page]').forEach(item => {
-    item.addEventListener('click', () => {
-      goTo(item.dataset.page);
-      document.getElementById('sidebar').classList.remove('open');
-      document.querySelector('.hamburger').classList.remove('open');
-    });
-  });
-
-  // === МОБИЛЬНОЕ МЕНЮ ===
   function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('open');
     document.querySelector('.hamburger').classList.toggle('open');
   }
 
-  // === ТЕМА ===
   function toggleTheme() {
-    const current = document.body.getAttribute('data-theme');
-    const next = current === 'light' ? 'dark' : 'light';
+    const cur = document.body.getAttribute('data-theme');
+    const next = cur === 'dark' ? 'light' : 'dark';
     document.body.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
   }
 
-  (function initTheme() {
-    const saved = localStorage.getItem('theme') || 'light';
-    document.body.setAttribute('data-theme', saved);
-  })();
-
-  // === ЗАГРУЗКА ОБЛОЖКИ ===
-  document.getElementById('cover-upload')?.addEventListener('change', e => {
-    const file = e.target.files[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      const preview = document.getElementById('cover-preview');
-      preview.style.backgroundImage = `url(${url})`;
-      preview.querySelector('.profile-cover-placeholder').style.display = 'none';
-    }
-  });
-
-  // === ЗАГРУЗКА АВАТАРА ===
-  document.getElementById('avatar-upload')?.addEventListener('change', e => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = ev => {
-        const avatarImg = document.getElementById('avatar-preview');
-        avatarImg.src = ev.target.result;
-        avatarImg.style.display = 'block';
-        document.querySelector('.profile-avatar-placeholder').style.display = 'none';
-      };
-      reader.readAsDataURL(file);
-    }
-  });
-
-  // === МАНИФЕСТ — КНОПКА PAY ===
-  document.getElementById('agree-check')?.addEventListener('change', e => {
-    document.getElementById('pay-btn').disabled = !e.target.checked;
-  });
-
-  // === ПОСТЫ ===
-  function createPost() {
-    alert('Post created (stub)');
+  function goTo(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+    const targetPage = document.getElementById(page);
+    const targetItem = document.querySelector(`.sidebar-item[data-page="${page}"]`);
+    if (targetPage) targetPage.classList.add('active');
+    if (targetItem) targetItem.classList.add('active');
+    window.location.hash = page;
+    if (window.innerWidth <= 768) toggleSidebar();
   }
 
-  // === LOGOUT ===
+  document.querySelectorAll('.sidebar-item[data-page]').forEach(item => {
+    item.addEventListener('click', () => goTo(item.dataset.page));
+  });
+
   function logout() {
     if (confirm('Wipe all local data?')) {
       localStorage.clear();
-      window.location.reload();
+      location.reload();
     }
   }
 
-  // === ИНИЦИАЛИЗАЦИЯ ===
-  window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-      document.getElementById('profile-pubkey').textContent = '0x742d35Cc6634C0532925a3b8D4C9...';
-    }, 500);
-
-    const hash = window.location.hash.slice(1) || 'profile';
-    goTo(hash);
-  });
-
-  window.addEventListener('popstate', () => {
-    const hash = window.location.hash.slice(1) || 'profile';
-    goTo(hash);
+  window.addEventListener('load', () => {
+    const saved = localStorage.getItem('theme') || 'light';
+    document.body.setAttribute('data-theme', saved);
+    goTo(window.location.hash.slice(1) || 'home');
   });
 </script>
 </body>
