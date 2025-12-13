@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CRYPTOBROS — Mihelson</title>
+<title>CRYPTOBROS — The Mihelson Triad</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#00f3ff">
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
@@ -57,10 +59,51 @@ header{
  cursor:pointer;
 }
 .icon-btn{
- margin-left:auto;
+ margin-left:12px;
  font-size:1.6rem;
  cursor:pointer;
 }
+
+/* LANGUAGE */
+.lang-selector {
+  position: relative;
+  display: inline-block;
+}
+.lang-btn {
+  background: var(--card);
+  border: 1px solid rgba(0,0,0,0.1);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.lang-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--card);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 220px;
+  max-height: 300px;
+  overflow-y: auto;
+  display: none;
+  z-index: 1001;
+}
+.lang-dropdown.show { display: block; }
+.lang-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+}
+.lang-item:hover { background: rgba(0,243,255,0.1); }
 
 /* SIDEBAR */
 .hamburger{
@@ -75,7 +118,6 @@ header{
  background:var(--text);
  border-radius:3px;
 }
-
 .sidebar{
  position:fixed;
  top:64px;
@@ -103,10 +145,22 @@ header{
  padding-top:64px;
  flex: 1;
 }
-
-/* PAGE */
-.page{display:none; padding-bottom: 20px;}
+.page{display:none; padding-bottom: 60px;}
 .page.active{display:block}
+
+/* FLICKER RAINBOW */
+.flicker-rainbow {
+  background: linear-gradient(90deg, var(--neon), var(--pink), #ffd700, #00ffaa, var(--neon));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: flicker 4s infinite alternate;
+  font-weight: 800;
+}
+@keyframes flicker {
+  0%, 100% { opacity: 1; filter: blur(0); }
+  50% { opacity: 0.95; filter: blur(0.2px); }
+}
 
 /* PROFILE */
 .profile-header{
@@ -180,27 +234,7 @@ header{
 .post-tools label{cursor:pointer}
 .post-tools label:hover{color:var(--neon)}
 
-/* HOME AI BG — убран, заменён на статичный фон из AURASYSTEM */
-#home-bg {
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: url('https://aurasystem.space/assets/bg5.png') center/cover no-repeat;
-  opacity: 0.25;
-  z-index: -1;
-  filter: brightness(1.2) contrast(1.1);
-}
-
-/* MANIFEST BG */
-#manifest-bg {
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: url('https://aurasystem.space/assets/abstract.png') center/cover no-repeat;
-  opacity: 0.25;
-  z-index: -1;
-  filter: brightness(1.2) contrast(1.1);
-}
-
-/* FOOTER — теперь ВСЕГДА внизу */
+/* FOOTER */
 footer{
   margin-top: auto;
   text-align:center;
@@ -233,14 +267,40 @@ footer{
   <span></span><span></span><span></span>
  </div>
  <div class="logo" onclick="go('home')">CRYPTOBROS</div>
+
+ <!-- LANGUAGE SELECTOR -->
+ <div class="lang-selector">
+   <div class="lang-btn" onclick="toggleLangDropdown()">
+     <span id="current-lang-flag">🇷🇺</span>
+     <span>Language</span>
+   </div>
+   <div class="lang-dropdown" id="langDropdown">
+     <div class="lang-item" data-lang="en" onclick="setLanguage('en')"><span>🇺🇸</span> English</div>
+     <div class="lang-item" data-lang="de" onclick="setLanguage('de')"><span>🇩🇪</span> Deutsch</div>
+     <div class="lang-item" data-lang="fr" onclick="setLanguage('fr')"><span>🇫🇷</span> Français</div>
+     <div class="lang-item" data-lang="he" onclick="setLanguage('he')"><span>🇮🇱</span> עברית</div>
+     <div class="lang-item" data-lang="it" onclick="setLanguage('it')"><span>🇮🇹</span> Italiano</div>
+     <div class="lang-item" data-lang="es" onclick="setLanguage('es')"><span>🇪🇸</span> Español</div>
+     <div class="lang-item" data-lang="nl" onclick="setLanguage('nl')"><span>🇳🇱</span> Nederlands</div>
+     <div class="lang-item" data-lang="pt" onclick="setLanguage('pt')"><span>🇵🇹</span> Português</div>
+     <div class="lang-item" data-lang="sv" onclick="setLanguage('sv')"><span>🇸🇪</span> Svenska</div>
+     <div class="lang-item" data-lang="ru" onclick="setLanguage('ru')"><span>🇷🇺</span> Русский</div>
+     <div class="lang-item" data-lang="zh-TW" onclick="setLanguage('zh-TW')"><span>🇹🇼</span> 繁體中文</div>
+     <div class="lang-item" data-lang="ja" onclick="setLanguage('ja')"><span>🇯🇵</span> 日本語</div>
+     <div class="lang-item" data-lang="ko" onclick="setLanguage('ko')"><span>🇰🇷</span> 한국어</div>
+     <div class="lang-item" data-lang="vi" onclick="setLanguage('vi')"><span>🇻🇳</span> Tiếng Việt</div>
+     <div class="lang-item" data-lang="ar" onclick="setLanguage('ar')"><span>🇸🇦</span> العربية</div>
+   </div>
+ </div>
+
  <div class="icon-btn" onclick="toggleTheme()"><i class="ti ti-moon"></i></div>
 </header>
 
 <nav class="sidebar" id="sidebar">
- <!-- КНОПКИ ВСЕ СЛЕВА, КАК ВЫ ПРОСИЛИ -->
  <div class="sidebar-item" onclick="go('home', this)"><i class="ti ti-home"></i> Home</div>
- <div class="sidebar-item" onclick="go('manifest', this)"><i class="ti ti-file"></i> Manifesto</div>
  <div class="sidebar-item" onclick="go('tribunal', this)"><i class="ti ti-scale"></i> The Mihelson Triad</div>
+ <div class="sidebar-item" onclick="go('manifest', this)"><i class="ti ti-file"></i> Manifesto</div>
+ <div class="sidebar-item" onclick="go('pay', this)"><i class="ti ti-coin"></i> Pay 300 AUS</div>
  <div class="sidebar-item" onclick="go('profile', this)"><i class="ti ti-user"></i> Profile</div>
  <div class="sidebar-item" onclick="go('feed', this)"><i class="ti ti-news"></i> Лента</div>
  <div class="sidebar-item" onclick="go('messenger', this)"><i class="ti ti-message-circle"></i> Messenger</div>
@@ -249,27 +309,73 @@ footer{
 
 <div class="main">
 
-<!-- HOME — КРАСИВО ОФОРМЛЕНО -->
-<section id="home" class="page active">
-  <div id="home-bg"></div>
-  <div style="padding:120px;text-align:center;color:var(--neon);">
-    <h1 style="font-size:3.2rem;margin-bottom:20px;">CRYPTOBROS</h1>
-    <p style="font-size:1.2rem;color:var(--muted);max-width:600px;margin:0 auto;line-height:1.6;">
+<!-- HOME -->
+<section id="home" class="page">
+  <div style="background:url('https://aurasystem.space/assets/bg5.png') center/cover;position:fixed;top:0;left:0;width:100%;height:100%;opacity:0.25;z-index:-1;"></div>
+  <div style="padding:100px 20px;text-align:center;color:var(--neon);">
+    <h1 class="flicker-rainbow" style="font-size:3.2rem;margin-bottom:20px;">CRYPTOBROS</h1>
+    <p class="flicker-rainbow" style="font-size:1.2rem;margin:20px auto;line-height:1.6;max-width:600px;">
       Privacy-native tools.<br>
       No servers. No accounts. Full control.
     </p>
-    <button style="margin-top:30px;padding:12px 32px;background:linear-gradient(135deg,var(--neon),var(--pink));border:none;border-radius:50px;color:#000;font-weight:600;cursor:pointer;" onclick="go('manifest')">
-      Read Manifesto
+    <button style="margin-top:30px;padding:12px 32px;background:linear-gradient(135deg,var(--neon),var(--pink));border:none;border-radius:50px;color:#000;font-weight:600;cursor:pointer;" onclick="go('tribunal')">
+      The Mihelson Triad
     </button>
+  </div>
+</section>
+
+<!-- TRIBUNAL -->
+<section id="tribunal" class="page active">
+  <div style="background:linear-gradient(135deg,#0f0c29,#302b63);position:fixed;top:0;left:0;width:100%;height:100%;opacity:0.25;z-index:-1;"></div>
+  <div style="max-width:800px;margin:60px auto;padding:0 20px;">
+    <h2 class="flicker-rainbow" style="font-size:2.8rem;text-align:center;margin-bottom:30px;">
+      The Mihelson Triad
+    </h2>
+    <div style="background:rgba(0,0,0,0.3);border-radius:16px;padding:24px;margin-bottom:30px;">
+      <p style="color:var(--muted);font-size:1.1rem;line-height:1.6;">
+        In the AI industry, there’s one of the toughest benchmarks — <strong>ARC-AGI-2</strong>.<br>
+        It’s designed to break even the strongest models.<br>
+        The human baseline: <strong>60%</strong> (from 600 people).
+      </p>
+    </div>
+    <div style="background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+      <div style="display:flex;justify-content:space-between;padding:14px 20px;font-weight:600;background:rgba(0,243,255,0.1);">
+        <span>Model</span>
+        <span>ARC-AGI-2</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border);"><span>GPT-5</span><span>10%</span></div>
+      <div style="display:flex;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border);"><span>Claude Sonnet</span><span>13%</span></div>
+      <div style="display:flex;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border);"><span>Grok 4</span><span>16%</span></div>
+      <div style="display:flex;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border);"><span>Gemini 3</span><span>32%</span></div>
+      <div style="display:flex;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border);"><span>Claude Opus 4.5</span><span>37%</span></div>
+      <div style="display:flex;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border);"><span>Gemini 3 Deep Think</span><span>45%</span></div>
+      <div style="display:flex;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border);background:rgba(255,42,109,0.1);"><span><strong>GPT-5.2 Thinking</strong></span><span><strong>53%</strong></span></div>
+      <div style="display:flex;justify-content:space-between;padding:12px 20px;background:rgba(0,255,170,0.1);"><span><strong>Human Average</strong></span><span><strong>60%</strong></span></div>
+    </div>
+    <div style="margin-top:24px;background:rgba(0,243,255,0.1);padding:20px;border-radius:16px;text-align:center;">
+      <p style="color:var(--neon);font-weight:600;font-size:1.1rem;">
+        ✨ Qwen2 — core of The Mihelson Triad.<br>
+        Not racing alone. Ruling together.
+      </p>
+    </div>
+    <p style="text-align:center;color:var(--muted);margin:24px 0;font-style:italic;">
+      Progress that once took years now fits in a quarter.<br>
+      This is no longer a model race — it’s a level shift.
+    </p>
+    <div style="text-align:center;margin-top:30px;">
+      <button class="btn" style="padding:12px 32px;" onclick="alert('Debate engine loading...')">
+        Debate a Token
+      </button>
+    </div>
   </div>
 </section>
 
 <!-- MANIFESTO -->
 <section id="manifest" class="page">
-  <div id="manifest-bg"></div>
+  <div style="background:url('https://aurasystem.space/assets/abstract.png') center/cover;position:fixed;top:0;left:0;width:100%;height:100%;opacity:0.25;z-index:-1;"></div>
   <div style="max-width:700px;margin:80px auto;padding:0 20px;">
-    <h2 style="font-size:2.6rem;text-align:center;margin-bottom:30px;color:var(--neon);">MANIFESTO</h2>
-    <ul style="font-size:1.2rem;line-height:1.8;text-align:left;padding-left:20px;">
+    <h2 class="flicker-rainbow" style="font-size:2.6rem;text-align:center;margin-bottom:30px;">MANIFESTO</h2>
+    <ul style="font-size:1.2rem;line-height:1.8;text-align:left;padding-left:20px;color:var(--text);">
       <li>Bros in. Noise out.</li>
       <li>No servers. Zero KYC. Only wallet.</li>
       <li>We do not advise buying! We advise not buying!</li>
@@ -281,19 +387,46 @@ footer{
       <input type="checkbox" id="agree" style="accent-color:var(--neon);">
       <label for="agree">I agree to the Manifesto and accept full responsibility</label>
     </div>
-    <button id="pay-btn" disabled style="margin-top:20px;padding:12px 32px;background:linear-gradient(135deg,var(--neon),var(--pink));border:none;border-radius:50px;color:#000;font-weight:600;width:100%;">
-      Pay & Join
+    <button id="pay-btn" disabled style="margin-top:20px;padding:12px 32px;background:linear-gradient(135deg,var(--neon),var(--pink));border:none;border-radius:50px;color:#000;font-weight:600;width:100%;" onclick="go('pay')">
+      Pay 300 AUS
     </button>
   </div>
 </section>
 
-<!-- TRIBUNAL -->
-<section id="tribunal" class="page">
-  <div style="background:linear-gradient(135deg,#0f0c29,#302b63);position:fixed;top:0;left:0;width:100%;height:100%;opacity:0.25;z-index:-1;"></div>
-  <div style="padding:100px;text-align:center;color:var(--neon);">
-    <h2 style="font-size:2.8rem;margin-bottom:20px;">The Mihelson Triad</h2>
-    <p style="font-size:1.4rem;margin:10px 0;">Grok • Qwen2 • Phi-3</p>
-    <p style="color:var(--muted);margin-top:20px;font-style:italic;">Three minds. One truth.</p>
+<!-- PAY PAGE -->
+<section id="pay" class="page">
+  <div style="background:linear-gradient(135deg,#141E30,#243B55);position:fixed;top:0;left:0;width:100%;height:100%;opacity:0.25;z-index:-1;"></div>
+  <div style="max-width:600px;margin:80px auto;padding:0 20px;text-align:center;">
+    <h2 class="flicker-rainbow" style="font-size:2.4rem;margin-bottom:20px;">Prove You’re Real</h2>
+    <p style="color:var(--muted);margin-bottom:30px;">
+      Pay 300 AUS or sign the Manifesto to join CRYPTOBROS.<br>
+      <strong>No servers. No tracking. Full control.</strong>
+    </p>
+
+    <!-- YOUR QR CODE -->
+    <div style="background:var(--card);padding:20px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.1);margin-bottom:30px;">
+      <img src="5R8wHTuWuhxGE6qUHbPh4RZatKBAvxJKpmLAdA2GbzPL.png" 
+           style="width:200px;height:200px;object-fit:contain;">
+      <p style="margin-top:12px;color:var(--muted);font-size:0.9rem;word-break:break-all;">
+        <strong>Solana Address:</strong><br>
+        5R8wHTuWuhxGE6qUHbPh4RZatKBAvxJKpmLAdA2GbzPL
+      </p>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <button class="btn" style="background:linear-gradient(135deg,#00ffaa,#ffd700);color:#000;" onclick="signManifesto()">
+        <i class="ti ti-signature"></i> Sign Manifesto (Free Registration)
+      </button>
+      <button class="btn" style="background:linear-gradient(135deg,#9945FF,#14F195);color:#000;" onclick="openInPhantom()">
+        <i class="ti ti-external-link"></i> Open in Phantom
+      </button>
+      <div style="margin-top:20px;">
+        <input type="text" id="promo-code" placeholder="Enter promo code" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);">
+        <button class="btn" style="margin-top:8px;width:100%;" onclick="redeemPromo()">
+          Redeem Promo Code
+        </button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -305,7 +438,6 @@ footer{
    <input type="file" hidden accept="image/*" onchange="previewCover(this)">
   </label>
  </div>
-
  <div class="profile-card">
   <div class="avatar-wrap">
    <div class="avatar"><img id="ava" src="" alt=""></div>
@@ -314,8 +446,12 @@ footer{
     <input type="file" hidden accept="image/*" onchange="previewAvatar(this)">
    </label>
   </div>
+  <div style="margin-top:20px;">
+    <div><strong>Username:</strong> <span id="profile-username">User</span></div>
+    <div><strong>Bio:</strong> <span id="profile-bio">Tell your story...</span></div>
+    <button onclick="editProfile()" style="margin-top:10px;padding:6px 16px;background:var(--neon);border:none;border-radius:6px;">Edit profile</button>
+  </div>
  </div>
-
  <div class="post">
   <textarea placeholder="What's new?"></textarea>
   <div class="post-tools">
@@ -332,85 +468,204 @@ footer{
 <!-- FEED -->
 <section id="feed" class="page">
   <div style="background:linear-gradient(135deg,#16222A,#3A6073);position:fixed;top:0;left:0;width:100%;height:100%;opacity:0.25;z-index:-1;"></div>
-  <div style="padding:80px;text-align:center;">
-    <h2 style="font-size:2.2rem;margin-bottom:20px;">Лента</h2>
-    <p style="color:var(--muted);">Your decentralized feed</p>
+  <div class="post" style="margin:20px;">
+    <textarea placeholder="What’s new, Bro?" id="feed-post-text" style="width:100%;min-height:80px;border:none;resize:none;outline:none;background:none;font-size:1.1rem;"></textarea>
+    <div class="post-tools">
+      <label><i class="ti ti-photo"></i>
+        <input type="file" hidden accept="image/*">
+      </label>
+      <label><i class="ti ti-video"></i>
+        <input type="file" hidden accept="video/*">
+      </label>
+    </div>
+    <button onclick="createFeedPost()" style="margin-top:12px;padding:8px 20px;background:linear-gradient(135deg,var(--neon),var(--pink));border:none;border-radius:50px;color:#000;font-weight:600;">Post</button>
   </div>
+  <div id="feed-posts" style="margin-top:20px;"></div>
 </section>
 
 <!-- MESSENGER -->
 <section id="messenger" class="page">
   <div style="background:linear-gradient(135deg,#16222A,#3A6073);position:fixed;top:0;left:0;width:100%;height:100%;opacity:0.25;z-index:-1;"></div>
   <div style="padding:80px;text-align:center;">
-    <h2 style="font-size:2.2rem;margin-bottom:20px;">P2P Messenger</h2>
-    <p style="color:var(--muted);">E2EE • No metadata • Libp2p</p>
+    <h2 class="flicker-rainbow">P2P Messenger</h2>
+    <p style="color:var(--muted);">E2EE • No metadata • WebRTC</p>
   </div>
 </section>
 
 </div>
 
-<!-- ФУТЕР — НА ВСЕХ СТРАНИЦАХ, В САМОМ НИЗУ -->
 <footer>
  Produced by MIHELSON © 2025 • The Mihelson Triad is watching.
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <script>
-// Переключение страниц и подсветка меню
+// LANGUAGE
+const LANGUAGES = {
+  en: '🇺🇸', de: '🇩🇪', fr: '🇫🇷', he: '🇮🇱', it: '🇮🇹', es: '🇪🇸',
+  nl: '🇳🇱', pt: '🇵🇹', sv: '🇸🇪', ru: '🇷🇺', 'zh-TW': '🇹🇼',
+  ja: '🇯🇵', ko: '🇰🇷', vi: '🇻🇳', ar: '🇸🇦'
+};
+function setLanguage(lang) {
+  localStorage.setItem('language', lang);
+  document.getElementById('current-lang-flag').textContent = LANGUAGES[lang] || '🌐';
+  document.querySelector('.lang-dropdown').classList.remove('show');
+}
+function toggleLangDropdown() {
+  document.querySelector('.lang-dropdown').classList.toggle('show');
+}
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.lang-selector')) {
+    document.querySelector('.lang-dropdown').classList.remove('show');
+  }
+});
+(function initLanguage() {
+  const saved = localStorage.getItem('language') || 'ru';
+  setLanguage(saved);
+})();
+
+// THEME
+function toggleTheme() {
+  document.body.dataset.theme = 
+    document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('theme', document.body.dataset.theme);
+}
+(function initTheme() {
+  const saved = localStorage.getItem('theme') || 'light';
+  document.body.dataset.theme = saved;
+})();
+
+// NAVIGATION
 function go(id, element) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  
+  document.getElementById(id)?.classList.add('active');
   document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
   if (element) element.classList.add('active');
 }
 
-// Мобильное меню
+// SIDEBAR
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('open');
 }
 
-// Тёмная/светлая тема
-function toggleTheme() {
-  document.body.dataset.theme = 
-    document.body.dataset.theme === 'dark' ? 'light' : 'dark';
-}
-
-// Загрузка обложки
+// PROFILE
 function previewCover(input) {
-  if (input.files && input.files[0]) {
+  if (input.files?.[0]) {
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = e => {
       document.getElementById('cover').style.backgroundImage = `url(${e.target.result})`;
+      localStorage.setItem('cover', e.target.result);
     };
     reader.readAsDataURL(input.files[0]);
   }
 }
-
-// Загрузка аватара
 function previewAvatar(input) {
-  if (input.files && input.files[0]) {
+  if (input.files?.[0]) {
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = e => {
       document.getElementById('ava').src = e.target.result;
+      localStorage.setItem('avatar', e.target.result);
     };
     reader.readAsDataURL(input.files[0]);
   }
 }
+function editProfile() {
+  const user = prompt('Username:', document.getElementById('profile-username').textContent);
+  const bio = prompt('Bio:', document.getElementById('profile-bio').textContent);
+  if (user !== null) document.getElementById('profile-username').textContent = user;
+  if (bio !== null) document.getElementById('profile-bio').textContent = bio;
+  localStorage.setItem('profile', JSON.stringify({ username: user, bio }));
+}
 
-// Manifest checkbox
-document.getElementById('agree')?.addEventListener('change', e => {
-  document.getElementById('pay-btn').disabled = !e.target.checked;
-});
+// FEED
+function createFeedPost() {
+  const text = document.getElementById('feed-post-text')?.value.trim();
+  if (!text) return;
+  const posts = JSON.parse(localStorage.getItem('feedPosts') || '[]');
+  posts.unshift({ id: Date.now(), content: text });
+  localStorage.setItem('feedPosts', JSON.stringify(posts));
+  document.getElementById('feed-post-text').value = '';
+  renderFeedPosts();
+}
+function renderFeedPosts() {
+  const container = document.getElementById('feed-posts');
+  if (!container) return;
+  const posts = JSON.parse(localStorage.getItem('feedPosts') || '[]');
+  container.innerHTML = '';
+  posts.forEach(post => {
+    const el = document.createElement('div');
+    el.className = 'post';
+    el.style.margin = '20px';
+    el.innerHTML = `<div style="font-weight:600;">You</div><div style="margin:8px 0;">${post.content}</div>`;
+    container.appendChild(el);
+  });
+}
 
-// Logout
+// PAY / SOLANA
+function signManifesto() {
+  if (!window.solana && !window.phantom?.solana) {
+    alert('Install Phantom wallet');
+    return;
+  }
+  const message = `I agree to the CRYPTOBROS Manifesto. Nonce: ${Date.now()}`;
+  const provider = window.solana || window.phantom.solana;
+  provider.signMessage(new TextEncoder().encode(message), 'utf8')
+    .then(() => {
+      localStorage.setItem('isReal', 'true');
+      alert('✅ You are real. Welcome to CRYPTOBROS.');
+      go('home');
+    })
+    .catch(err => alert('Signature failed: ' + err.message));
+}
+function openInPhantom() {
+  const addr = "5R8wHTuWuhxGE6qUHbPh4RZatKBAvxJKpmLAdA2GbzPL";
+  window.open(`https://phantom.app/ul/v1/transfer?to=${addr}&amount=300000000000`, '_blank');
+}
+function redeemPromo() {
+  const code = document.getElementById('promo-code').value.trim();
+  if (code) {
+    localStorage.setItem('isReal', 'true');
+    localStorage.setItem('promo', code);
+    alert('✅ Promo activated!');
+    go('home');
+  }
+}
+
+// LOGOUT
 function logout() {
   if (confirm('Wipe all local data?')) {
     localStorage.clear();
-    alert('Logged out');
     location.reload();
   }
 }
+
+// INIT
+window.addEventListener('DOMContentLoaded', () => {
+  // Load profile
+  const savedProfile = JSON.parse(localStorage.getItem('profile') || '{}');
+  if (savedProfile.username) document.getElementById('profile-username').textContent = savedProfile.username;
+  if (savedProfile.bio) document.getElementById('profile-bio').textContent = savedProfile.bio;
+  
+  // Load media
+  const cover = localStorage.getItem('cover');
+  if (cover) document.getElementById('cover').style.backgroundImage = `url(${cover})`;
+  const avatar = localStorage.getItem('avatar');
+  if (avatar) document.getElementById('ava').src = avatar;
+  
+  // Feed
+  renderFeedPosts();
+  
+  // Manifest checkbox
+  document.getElementById('agree')?.addEventListener('change', e => {
+    document.getElementById('pay-btn').disabled = !e.target.checked;
+  });
+  
+  // Go to home if not real
+  if (!localStorage.getItem('isReal')) {
+    go('tribunal');
+  }
+});
 </script>
 
 </body>
-</html>
+       </html>
