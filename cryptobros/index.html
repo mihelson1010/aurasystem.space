@@ -3,44 +3,51 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CRYPTOBROS — The Mihelson Triad</title>
+<title>CRYPTOBROS — Mihelson</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 
 <style>
 :root{
+ --bg:#f5f7fa;
+ --card:#ffffff;
+ --text:#111;
+ --muted:#666;
  --neon:#00f3ff;
  --pink:#ff2a6d;
- --bg:#0a0a0a;
- --card:#111;
- --text:#eaeaea;
- --muted:#777;
  --radius:18px;
 }
+[data-theme="dark"]{
+ --bg:#0a0a0a;
+ --card:#111;
+ --text:#eee;
+ --muted:#888;
+}
+
 *{box-sizing:border-box;margin:0;padding:0}
 body{
  font-family:Inter,system-ui;
- background:#000;
+ background:var(--bg);
  color:var(--text);
- overflow-x:hidden;
+ transition:.3s;
 }
 
 /* HEADER */
 header{
  position:fixed;
- top:0;left:0;right:0;
+ inset:0 0 auto 0;
  height:64px;
+ background:rgba(255,255,255,.8);
+ backdrop-filter:blur(14px);
  display:flex;
  align-items:center;
  padding:0 20px;
- background:rgba(0,0,0,.6);
- backdrop-filter:blur(14px);
  z-index:1000;
 }
 .logo{
- font-weight:800;
  font-size:1.6rem;
+ font-weight:800;
  background:linear-gradient(90deg,var(--neon),var(--pink));
  -webkit-background-clip:text;
  color:transparent;
@@ -50,17 +57,29 @@ header{
  margin-left:auto;
  font-size:1.6rem;
  cursor:pointer;
- color:var(--neon);
 }
 
 /* SIDEBAR */
+.hamburger{
+ display:none;
+ flex-direction:column;
+ gap:5px;
+ margin-right:12px;
+ cursor:pointer;
+}
+.hamburger span{
+ width:26px;height:3px;
+ background:var(--text);
+ border-radius:3px;
+}
+
 .sidebar{
  position:fixed;
  top:64px;
  bottom:0;
  width:260px;
- background:#080808;
- border-right:1px solid rgba(0,243,255,.15);
+ background:var(--card);
+ border-right:1px solid rgba(0,0,0,.1);
 }
 .sidebar-item{
  padding:16px 24px;
@@ -73,7 +92,6 @@ header{
 .sidebar-item.active,
 .sidebar-item:hover{
  color:var(--neon);
- text-shadow:0 0 10px var(--neon);
 }
 
 /* MAIN */
@@ -82,102 +100,90 @@ header{
  padding-top:64px;
 }
 
-/* PAGES */
-.page{display:none;min-height:100vh}
+/* PAGE */
+.page{display:none}
 .page.active{display:block}
 
-/* PROFILE HEADER */
+/* PROFILE */
 .profile-header{
  height:300px;
- background:#111;
+ background:#ddd;
  position:relative;
 }
-.profile-header::after{
- content:'';
- position:absolute;inset:0;
- background:linear-gradient(to bottom,transparent,rgba(0,0,0,.7));
-}
-
-/* PROFILE CARD */
-.profile-card{
- background:#0f0f0f;
+.cover-btn{
+ position:absolute;
+ top:14px;right:14px;
+ background:rgba(0,0,0,.6);
+ color:#fff;
+ padding:6px 14px;
  border-radius:20px;
- margin:-90px 40px 30px;
- padding:24px;
+ cursor:pointer;
+}
+.profile-card{
+ background:var(--card);
+ border-radius:20px;
+ margin:-90px 30px 30px;
+ padding:20px;
+}
+.avatar-wrap{
  position:relative;
+ width:160px;
 }
 .avatar{
  width:160px;height:160px;
  border-radius:50%;
- border:6px solid #000;
+ background:#ccc;
  overflow:hidden;
- background:#222;
 }
 .avatar img{width:100%;height:100%;object-fit:cover}
-.avatar-upload{
+.avatar-btn{
  position:absolute;
- left:140px;top:120px;
+ bottom:8px;right:8px;
+ width:40px;height:40px;
  background:var(--neon);
- width:42px;height:42px;
  border-radius:50%;
  display:flex;
  align-items:center;
  justify-content:center;
  cursor:pointer;
- color:#000;
 }
 
-/* POST COMPOSER */
-.post-composer{
- background:#0b0b0b;
- border:1px solid rgba(0,243,255,.2);
+/* POST */
+.post{
+ background:var(--card);
+ margin:20px 30px;
  border-radius:20px;
  padding:20px;
- margin:0 40px 40px;
 }
-.post-composer textarea{
+.post textarea{
  width:100%;
- min-height:90px;
- background:none;
+ min-height:80px;
  border:none;
- color:#fff;
- font-size:1.1rem;
  resize:none;
  outline:none;
+ background:none;
+ font-size:1.1rem;
 }
 .post-tools{
  display:flex;
  gap:20px;
- font-size:1.6rem;
+ font-size:1.5rem;
  color:var(--muted);
 }
 .post-tools label{cursor:pointer}
 .post-tools label:hover{color:var(--neon)}
 
-/* FEED */
-.feed-wrap{
- max-width:1100px;
- margin:40px auto;
- display:grid;
- gap:24px;
-}
-.feed-card{
- background:rgba(15,15,15,.9);
- border-radius:20px;
- padding:24px;
- box-shadow:0 0 40px rgba(0,243,255,.1);
-}
-
-/* HOME AI BACKGROUND */
+/* HOME AI BG */
 #ai-bg{
  position:fixed;
  inset:0;
  z-index:-1;
- background:radial-gradient(circle at 30% 30%,#00f3ff33,transparent),
-            radial-gradient(circle at 70% 70%,#ff2a6d33,transparent);
- animation:bgmove 12s infinite alternate;
+ background:
+  radial-gradient(circle at 20% 30%,#00f3ff55,transparent),
+  radial-gradient(circle at 80% 70%,#ff2a6d55,transparent);
+ animation:ai 10s infinite alternate;
 }
-@keyframes bgmove{
+@keyframes ai{
  0%{filter:hue-rotate(0deg)}
  100%{filter:hue-rotate(360deg)}
 }
@@ -186,28 +192,38 @@ header{
 footer{
  text-align:center;
  padding:20px;
- font-size:.9rem;
- animation:rgb 3s infinite linear;
+ animation:rgb 3s linear infinite;
 }
 @keyframes rgb{
  0%{color:#00f3ff}
  33%{color:#ff2a6d}
- 66%{color:#8aff00}
+ 66%{color:#7fff00}
  100%{color:#00f3ff}
+}
+
+/* MOBILE */
+@media(max-width:768px){
+ .hamburger{display:flex}
+ .sidebar{transform:translateX(-100%);transition:.3s}
+ .sidebar.open{transform:none}
+ .main{margin-left:0}
 }
 </style>
 </head>
 
-<body>
+<body data-theme="light">
 
 <div id="ai-bg"></div>
 
 <header>
+ <div class="hamburger" onclick="toggleSidebar()">
+  <span></span><span></span><span></span>
+ </div>
  <div class="logo" onclick="go('home')">CRYPTOBROS</div>
- <div class="icon-btn"><i class="ti ti-moon"></i></div>
+ <div class="icon-btn" onclick="toggleTheme()"><i class="ti ti-moon"></i></div>
 </header>
 
-<nav class="sidebar">
+<nav class="sidebar" id="sidebar">
  <div class="sidebar-item active" onclick="go('profile')"><i class="ti ti-user"></i>Profile</div>
  <div class="sidebar-item" onclick="go('feed')"><i class="ti ti-news"></i>Лента</div>
  <div class="sidebar-item" onclick="go('home')"><i class="ti ti-home"></i>Home</div>
@@ -215,47 +231,39 @@ footer{
 
 <div class="main">
 
-<!-- PROFILE -->
 <section id="profile" class="page active">
- <div class="profile-header"></div>
+ <div class="profile-header" id="cover">
+  <label class="cover-btn">
+   <i class="ti ti-photo"></i> Upload cover
+   <input type="file" hidden accept="image/*" onchange="cover.style.backgroundImage=`url(${URL.createObjectURL(this.files[0])})`">
+  </label>
+ </div>
 
  <div class="profile-card">
-  <div style="position:relative">
-   <div class="avatar">
-    <img id="ava">
-   </div>
-   <label class="avatar-upload">
+  <div class="avatar-wrap">
+   <div class="avatar"><img id="ava"></div>
+   <label class="avatar-btn">
     <i class="ti ti-plus"></i>
-    <input type="file" hidden onchange="ava.src=URL.createObjectURL(this.files[0])">
+    <input type="file" hidden accept="image/*" onchange="ava.src=URL.createObjectURL(this.files[0])">
    </label>
   </div>
  </div>
 
- <div class="post-composer">
+ <div class="post">
   <textarea placeholder="What's new?"></textarea>
-  <div style="display:flex;justify-content:space-between;align-items:center">
-   <div class="post-tools">
-    <label><i class="ti ti-photo"></i><input type="file" hidden></label>
-    <label><i class="ti ti-video"></i><input type="file" hidden></label>
-   </div>
-   <button>Post</button>
+  <div class="post-tools">
+   <label><i class="ti ti-photo"></i><input type="file" hidden></label>
+   <label><i class="ti ti-video"></i><input type="file" hidden></label>
   </div>
  </div>
 </section>
 
-<!-- FEED -->
 <section id="feed" class="page">
- <div class="feed-wrap">
-  <div class="feed-card">🔥 Новость 1</div>
-  <div class="feed-card">⚡ Новость 2</div>
- </div>
+ <h2 style="padding:40px">Лента</h2>
 </section>
 
-<!-- HOME -->
 <section id="home" class="page">
- <div style="text-align:center;padding:120px 20px">
-  <h1 style="font-size:3rem;color:var(--neon)">CRYPTOBROS</h1>
- </div>
+ <h1 style="padding:120px;text-align:center;color:var(--neon)">HOME</h1>
 </section>
 
 </div>
@@ -269,6 +277,13 @@ function go(id){
  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
  document.getElementById(id).classList.add('active');
  document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));
+}
+function toggleSidebar(){
+ sidebar.classList.toggle('open')
+}
+function toggleTheme(){
+ document.body.dataset.theme =
+  document.body.dataset.theme==='dark'?'light':'dark'
 }
 </script>
 
