@@ -31,6 +31,9 @@ body{
  background:var(--bg);
  color:var(--text);
  transition:.3s;
+ display: flex;
+ flex-direction: column;
+ min-height: 100vh;
 }
 
 /* HEADER */
@@ -98,10 +101,11 @@ header{
 .main{
  margin-left:260px;
  padding-top:64px;
+ flex: 1;
 }
 
 /* PAGE */
-.page{display:none}
+.page{display:none; padding-bottom: 20px;}
 .page.active{display:block}
 
 /* PROFILE */
@@ -176,26 +180,34 @@ header{
 .post-tools label{cursor:pointer}
 .post-tools label:hover{color:var(--neon)}
 
-/* HOME AI BG */
-#ai-bg{
- position:fixed;
- inset:0;
- z-index:-1;
- background:
-  radial-gradient(circle at 20% 30%,#00f3ff55,transparent),
-  radial-gradient(circle at 80% 70%,#ff2a6d55,transparent);
- animation:ai 10s infinite alternate;
-}
-@keyframes ai{
- 0%{filter:hue-rotate(0deg)}
- 100%{filter:hue-rotate(360deg)}
+/* HOME AI BG — убран, заменён на статичный фон из AURASYSTEM */
+#home-bg {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: url('https://aurasystem.space/assets/bg5.png') center/cover no-repeat;
+  opacity: 0.25;
+  z-index: -1;
+  filter: brightness(1.2) contrast(1.1);
 }
 
-/* FOOTER */
+/* MANIFEST BG */
+#manifest-bg {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: url('https://aurasystem.space/assets/abstract.png') center/cover no-repeat;
+  opacity: 0.25;
+  z-index: -1;
+  filter: brightness(1.2) contrast(1.1);
+}
+
+/* FOOTER — теперь ВСЕГДА внизу */
 footer{
- text-align:center;
- padding:20px;
- animation:rgb 3s linear infinite;
+  margin-top: auto;
+  text-align:center;
+  padding:20px;
+  background: var(--card);
+  border-top: 1px solid rgba(0,243,255,0.1);
+  animation:rgb 3s linear infinite;
 }
 @keyframes rgb{
  0%{color:#00f3ff}
@@ -216,8 +228,6 @@ footer{
 
 <body data-theme="light">
 
-<div id="ai-bg"></div>
-
 <header>
  <div class="hamburger" onclick="toggleSidebar()">
   <span></span><span></span><span></span>
@@ -227,14 +237,68 @@ footer{
 </header>
 
 <nav class="sidebar" id="sidebar">
- <div class="sidebar-item" onclick="go('profile', this)"><i class="ti ti-user"></i>Profile</div>
- <div class="sidebar-item" onclick="go('feed', this)"><i class="ti ti-news"></i>Лента</div>
- <div class="sidebar-item" onclick="go('home', this)"><i class="ti ti-home"></i>Home</div>
+ <!-- КНОПКИ ВСЕ СЛЕВА, КАК ВЫ ПРОСИЛИ -->
+ <div class="sidebar-item" onclick="go('home', this)"><i class="ti ti-home"></i> Home</div>
+ <div class="sidebar-item" onclick="go('manifest', this)"><i class="ti ti-file"></i> Manifesto</div>
+ <div class="sidebar-item" onclick="go('tribunal', this)"><i class="ti ti-scale"></i> The Mihelson Triad</div>
+ <div class="sidebar-item" onclick="go('profile', this)"><i class="ti ti-user"></i> Profile</div>
+ <div class="sidebar-item" onclick="go('feed', this)"><i class="ti ti-news"></i> Лента</div>
+ <div class="sidebar-item" onclick="go('messenger', this)"><i class="ti ti-message-circle"></i> Messenger</div>
+ <div class="sidebar-item" onclick="logout()"><i class="ti ti-logout"></i> Logout</div>
 </nav>
 
 <div class="main">
 
-<section id="profile" class="page active">
+<!-- HOME — КРАСИВО ОФОРМЛЕНО -->
+<section id="home" class="page active">
+  <div id="home-bg"></div>
+  <div style="padding:120px;text-align:center;color:var(--neon);">
+    <h1 style="font-size:3.2rem;margin-bottom:20px;">CRYPTOBROS</h1>
+    <p style="font-size:1.2rem;color:var(--muted);max-width:600px;margin:0 auto;line-height:1.6;">
+      Privacy-native tools.<br>
+      No servers. No accounts. Full control.
+    </p>
+    <button style="margin-top:30px;padding:12px 32px;background:linear-gradient(135deg,var(--neon),var(--pink));border:none;border-radius:50px;color:#000;font-weight:600;cursor:pointer;" onclick="go('manifest')">
+      Read Manifesto
+    </button>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section id="manifest" class="page">
+  <div id="manifest-bg"></div>
+  <div style="max-width:700px;margin:80px auto;padding:0 20px;">
+    <h2 style="font-size:2.6rem;text-align:center;margin-bottom:30px;color:var(--neon);">MANIFESTO</h2>
+    <ul style="font-size:1.2rem;line-height:1.8;text-align:left;padding-left:20px;">
+      <li>Bros in. Noise out.</li>
+      <li>No servers. Zero KYC. Only wallet.</li>
+      <li>We do not advise buying! We advise not buying!</li>
+      <li>Pay 300 AUS to prove you’re real.</li>
+      <li>Privacy-native. End-to-end encrypted.</li>
+      <li>Full control. No tracking. Ever.</li>
+    </ul>
+    <div style="margin-top:30px;display:flex;align-items:center;gap:10px;justify-content:center;">
+      <input type="checkbox" id="agree" style="accent-color:var(--neon);">
+      <label for="agree">I agree to the Manifesto and accept full responsibility</label>
+    </div>
+    <button id="pay-btn" disabled style="margin-top:20px;padding:12px 32px;background:linear-gradient(135deg,var(--neon),var(--pink));border:none;border-radius:50px;color:#000;font-weight:600;width:100%;">
+      Pay & Join
+    </button>
+  </div>
+</section>
+
+<!-- TRIBUNAL -->
+<section id="tribunal" class="page">
+  <div style="background:linear-gradient(135deg,#0f0c29,#302b63);position:fixed;top:0;left:0;width:100%;height:100%;opacity:0.25;z-index:-1;"></div>
+  <div style="padding:100px;text-align:center;color:var(--neon);">
+    <h2 style="font-size:2.8rem;margin-bottom:20px;">The Mihelson Triad</h2>
+    <p style="font-size:1.4rem;margin:10px 0;">Grok • Qwen2 • Phi-3</p>
+    <p style="color:var(--muted);margin-top:20px;font-style:italic;">Three minds. One truth.</p>
+  </div>
+</section>
+
+<!-- PROFILE -->
+<section id="profile" class="page">
  <div class="profile-header" id="cover">
   <label class="cover-btn">
    <i class="ti ti-photo"></i> Upload cover
@@ -265,16 +329,27 @@ footer{
  </div>
 </section>
 
+<!-- FEED -->
 <section id="feed" class="page">
- <h2 style="padding:40px">Лента</h2>
+  <div style="background:linear-gradient(135deg,#16222A,#3A6073);position:fixed;top:0;left:0;width:100%;height:100%;opacity:0.25;z-index:-1;"></div>
+  <div style="padding:80px;text-align:center;">
+    <h2 style="font-size:2.2rem;margin-bottom:20px;">Лента</h2>
+    <p style="color:var(--muted);">Your decentralized feed</p>
+  </div>
 </section>
 
-<section id="home" class="page">
- <h1 style="padding:120px;text-align:center;color:var(--neon)">HOME</h1>
+<!-- MESSENGER -->
+<section id="messenger" class="page">
+  <div style="background:linear-gradient(135deg,#16222A,#3A6073);position:fixed;top:0;left:0;width:100%;height:100%;opacity:0.25;z-index:-1;"></div>
+  <div style="padding:80px;text-align:center;">
+    <h2 style="font-size:2.2rem;margin-bottom:20px;">P2P Messenger</h2>
+    <p style="color:var(--muted);">E2EE • No metadata • Libp2p</p>
+  </div>
 </section>
 
 </div>
 
+<!-- ФУТЕР — НА ВСЕХ СТРАНИЦАХ, В САМОМ НИЗУ -->
 <footer>
  Produced by MIHELSON © 2025 • The Mihelson Triad is watching.
 </footer>
@@ -319,6 +394,20 @@ function previewAvatar(input) {
       document.getElementById('ava').src = e.target.result;
     };
     reader.readAsDataURL(input.files[0]);
+  }
+}
+
+// Manifest checkbox
+document.getElementById('agree')?.addEventListener('change', e => {
+  document.getElementById('pay-btn').disabled = !e.target.checked;
+});
+
+// Logout
+function logout() {
+  if (confirm('Wipe all local data?')) {
+    localStorage.clear();
+    alert('Logged out');
+    location.reload();
   }
 }
 </script>
