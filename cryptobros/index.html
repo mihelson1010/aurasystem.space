@@ -109,6 +109,8 @@ header{
  height:300px;
  background:#ddd;
  position:relative;
+ background-size:cover;
+ background-position:center;
 }
 .cover-btn{
  position:absolute;
@@ -134,6 +136,7 @@ header{
  border-radius:50%;
  background:#ccc;
  overflow:hidden;
+ border:5px solid var(--card);
 }
 .avatar img{width:100%;height:100%;object-fit:cover}
 .avatar-btn{
@@ -224,9 +227,9 @@ footer{
 </header>
 
 <nav class="sidebar" id="sidebar">
- <div class="sidebar-item active" onclick="go('profile')"><i class="ti ti-user"></i>Profile</div>
- <div class="sidebar-item" onclick="go('feed')"><i class="ti ti-news"></i>Лента</div>
- <div class="sidebar-item" onclick="go('home')"><i class="ti ti-home"></i>Home</div>
+ <div class="sidebar-item" onclick="go('profile', this)"><i class="ti ti-user"></i>Profile</div>
+ <div class="sidebar-item" onclick="go('feed', this)"><i class="ti ti-news"></i>Лента</div>
+ <div class="sidebar-item" onclick="go('home', this)"><i class="ti ti-home"></i>Home</div>
 </nav>
 
 <div class="main">
@@ -235,16 +238,16 @@ footer{
  <div class="profile-header" id="cover">
   <label class="cover-btn">
    <i class="ti ti-photo"></i> Upload cover
-   <input type="file" hidden accept="image/*" onchange="cover.style.backgroundImage=`url(${URL.createObjectURL(this.files[0])})`">
+   <input type="file" hidden accept="image/*" onchange="previewCover(this)">
   </label>
  </div>
 
  <div class="profile-card">
   <div class="avatar-wrap">
-   <div class="avatar"><img id="ava"></div>
+   <div class="avatar"><img id="ava" src="" alt=""></div>
    <label class="avatar-btn">
     <i class="ti ti-plus"></i>
-    <input type="file" hidden accept="image/*" onchange="ava.src=URL.createObjectURL(this.files[0])">
+    <input type="file" hidden accept="image/*" onchange="previewAvatar(this)">
    </label>
   </div>
  </div>
@@ -252,8 +255,12 @@ footer{
  <div class="post">
   <textarea placeholder="What's new?"></textarea>
   <div class="post-tools">
-   <label><i class="ti ti-photo"></i><input type="file" hidden></label>
-   <label><i class="ti ti-video"></i><input type="file" hidden></label>
+   <label><i class="ti ti-photo"></i>
+    <input type="file" hidden accept="image/*">
+   </label>
+   <label><i class="ti ti-video"></i>
+    <input type="file" hidden accept="video/*">
+   </label>
   </div>
  </div>
 </section>
@@ -273,17 +280,46 @@ footer{
 </footer>
 
 <script>
-function go(id){
- document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
- document.getElementById(id).classList.add('active');
- document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));
+// Переключение страниц и подсветка меню
+function go(id, element) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  if (element) element.classList.add('active');
 }
-function toggleSidebar(){
- sidebar.classList.toggle('open')
+
+// Мобильное меню
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
 }
-function toggleTheme(){
- document.body.dataset.theme =
-  document.body.dataset.theme==='dark'?'light':'dark'
+
+// Тёмная/светлая тема
+function toggleTheme() {
+  document.body.dataset.theme = 
+    document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+}
+
+// Загрузка обложки
+function previewCover(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('cover').style.backgroundImage = `url(${e.target.result})`;
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+// Загрузка аватара
+function previewAvatar(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('ava').src = e.target.result;
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
 }
 </script>
 
