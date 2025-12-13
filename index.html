@@ -1,223 +1,656 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AURASYSTEM</title>
-  <meta name="description" content="No servers. No accounts. Full control.">
-  <meta property="og:title" content="AURASYSTEM — Privacy-native tools">
-  <meta property="og:description" content="No servers. No accounts. Full control.">
-  <meta property="og:image" content="https://aurasystem.space/logo1.png">
-  <meta property="og:url" content="https://aurasystem.space/">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="AURASYSTEM">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="AURASYSTEM — Privacy-native tools">
-  <meta name="twitter:description" content="No servers. No accounts. Full control.">
-  <meta name="twitter:image" content="https://aurasystem.space/logo1.png">
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https:; frame-ancestors 'none'; base-uri 'self';">
-  <meta name="referrer" content="no-referrer">
-  <link rel="canonical" href="https://aurasystem.space/">
-  <link rel="manifest" href="manifest.json">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800;900&display=swap" rel="stylesheet">
-  <style>
-    html { scroll-behavior: smooth; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CRYPTOBROS — The Mihelson Triad</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#00f3ff">
 
-    body {
-      margin: 0;
-      padding: 0;
-      background: #0d0d1a url('fonsystem.png') center/cover no-repeat;
-      background-attachment: fixed;
-      color: #fff;
-      font-family: 'Inter', system-ui, sans-serif;
-      text-align: center;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 
-    .network-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      pointer-events: none;
-      z-index: 1;
-      background: 
-        linear-gradient(transparent 97%, rgba(0, 243, 255, 0.8) 3%),
-        linear-gradient(90deg, transparent 97%, rgba(123, 44, 191, 0.6) 3%);
-      background-size: 70px 70px;
-      opacity: 0.7;
-      animation: networkMove 10s infinite linear;
-    }
+<style>
+:root{
+ --bg:#f5f7fa;
+ --card:#ffffff;
+ --text:#111;
+ --muted:#666;
+ --neon:#00f3ff;
+ --pink:#ff2a6d;
+ --radius:18px;
+}
+[data-theme="dark"]{
+ --bg:#0a0a0a;
+ --card:#111;
+ --text:#eee;
+ --muted:#888;
+}
 
-    @keyframes networkMove {
-      0% { background-position: 0 0; }
-      100% { background-position: 70px 70px; }
-    }
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+ font-family:Inter,system-ui;
+ background:var(--bg);
+ color:var(--text);
+ transition:.3s;
+ display: flex;
+ flex-direction: column;
+ min-height: 100vh;
+}
 
-    h1 {
-      font-size: 7.2rem;
-      font-weight: 900;
-      letter-spacing: 4px;
-      margin: 10px 0 15px;
-      background: linear-gradient(90deg, #00f3ff, #ff2a6d, #7b2cbf, #2ecc71, #ffd700);
-      background-size: 300% 300%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      animation: gradientShift 6s ease infinite;
-      position: relative;
-      z-index: 10;
-      text-shadow: 0 0 12px rgba(0, 243, 255, 0.4);
-    }
+/* HEADER */
+header{
+ position:fixed;
+ inset:0 0 auto 0;
+ height:64px;
+ background:rgba(255,255,255,.8);
+ backdrop-filter:blur(14px);
+ display:flex;
+ align-items:center;
+ padding:0 20px;
+ z-index:1000;
+}
+.logo{
+ font-size:1.6rem;
+ font-weight:800;
+ background:linear-gradient(90deg,var(--neon),var(--pink));
+ -webkit-background-clip:text;
+ color:transparent;
+ cursor:pointer;
+}
+.icon-btn{
+ margin-left:12px;
+ font-size:1.6rem;
+ cursor:pointer;
+}
 
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+/* LANGUAGE */
+.lang-selector {
+  position: relative;
+  display: inline-block;
+}
+.lang-btn {
+  background: var(--card);
+  border: 1,px,solid,rgba(0,0,0,0.1);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.lang-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--card);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 220px;
+  max-height: 300px;
+  overflow-y: auto;
+  display: none;
+  z-index: 1001;
+}
+.lang-dropdown.show { display: block; }
+.lang-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+}
+.lang-item:hover { background: rgba(0,243,255,0.1); }
 
-    .tagline {
-      font-size: 1.6rem;
-      font-weight: 900;
-      line-height: 1.4;
-      max-width: 700px;
-      padding: 0 20px;
-      margin-bottom: 45px;
-      position: relative;
-      z-index: 10;
-      background: linear-gradient(90deg, #ffd700, #00f3ff, #ff2a6d, #2ecc71);
-      background-size: 400% 400%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      animation: taglineGlow 5s ease infinite;
-      text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-    }
+/* SIDEBAR */
+.hamburger{
+ display:none;
+ flex-direction:column;
+ gap:5px;
+ margin-right:12px;
+ cursor:pointer;
+}
+.hamburger span{
+ width:26px;height:3px;
+ background:var(--text);
+ border-radius:3px;
+}
+.sidebar{
+ position:fixed;
+ top:64px;
+ bottom:0;
+ width:260px;
+ background:var(--card);
+ border-right:1px solid rgba(0,0,0,.1);
+}
+.sidebar-item{
+ padding:16px 24px;
+ display:flex;
+ gap:14px;
+ cursor:pointer;
+ color:var(--muted);
+ font-weight:600;
+}
+.sidebar-item.active,
+.sidebar-item:hover{
+ color:var(--neon);
+}
 
-    @keyframes taglineGlow {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+/* MAIN */
+.main{
+ margin-left:260px;
+ padding-top:64px;
+ flex: 1;
+}
+.page{display:none; padding-bottom: 60px;}
+.page.active{display:block}
 
-    .buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 22px;
-      width: 100%;
-      max-width: 380px;
-      padding: 0 20px;
-      position: relative;
-      z-index: 10;
-    }
+/* FLICKER RAINBOW */
+.flicker-rainbow {
+  background: linear-gradient(90deg, var(--neon), var(--pink), #ffd700, #00ffaa, var(--neon));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: flicker 4s infinite alternate;
+  font-weight: 800;
+}
+@keyframes flicker {
+  0%, 100% { opacity: 1; filter: blur(0); }
+  50% { opacity: 0.95; filter: blur(0.2px); }
+}
 
-    .btn {
-      padding: 16px 32px;
-      border-radius: 60px;
-      font-size: 1.3rem;
-      font-weight: 800;
-      text-decoration: none;
-      color: white;
-      text-align: center;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      letter-spacing: 1px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
+/* PROFILE */
+.profile-header{
+ height:300px;
+ background:#ddd;
+ position:relative;
+ background-size:cover;
+ background-position:center;
+}
+.cover-btn{
+ position:absolute;
+ top:14px;right:14px;
+ background:rgba(0,0,0,.6);
+ color:#fff;
+ padding:6px 14px;
+ border-radius:20px;
+ cursor:pointer;
+}
+.profile-card{
+ background:var(--card);
+ border-radius:20px;
+ margin:-90px 30px 30px;
+ padding:20px;
+}
+.avatar-wrap{
+ position:relative;
+ width:160px;
+}
+.avatar{
+ width:160px;height:160px;
+ border-radius:50%;
+ background:#ccc;
+ overflow:hidden;
+ border:5px solid var(--card);
+}
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:none;
+}
+.avatar-btn{
+ position:absolute;
+ bottom:8px;right:8px;
+ width:40px;height:40px;
+ background:var(--neon);
+ border-radius:50%;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ cursor:pointer;
+}
 
-    .btn-cryptobros { background: linear-gradient(135deg, #8e44ad, #9b59b6); }
-    .btn-cryptobros:hover { transform: translateY(-3px); box-shadow: 0 0 25px rgba(155, 89, 182, 0.8); background: linear-gradient(135deg, #9b59b6, #c0392b); }
+/* POST */
+.post{
+ background:var(--card);
+ margin:20px 30px;
+ border-radius:20px;
+ padding:20px;
+}
+.post textarea{
+ width:100%;
+ min-height:80px;
+ border:none;
+ resize:none;
+ outline:none;
+ background:none;
+ font-size:1.1rem;
+}
+.post-tools{
+ display:flex;
+ gap:20px;
+ font-size:1.5rem;
+ color:var(--muted);
+}
+.post-tools label{cursor:pointer}
+.post-tools label:hover{color:var(--neon)}
 
-    .btn-office { background: linear-gradient(135deg, #ff7700, #ffaa00); }
-    .btn-office:hover { transform: translateY(-3px); box-shadow: 0 0 25px rgba(255, 170, 0, 0.8); background: linear-gradient(135deg, #ffaa00, #ffd700); }
+/* FOOTER */
+footer{
+  margin-top: auto;
+  text-align:center;
+  padding:20px;
+  background: var(--card);
+  border-top: 1px solid rgba(0,243,255,0.1);
+  animation:rgb 3s linear infinite;
+}
+@keyframes rgb{
+ 0%{color:#00f3ff}
+ 33%{color:#ff2a6d}
+ 66%{color:#7fff00}
+ 100%{color:#00f3ff}
+}
 
-    .btn-crypto { background: linear-gradient(135deg, #27ae60, #2ecc71); }
-    .btn-crypto:hover { transform: translateY(-3px); box-shadow: 0 0 25px rgba(46, 204, 113, 0.8); background: linear-gradient(135deg, #2ecc71, #34e07c); }
-
-    .btn-wallet {
-      margin-top: 12px;
-      font-size: 1.1rem;
-      background: rgba(0,0,0,0.2);
-      border: 1px solid rgba(0, 243, 255, 0.5);
-    }
-    .btn-wallet:hover {
-      background: rgba(0, 243, 255, 0.1);
-      border-color: #00f3ff;
-      box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
-    }
-
-    /* ✅ НОРМАЛЬНЫЙ ФУТЕР — ЧИТАЕМЫЙ, АНИМИРОВАННЫЙ, НАДЕЖНЫЙ */
-    .footer {
-      position: fixed;
-      bottom: 16px;
-      right: 20px;
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: #4cff4c; /* светло-зелёный */
-      text-shadow: 0 0 6px rgba(76, 255, 76, 0.6);
-      opacity: 0.95;
-      pointer-events: none;
-      z-index: 10;
-      animation: footerPulse 4s infinite alternate;
-    }
-
-    @keyframes footerPulse {
-      0%, 100% { opacity: 0.9; text-shadow: 0 0 6px rgba(76, 255, 76, 0.6); }
-      50% { opacity: 1; text-shadow: 0 0 12px rgba(76, 255, 76, 0.9); }
-    }
-  </style>
+/* MOBILE */
+@media(max-width:768px){
+ .hamburger{display:flex}
+ .sidebar{transform:translateX(-100%);transition:.3s}
+ .sidebar.open{transform:none}
+ .main{margin-left:0}
+}
+</style>
 </head>
-<body>
 
-<div class="network-overlay"></div>
+<body data-theme="light">
 
-<h1>AURASYSTEM</h1>
+<header>
+ <div class="hamburger" onclick="toggleSidebar()">
+  <span></span><span></span><span></span>
+ </div>
+ <div class="logo" onclick="go('home')">CRYPTOBROS</div>
 
-<div class="tagline">
-  Privacy-native tools.<br>
-  No servers. No accounts. Full control.
+ <!-- LANGUAGE -->
+ <div class="lang-selector">
+   <div class="lang-btn" onclick="toggleLangDropdown()">
+     <span id="current-lang-flag">🇷🇺</span>
+     <span>Language</span>
+   </div>
+   <div class="lang-dropdown" id="langDropdown">
+     <div class="lang-item" data-lang="en" onclick="setLanguage('en')"><span>🇺🇸</span> English</div>
+     <div class="lang-item" data-lang="ru" onclick="setLanguage('ru')"><span>🇷🇺</span> Русский</div>
+   </div>
+ </div>
+
+ <div class="icon-btn" onclick="toggleTheme()"><i class="ti ti-moon"></i></div>
+</header>
+
+<nav class="sidebar" id="sidebar">
+ <div class="sidebar-item" onclick="go('home', this)"><i class="ti ti-home"></i> Home</div>
+ <div class="sidebar-item" onclick="go('tribunal', this)"><i class="ti ti-scale"></i> The Mihelson Triad</div>
+ <div class="sidebar-item" onclick="go('manifest', this)"><i class="ti ti-file"></i> Manifesto</div>
+ <div class="sidebar-item" onclick="go('pay', this)"><i class="ti ti-coin"></i> Pay 300 AUS</div>
+ <div class="sidebar-item" onclick="go('profile', this)"><i class="ti ti-user"></i> Profile</div>
+ <div class="sidebar-item" onclick="go('feed', this)"><i class="ti ti-news"></i> Лента</div>
+ <div class="sidebar-item" onclick="go('messenger', this)"><i class="ti ti-message-circle"></i> Messenger</div>
+ <div class="sidebar-item" onclick="logout()"><i class="ti ti-logout"></i> Logout</div>
+</nav>
+
+<div class="main">
+
+<!-- HOME -->
+<section id="home" class="page">
+  <div style="background:url('https://aurasystem.space/assets/bg5.png') center/cover;position:fixed;top:0;left:0;width:100%;height:100%;opacity:0.25;z-index:-1;"></div>
+  <div style="padding:100px 20px;text-align:center;color:var(--neon);">
+    <h1 class="flicker-rainbow" style="font-size:3.2rem;margin-bottom:20px;">CRYPTOBROS</h1>
+    <p class="flicker-rainbow" style="font-size:1.2rem;margin:20px auto;line-height:1.6;max-width:600px;">
+      Privacy-native tools.<br>
+      No servers. No accounts. Full control.
+    </p>
+    <button style="margin-top:30px;padding:12px 32px;background:linear-gradient(135deg,var(--neon),var(--pink));border:none;border-radius:50px;color:#000;font-weight:600;cursor:pointer;" onclick="go('tribunal')">
+      The Mihelson Triad
+    </button>
+  </div>
+</section>
+
+<!-- TRIBUNAL (БЕЗ ТАБЛИЦЫ) -->
+<section id="tribunal" class="page active">
+  <div style="background:linear-gradient(135deg,#0f0c29,#302b63);position:fixed;top:0;left:0;width:100%;height:100%;opacity:0.25;z-index:-1;"></div>
+  <div style="text-align:center;padding:100px 20px;color:var(--neon);">
+    <h2 class="flicker-rainbow" style="font-size:2.8rem;margin-bottom:20px;">The Mihelson Triad</h2>
+    <p style="font-size:1.4rem;margin:10px 0;">Grok • Qwen2 • Phi-3</p>
+    <p style="color:var(--muted);margin-top:20px;font-style:italic;">Three minds. One truth.</p>
+    <div style="margin-top:30px;">
+      <button class="btn" style="padding:12px 32px;" onclick="alert('Debate UI loading...')">
+        Debate a Token
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section id="manifest" class="page">
+  <div style="background:url('https://aurasystem.space/assets/abstract.png') center/cover;position:fixed;top:0;left:0;width:100%;height:100%;opacity:0.25;z-index:-1;"></div>
+  <div style="max-width:700px;margin:80px auto;padding:0 20px;">
+    <h2 class="flicker-rainbow" style="font-size:2.6rem;text-align:center;margin-bottom:30px;">MANIFESTO</h2>
+    <ul style="font-size:1.2rem;line-height:1.8;text-align:left;padding-left:20px;color:var(--text);">
+      <li>Bros in. Noise out.</li>
+      <li>No servers. Zero KYC. Only wallet.</li>
+      <li>We do not advise buying! We advise not buying!</li>
+      <li>Pay 300 AUS to prove you’re real.</li>
+      <li>Privacy-native. End-to-end encrypted.</li>
+      <li>Full control. No tracking. Ever.</li>
+    </ul>
+    <div style="margin-top:30px;display:flex;align-items:center;gap:10px;justify-content:center;">
+      <input type="checkbox" id="agree" style="accent-color:var(--neon);">
+      <label for="agree">I agree to the Manifesto and accept full responsibility</label>
+    </div>
+    <button id="pay-btn" disabled style="margin-top:20px;padding:12px 32px;background:linear-gradient(135deg,var(--neon),var(--pink));border:none;border-radius:50px;color:#000;font-weight:600;width:100%;" onclick="go('pay')">
+      Pay & Join
+    </button>
+  </div>
+</section>
+
+<!-- PAY PAGE -->
+<section id="pay" class="page">
+  <div style="background:linear-gradient(135deg,#141E30,#243B55);position:fixed;top:0;left:0;width:100%;height:100%;opacity:0.25;z-index:-1;"></div>
+  <div style="max-width:600px;margin:60px auto;padding:0 20px;">
+
+    <!-- Beautiful header -->
+    <div style="text-align:center; margin-bottom:30px;">
+      <h3 class="flicker-rainbow" style="font-size:1.8rem;margin-bottom:12px;">Prove You’re Real</h3>
+      <p style="color:var(--muted); max-width:500px; margin:0 auto; line-height:1.5;">
+        Pay 300 AUS or sign the Manifesto to join CRYPTOBROS.<br>
+        <strong>No servers. No tracking. Full control.</strong>
+      </p>
+    </div>
+
+    <!-- QR -->
+    <div style="background:var(--card);padding:20px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.1);margin-bottom:30px;">
+      <img src="5R8wHTuWuhxGE6qUHbPh4RZatKBAvxJKpmLAdA2GbzPL.png" style="width:200px;height:200px;object-fit:contain;">
+      <p style="margin-top:12px;color:var(--muted);font-size:0.9rem;word-break:break-all;">
+        <strong>Solana Address:</strong><br>
+        5R8wHTuWuhxGE6qUHbPh4RZatKBAvxJKpmLAdA2GbzPL
+      </p>
+    </div>
+
+    <!-- Buttons -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <button class="btn" style="background:linear-gradient(135deg,#00ffaa,#ffd700);color:#000;padding:12px;" onclick="signManifesto()">
+        <i class="ti ti-signature"></i> Sign Manifesto (Free)
+      </button>
+      <button class="btn" style="background:linear-gradient(135deg,#9945FF,#14F195);color:#000;padding:12px;" onclick="openInPhantom()">
+        <i class="ti ti-external-link"></i> Open in Phantom
+      </button>
+      <div style="margin-top:15px;">
+        <input type="text" id="promo-code" placeholder="Enter promo code" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);">
+        <button class="btn" style="margin-top:8px;width:100%;padding:10px;" onclick="redeemPromo()">
+          Redeem Promo Code
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROFILE -->
+<section id="profile" class="page">
+ <div class="profile-header" id="cover">
+  <label class="cover-btn">
+   <i class="ti ti-photo"></i> Upload cover
+   <input type="file" id="cover-upload" hidden accept="image/*">
+  </label>
+ </div>
+ <div class="profile-card">
+  <div class="avatar-wrap">
+   <div class="avatar">
+     <span id="avatar-placeholder" style="font-size:3rem;font-weight:800;color:var(--muted);display:flex;align-items:center;justify-content:center;">U</span>
+     <img id="avatar-preview" src="" alt="">
+   </div>
+   <label class="avatar-btn" for="avatar-upload">
+    <i class="ti ti-plus"></i>
+   </label>
+   <input type="file" id="avatar-upload" hidden accept="image/*">
+  </div>
+  <div style="margin-top:20px;">
+    <div><strong>Username:</strong> <span id="profile-username">User</span></div>
+    <div><strong>Bio:</strong> <span id="profile-bio">Tell your story...</span></div>
+    <button onclick="editProfile()" style="margin-top:10px;padding:6px 16px;background:var(--neon);border:none;border-radius:6px;">Edit profile</button>
+  </div>
+ </div>
+ <div class="post">
+  <textarea placeholder="What's new?"></textarea>
+  <div class="post-tools">
+   <label for="post-photo"><i class="ti ti-photo"></i></label>
+   <label for="post-video"><i class="ti ti-video"></i></label>
+  </div>
+  <input type="file" id="post-photo" hidden accept="image/*">
+  <input type="file" id="post-video" hidden accept="video/*">
+ </div>
+</section>
+
+<!-- FEED -->
+<section id="feed" class="page">
+  <div style="background:linear-gradient(135deg,#16222A,#3A6073);position:fixed;top:0;left:0;width:100%;height:100%;opacity:0.25;z-index:-1;"></div>
+  <div class="post">
+    <textarea placeholder="What’s new, Bro?" id="feed-post-text"></textarea>
+    <div class="post-tools">
+      <label for="feed-photo"><i class="ti ti-photo"></i></label>
+      <label for="feed-video"><i class="ti ti-video"></i></label>
+    </div>
+    <input type="file" id="feed-photo" hidden accept="image/*">
+    <input type="file" id="feed-video" hidden accept="video/*">
+    <button onclick="createFeedPost()" style="margin-top:12px;padding:10px 24px;background:linear-gradient(135deg,var(--neon),var(--pink));border:none;border-radius:24px;color:#000;font-weight:600;">Post</button>
+  </div>
+  <div id="feed-posts" style="margin-top:20px;"></div>
+</section>
+
+<!-- MESSENGER -->
+<section id="messenger" class="page">
+  <div style="background:linear-gradient(135deg,#16222A,#3A6073);position:fixed;top:0;left:0;width:100%;height:100%;opacity:0.25;z-index:-1;"></div>
+  <div style="max-width:600px;margin:20px auto;padding:0 10px;">
+    <h2 class="flicker-rainbow" style="text-align:center;margin-bottom:20px;">P2P Messenger</h2>
+    <div style="background:var(--card);padding:16px;border-radius:16px;margin-bottom:20px;">
+      <input type="text" id="peer-wallet" placeholder="Enter peer Solana address" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);">
+      <button class="btn" style="margin-top:10px;width:100%;" onclick="alert('Connect logic coming soon')">
+        Connect
+      </button>
+    </div>
+    <div id="chat-box" style="background:var(--card);height:300px;overflow-y:auto;padding:16px;border-radius:16px;margin-bottom:15px;"></div>
+    <div style="display:flex;gap:10px;">
+      <input type="text" id="chat-input" placeholder="Type message..." style="flex:1;padding:12px;border:1px solid var(--border);border-radius:24px;background:var(--bg);color:var(--text);">
+      <button class="btn" style="padding:12px 20px;" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+</section>
+
 </div>
 
-<div class="buttons">
-  <a href="cryptobros/" class="btn btn-cryptobros">CRYPTOBROS</a>
-  <a href="office/" class="btn btn-office">Aura Office</a>
-  <a href="cryptoaura.html" class="btn btn-crypto">CryptoAura</a>
-  <a href="#" class="btn btn-wallet" onclick="connectWallet(); return false;">Connect Wallet</a>
-</div>
-
-<!-- ✅ НОРМАЛЬНЫЙ ФУТЕР -->
-<div class="footer">Produced by Mihelson © 2025</div>
+<footer>
+ Produced by MIHELSON © 2025 • The Mihelson Triad is watching.
+</footer>
 
 <script>
-  // PWA
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(console.warn);
+// LANG
+function setLanguage(lang) {
+  localStorage.setItem('language', lang);
+  document.getElementById('current-lang-flag').textContent = lang === 'ru' ? '🇷🇺' : '🇺🇸';
+  document.querySelector('.lang-dropdown').classList.remove('show');
+}
+function toggleLangDropdown() {
+  document.querySelector('.lang-dropdown').classList.toggle('show');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.lang-selector')) {
+    document.querySelector('.lang-dropdown').classList.remove('show');
   }
+});
+(function() {
+  const saved = localStorage.getItem('language') || 'ru';
+  setLanguage(saved);
+})();
 
-  // Web3
-  async function connectWallet() {
-    if (typeof window.ethereum !== 'undefined') {
-      try {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        alert('Connected: ' + accounts[0].slice(0,6) + '...');
-      } catch (e) {
-        alert('Wallet access denied.');
-      }
-    } else {
-      alert('MetaMask not detected.');
-    }
-  }
+// THEME
+function toggleTheme() {
+  const next = document.body.dataset.theme === 'light' ? 'dark' : 'light';
+  document.body.dataset.theme = next;
+  localStorage.setItem('theme', next);
+}
+(function() {
+  const saved = localStorage.getItem('theme') || 'light';
+  document.body.dataset.theme = saved;
+})();
 
-  // Clean URL
-  if (window.location.search && window.location.search !== '?') {
-    history.replaceState(null, '', window.location.pathname);
+// NAV
+function go(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id)?.classList.add('active');
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+}
+
+// SIDEBAR
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// PROFILE MEDIA
+document.getElementById('cover-upload')?.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (file) {
+    const url = URL.createObjectURL(file);
+    document.getElementById('cover').style.backgroundImage = `url(${url})`;
+    localStorage.setItem('cover', url);
   }
+});
+document.getElementById('avatar-upload')?.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const img = document.getElementById('avatar-preview');
+      img.src = ev.target.result;
+      img.style.display = 'block';
+      document.getElementById('avatar-placeholder').style.display = 'none';
+      localStorage.setItem('avatar', ev.target.result);
+    };
+    reader.readAsDataURL(file);
+  }
+});
+function editProfile() {
+  const user = prompt('Username:', document.getElementById('profile-username').textContent);
+  const bio = prompt('Bio:', document.getElementById('profile-bio').textContent);
+  if (user !== null) document.getElementById('profile-username').textContent = user;
+  if (bio !== null) document.getElementById('profile-bio').textContent = bio;
+  localStorage.setItem('profile', JSON.stringify({ username: user, bio }));
+}
+
+// FEED
+function createFeedPost() {
+  const text = document.getElementById('feed-post-text')?.value.trim();
+  if (!text) return;
+  const posts = JSON.parse(localStorage.getItem('feedPosts') || '[]');
+  posts.unshift({ id: Date.now(), content: text });
+  localStorage.setItem('feedPosts', JSON.stringify(posts));
+  document.getElementById('feed-post-text').value = '';
+  renderFeedPosts();
+}
+function renderFeedPosts() {
+  const container = document.getElementById('feed-posts');
+  if (!container) return;
+  const posts = JSON.parse(localStorage.getItem('feedPosts') || '[]');
+  container.innerHTML = '';
+  posts.forEach(post => {
+    const el = document.createElement('div');
+    el.className = 'post';
+    el.style.margin = '20px';
+    el.innerHTML = `<div style="font-weight:600;">You</div><div style="margin:8px 0;">${post.content}</div>`;
+    container.appendChild(el);
+  });
+}
+
+// PAY
+function signManifesto() {
+  if (!window.solana && !window.phantom?.solana) {
+    alert('Install Phantom wallet');
+    return;
+  }
+  const message = `I agree to CRYPTOBROS Manifesto. ${Date.now()}`;
+  const provider = window.solana || window.phantom.solana;
+  provider.signMessage(new TextEncoder().encode(message), 'utf8')
+    .then(() => {
+      localStorage.setItem('isReal', 'true');
+      alert('✅ Verified! Welcome to CRYPTOBROS.');
+      go('home');
+    })
+    .catch(err => alert('Failed: ' + err.message));
+}
+function openInPhantom() {
+  const addr = "5R8wHTuWuhxGE6qUHbPh4RZatKBAvxJKpmLAdA2GbzPL";
+  window.open(`https://phantom.app/ul/v1/transfer?to=${addr}&amount=300000000000`, '_blank');
+}
+function redeemPromo() {
+  const code = document.getElementById('promo-code').value.trim();
+  if (code) {
+    localStorage.setItem('isReal', 'true');
+    alert('✅ Promo activated!');
+    go('home');
+  }
+}
+
+// MESSENGER
+function sendMessage() {
+  const input = document.getElementById('chat-input');
+  if (input.value.trim()) {
+    const box = document.getElementById('chat-box');
+    const msg = document.createElement('div');
+    msg.style.marginBottom = '10px';
+    msg.style.textAlign = 'right';
+    msg.textContent = input.value;
+    box.appendChild(msg);
+    box.scrollTop = box.scrollHeight;
+    input.value = '';
+  }
+}
+
+// LOGOUT
+function logout() {
+  if (confirm('Wipe all local data?')) {
+    localStorage.clear();
+    location.reload();
+  }
+}
+
+// INIT
+window.addEventListener('DOMContentLoaded', () => {
+  // Profile
+  const p = JSON.parse(localStorage.getItem('profile') || '{}');
+  if (p.username) document.getElementById('profile-username').textContent = p.username;
+  if (p.bio) document.getElementById('profile-bio').textContent = p.bio;
+  // Media
+  const cover = localStorage.getItem('cover');
+  if (cover) document.getElementById('cover').style.backgroundImage = `url(${cover})`;
+  const avatar = localStorage.getItem('avatar');
+  if (avatar) {
+    document.getElementById('avatar-preview').src = avatar;
+    document.getElementById('avatar-preview').style.display = 'block';
+    document.getElementById('avatar-placeholder').style.display = 'none';
+  }
+  // Feed
+  renderFeedPosts();
+  // Manifest
+  document.getElementById('agree')?.addEventListener('change', e => {
+    document.getElementById('pay-btn').disabled = !e.target.checked;
+  });
+  // Default page
+  if (!localStorage.getItem('isReal')) {
+    go('manifest');
+  } else {
+    go('home');
+  }
+});
 </script>
 
 </body>
